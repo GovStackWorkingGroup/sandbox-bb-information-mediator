@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govstack-xroad
+spec:
+  selector:
+    matchLabels:
+      run: govstack-xroad
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: govstack-xroad
+    spec:
+      serviceAccountName: ci-cd
+      containers:
+        - name: govstack-xroad-cs
+          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-cs
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 4000
