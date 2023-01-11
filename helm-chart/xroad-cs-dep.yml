@@ -12,15 +12,29 @@ spec:
     - port: 4000
       targetPort: 4000
       protocol: TCP
-      name: https
+      name: ui
     - port: 4001
+      targetPort: 4001
+      protocol: TCP
+      name: auth_cert_reg
+    - port: 4002
+      targetPort: 4002
+      protocol: TCP
+      name: management_services
+    - port: 80
       targetPort: 80
       protocol: TCP
-      name: http 
-    - port: 4002
-      targetPort: 9998
+      name: updates 
+    - port: 8888
+      targetPort: 8888
       protocol: TCP
-      name: ocsp           
+      name: ocsp
+    - port: 8899
+      targetPort: 8899
+      name: tsa
+    - port: 443
+      targetPort: 443
+      name: updates
 ---
 apiVersion: apps/v1
 description: A Helm chart for deploying a pre-configured X-Road Central Server
