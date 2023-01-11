@@ -1,2 +1,4 @@
 apiVersion: v1
+name: xroad-ssp
 description: A Helm chart for deploying a pre-configured provider X-Road Security Server
+version: 0.1
