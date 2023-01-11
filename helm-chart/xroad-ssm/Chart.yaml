@@ -59,4 +59,3 @@ spec:
               value: "govstack-xroad-ssm.govstack.svc.cluster.local"
             - name: serviceport
               value: "4000"
-
