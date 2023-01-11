@@ -1,0 +1,20 @@
+### Global Values if any ###
+global: {}
+
+### Sub Charts Specific Values ###
+xroad-cs:
+  enabled: true
+  image:
+    version:
+xroad-ssm:
+  enabled: true
+  image:
+    version:
+xroad-ssc:
+  enabled: true
+  image:
+    version:
+xroad-ssp:
+  enabled: true
+  image:
+    version:
