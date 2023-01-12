@@ -1,5 +1,4 @@
 apiVersion: apps/v1
-description: A Helm chart for deploying a pre-configured X-Road Security Server with management services
 kind: Deployment
 metadata:
   name: govstack-xroad
