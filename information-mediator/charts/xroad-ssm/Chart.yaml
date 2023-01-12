@@ -1,4 +1,2 @@
 apiVersion: v1
-name: xroad-ssm
 description: A Helm chart for deploying a pre-configured X-Road Security Server with management services
-version: 0.1
