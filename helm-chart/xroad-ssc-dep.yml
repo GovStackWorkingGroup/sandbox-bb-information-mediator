@@ -9,30 +9,14 @@ spec:
   selector:
     run: govstack-xroad-ssc
   ports:
-    - port: 4000
+    - port: 4200
       targetPort: 4000
       protocol: TCP
-      name: ui
-    - port: 4001
-      targetPort: 4001
+      name: https
+    - port: 8082
+      targetPort: 8080
       protocol: TCP
-      name: cs_comm
-    - port: 5500
-      targetPort: 5500
-      protocol: TCP
-      name: messaging
-    - port: 5577
-      targetPort: 5577
-      protocol: TCP
-      name: ocsp_resp
-    - port: 80
-      targetPort: 80
-      protocol: TCP
-      name: globalconf
-    - port: 443
-      targetPort: 443
-      protocol: TCP
-      name: ocsp_tsa        
+      name: http          
 ---
 apiVersion: apps/v1
 description: A Helm chart for deploying a pre-configured consumer X-Road Security Server
