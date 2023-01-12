@@ -1,49 +1,22 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: govstack-xroad-cs
-  labels:
-    run: govstack-xroad-cs
-spec:
-  type: ClusterIP
-  selector:
-    run: govstack-xroad-cs
-  ports:
-    - port: 4000
-      targetPort: 4000
-      protocol: TCP
-      name: https
-    - port: 4001
-      targetPort: 80
-      protocol: TCP
-      name: http 
-    - port: 4002
-      targetPort: 9998
-      protocol: TCP
-      name: ocsp           
----
 apiVersion: apps/v1
 description: A Helm chart for deploying a pre-configured X-Road Central Server
 kind: Deployment
 metadata:
-  name: govstack-xroad-cs
+  name: govstack-xroad
 spec:
   selector:
     matchLabels:
-      run: govstack-xroad-cs
+      run: govstack-xroad
   replicas: 1
   template:
     metadata:
       labels:
-        run: govstack-xroad-cs
+        run: govstack-xroad
     spec:
       serviceAccountName: ci-cd
       containers:
         - name: govstack-xroad-cs
           image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-cs
-          imagePullPolicy: "Always"        
-          env:
-            - name: servicename
-              value: "govstack-xroad-cs.govstack.svc.cluster.local"
-            - name: serviceport
-              value: "4000"
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 4000
