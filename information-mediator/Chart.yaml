@@ -1,0 +1,18 @@
+apiVersion: v1
+name: information-mediator
+description: A Helm chart for Information Mediator
+type: application
+version: 0.1.0
+dependencies:
+- name: xroad-cs
+  repository: file://charts/xroad-cs
+  condition: xroad-cs.enabled
+- name: xroad-ssm
+  repository: file://charts/xroad-ssm
+  condition: xroad-ssm.enabled
+- name: xroad-ssc
+  repository: file://charts/xroad-ssc
+  condition: xroad-ssc.enabled
+- name: xroad-ssp
+  repository: file://charts/xroad-ssp
+  condition: xroad-ssp.enabled    

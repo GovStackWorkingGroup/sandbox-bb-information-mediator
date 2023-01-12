@@ -1,0 +1,61 @@
+kind: Service
+metadata:
+  name: govstack-xroad-cs
+  labels:
+    run: govstack-xroad-cs
+spec:
+  type: ClusterIP
+  selector:
+    run: govstack-xroad-cs
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      name: ui
+    - port: 4001
+      targetPort: 4001
+      protocol: TCP
+      name: auth_cert_reg
+    - port: 4002
+      targetPort: 4002
+      protocol: TCP
+      name: management_services
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: updates 
+    - port: 8888
+      targetPort: 8888
+      protocol: TCP
+      name: ocsp
+    - port: 8899
+      targetPort: 8899
+      name: tsa
+    - port: 443
+      targetPort: 443
+      name: updates
+---
+
+kind: Deployment
+metadata:
+  name: govstack-xroad-cs
+spec:
+  selector:
+    matchLabels:
+      run: govstack-xroad-cs
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: govstack-xroad-cs
+    spec:
+      serviceAccountName: ci-cd
+      containers:
+        - name: govstack-xroad-cs
+          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-cs
+          imagePullPolicy: "Always"        
+          env:
+            - name: servicename
+              value: "govstack-xroad-cs.govstack.svc.cluster.local"
+            - name: serviceport
+              value: "4000"
