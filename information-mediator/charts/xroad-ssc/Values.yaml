@@ -1,8 +1,13 @@
+kind: Namespace
+metadata:
+  name: govstack
+---
 kind: Service
 metadata:
   name: govstack-xroad-ssc
   labels:
     run: govstack-xroad-ssc
+  namespace: govstack
 spec:
   type: ClusterIP
   selector:
@@ -11,31 +16,17 @@ spec:
     - port: 4000
       targetPort: 4000
       protocol: TCP
-      name: ui
-    - port: 4001
-      targetPort: 4001
-      protocol: TCP
-      name: cs_comm
-    - port: 5500
-      targetPort: 5500
-      protocol: TCP
-      name: messaging
-    - port: 5577
-      targetPort: 5577
-      protocol: TCP
-      name: ocsp_resp
+      name: config
     - port: 80
       targetPort: 80
       protocol: TCP
-      name: globalconf
-    - port: 443
-      targetPort: 443
-      protocol: TCP
-      name: ocsp_tsa        
+      name: http   
 ---
+
 kind: Deployment
 metadata:
   name: govstack-xroad-ssc
+  namespace: govstack
 spec:
   selector:
     matchLabels:
@@ -46,12 +37,11 @@ spec:
       labels:
         run: govstack-xroad-ssc
     spec:
-      serviceAccountName: ci-cd
       containers:
         - name: govstack-xroad-ssc
-          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-ssc        
-          env:
-            - name: servicename
-              value: "govstack-xroad-ssc.govstack.svc.cluster.local"
-            - name: serviceport
-              value: "4000"
+          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-ssc
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 4000
+            - containerPort: 80
+             
