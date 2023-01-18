@@ -1,0 +1,31 @@
+= Main
+
+https://helm.sh/docs/helm/helm_install/[Install] Helm chart.
+
+Helm install information-mediator https://github.com/GovStackWorkingGroup/sandbox-information-mediator/tree/main/information-mediator[./information-mediator/]
+
+X-Road sub-charts:
+
+== Central Server
+
+Helm value: `xroad-cs`
+
+== Security Server with management services
+
+Helm value: `xroad-ssm`
+
+
+== Consumer Security Server
+
+Helm value: `xroad-ssc`
+
+
+== Provider Security Server
+
+Helm value: `xroad-ssp`
+
+
+== Configuration
+Sub-charts can be configured in https://github.com/GovStackWorkingGroup/sandbox-information-mediator/tree/main/information-mediator/Values.yaml[Values.yaml] file
+
+by setting the boolean value of the "enabled" parameter of specific sub-chart
