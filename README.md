@@ -6,10 +6,10 @@ helm install information-mediator ./information-mediator/
 
 The "information-mediator" chart contains the following sub-charts:
 
-* xroad-cs
-* xroad-ssm
-* xroad-ssc
-* xroad-ssp
+* A chart for X-Road Central Server (information_mediator/charts/xroad-cs)
+* A chart for X-Road Security Server with management services (information_mediator/charts/xroad-ssm)
+* A chart for consumer X-Road Security Server (information_mediator/charts/xroad-ssc)
+* A chart for provider X-Road Security Server (information_mediator/charts/xroad-ssp)
 
 When installing the "information-mediator" chart, the installation of those sub-charts can be configured in the file "./information_mediator/Values.yaml":
 
