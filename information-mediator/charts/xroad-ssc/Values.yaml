@@ -1,0 +1,47 @@
+kind: Namespace
+metadata:
+  name: govstack
+---
+kind: Service
+metadata:
+  name: govstack-xroad-ssc
+  labels:
+    run: govstack-xroad-ssc
+  namespace: govstack
+spec:
+  type: ClusterIP
+  selector:
+    run: govstack-xroad-ssc
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      name: config
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http   
+---
+
+kind: Deployment
+metadata:
+  name: govstack-xroad-ssc
+  namespace: govstack
+spec:
+  selector:
+    matchLabels:
+      run: govstack-xroad-ssc
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: govstack-xroad-ssc
+    spec:
+      containers:
+        - name: govstack-xroad-ssc
+          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-ssc
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 4000
+            - containerPort: 80
+             
