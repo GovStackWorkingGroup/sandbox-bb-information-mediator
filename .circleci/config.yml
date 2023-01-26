@@ -1,26 +1,40 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+orbs:
+  aws-cli: circleci/aws-cli@3.1
+  aws-ecr: circleci/aws-ecr@8.2.1
+  aws-eks: circleci/aws-eks@2.1.2
+  kubernetes: circleci/kubernetes@1.3.1
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  deploy-project:
     steps:
       - checkout
+      - aws-cli/setup:
+          role-arn: 'arn:aws:iam::463471358064:role/CircleCIRole'
+          aws-region: AWS_DEFAULT_REGION
+          profile-name: CircleCIRole
+          role-session-name: CircleSession
+          session-duration: '1800' 
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: GovStack_sandbox
+          cluster-authentication-role-arn: arn:aws:iam::463471358064:role/CircleCIRole
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+          name: Debug
+          command: aws sts get-caller-identity
+      
+      - run:
+          name: Update kubectl
+          command: |
+            aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole 
+      - run:
+          name: Update Sandbox
+          command: |
+            helm install information-mediator information-mediator/
 workflows:
-  say-hello-workflow:
+  Deploy project to DEV environment:
     jobs:
-      - say-hello
+      - hold:
+          type: approval
+      - deploy-project:
+          context: aws
+          requires: 
+            - hold
