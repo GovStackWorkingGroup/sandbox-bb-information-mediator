@@ -31,7 +31,8 @@ jobs:
       - run:
           name: Update Sandbox
           command: |
-            helm upgrade --install information-mediator ./information-mediator/
+            #helm upgrade --install information-mediator ./information-mediator/
+            helm upgrade --install information-mediator --values information-mediator/values.yaml information-mediator/
 workflows:
   Deploy project to DEV environment:
     jobs:

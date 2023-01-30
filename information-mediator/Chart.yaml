@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 name: information-mediator
 description: A Helm chart for Information Mediator
 type: application
