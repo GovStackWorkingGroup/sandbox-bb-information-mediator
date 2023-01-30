@@ -6,6 +6,8 @@ orbs:
   helm: circleci/helm@1.0
 jobs:
   deploy-project:
+    docker:
+      - image: cimg/aws:2022.06
     steps:
       - checkout
       - aws-cli/setup:
