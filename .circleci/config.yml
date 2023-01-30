@@ -10,6 +10,8 @@ jobs:
       - image: cimg/aws:2022.06
     steps:
       - checkout
+      - helm/install-helm-client:
+          version: v3.0.0
       - aws-cli/setup:
           role-arn: 'arn:aws:iam::463471358064:role/CircleCIRole'
           aws-region: AWS_DEFAULT_REGION
