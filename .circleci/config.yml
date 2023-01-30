@@ -30,18 +30,18 @@ jobs:
           command: |
             aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole
       - run:
-          name: Check secrets
-          command: |
-            kubectl get secrets
-      - run:
           name: List helm releases
           command: |
             helm list 
       - run:
           name: Update Sandbox
           command: |
-            helm uninstall information-mediator
-            #helm upgrade --install information-mediator ./information-mediator/
+            #helm uninstall information-mediator
+            helm upgrade --install information-mediator ./information-mediator/ --dry-run --debug
+      - run:
+          name: Check kubernetes pods
+          command: |
+            kubectl get pods
 workflows:
   Deploy project to DEV environment:
     jobs:
