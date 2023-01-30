@@ -27,12 +27,15 @@ jobs:
       - run:
           name: Update kubectl
           command: |
-            aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole 
+            aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole
+      - run:
+          name: List helm releases
+          command: |
+            helm list 
       - run:
           name: Update Sandbox
           command: |
-            #helm upgrade --install information-mediator ./information-mediator/
-            helm upgrade --install information-mediator --values information-mediator/values.yaml information-mediator/
+            helm upgrade --install information-mediator ./information-mediator/
 workflows:
   Deploy project to DEV environment:
     jobs:
