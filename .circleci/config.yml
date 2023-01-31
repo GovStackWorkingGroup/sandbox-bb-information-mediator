@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Update IM with Helm charts
           command: |
-            helm uninstall information-mediator
+            helm dependencies list
             helm upgrade --install information-mediator ./information-mediator/ --dry-run --debug
       - run:
           name: Check kubernetes pods
