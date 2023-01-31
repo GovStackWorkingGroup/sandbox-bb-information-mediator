@@ -32,7 +32,7 @@ jobs:
       - run:
           name: Update IM with Helm charts
           command: |
-            helm upgrade --install information-mediator ./information-mediator/
+            helm upgrade --install information-mediator ./information-mediator/ --dry-run --debug
 workflows:
   Deploy IM to EKS cluster:
     jobs:

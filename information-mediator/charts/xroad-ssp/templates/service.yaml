@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: govstack-xroad-ssp
+  labels:
+    run: govstack-xroad-ssp
+  namespace: govstack
+spec:
+  type: ClusterIP
+  selector:
+    run: govstack-xroad-ssp
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      name: config
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http   
+

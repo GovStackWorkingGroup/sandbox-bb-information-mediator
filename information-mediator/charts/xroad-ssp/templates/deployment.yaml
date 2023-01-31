@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govstack-xroad-ssp
+  namespace: govstack
+spec:
+  selector:
+    matchLabels:
+      run: govstack-xroad-ssp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: govstack-xroad-ssp
+    spec:
+      containers:
+        - name: govstack-xroad-ssp
+          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-ssp
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 4000
+            - containerPort: 80
+             

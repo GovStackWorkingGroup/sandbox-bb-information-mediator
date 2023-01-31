@@ -3,6 +3,7 @@ name: information-mediator
 description: A Helm chart for Information Mediator
 type: application
 version: 0.1.0
+appVersion: "1.0.0"
 dependencies:
 - name: xroad-cs
   version: 0.1.0
