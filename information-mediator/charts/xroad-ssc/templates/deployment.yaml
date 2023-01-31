@@ -1,28 +1,4 @@
-kind: Namespace
-metadata:
-  name: govstack
----
-kind: Service
-metadata:
-  name: govstack-xroad-ssc
-  labels:
-    run: govstack-xroad-ssc
-  namespace: govstack
-spec:
-  type: ClusterIP
-  selector:
-    run: govstack-xroad-ssc
-  ports:
-    - port: 4000
-      targetPort: 4000
-      protocol: TCP
-      name: config
-    - port: 80
-      targetPort: 80
-      protocol: TCP
-      name: http   
----
-
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: govstack-xroad-ssc
@@ -44,4 +20,3 @@ spec:
           ports:
             - containerPort: 4000
             - containerPort: 80
-             
