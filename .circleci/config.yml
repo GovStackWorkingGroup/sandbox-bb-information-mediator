@@ -30,18 +30,9 @@ jobs:
           command: |
             aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole
       - run:
-          name: List Helm releases
-          command: |
-            helm list 
-      - run:
           name: Update IM with Helm charts
           command: |
-            helm dependencies list ./information-mediator/
-            helm upgrade --install information-mediator ./information-mediator/ --dry-run --debug
-      - run:
-          name: Check kubernetes pods
-          command: |
-            kubectl get pods
+            helm upgrade --install information-mediator ./information-mediator/
 workflows:
   Deploy IM to EKS cluster:
     jobs:
