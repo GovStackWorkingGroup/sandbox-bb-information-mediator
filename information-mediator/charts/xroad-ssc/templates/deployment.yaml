@@ -15,35 +15,8 @@ spec:
     spec:
       containers:
         - name: govstack-xroad-ssc
-          image: niis/xroad-security-server-sidecar:7.2.0-slim
+          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-ssc
           imagePullPolicy: "Always"
-          resources:
-            limits:
-              memory: "3Gi"
-            requests:
-              memory: "2.5Gi"
-          env:
-            - name: XROAD_TOKEN_PIN
-              value: "1234"
-            - name: XROAD_ADMIN_USER
-              value: "admin_user"
-            - name: XROAD_ADMIN_PASSWORD
-              value: "admin_password"
-            - name: XROAD_LOG_LEVEL
-              value: "INFO"
-            - name: XROAD_DB_HOST
-              value: "ec2-3-70-146-189.eu-central-1.compute.amazonaws.com"
-            - name: XROAD_DB_PORT
-              value: "5432"
-            - name: XROAD_DB_PWD
-              valueFrom:
-                secretKeyRef:
-                  name: ssc-db-secret
-                  key: password
-            - name: XROAD_DATABASE_NAME
-              value: "ssc-db"
           ports:
-            - containerPort: 443
             - containerPort: 4000
-            - containerPort: 5500
-            - containerPort: 5577
+            - containerPort: 80

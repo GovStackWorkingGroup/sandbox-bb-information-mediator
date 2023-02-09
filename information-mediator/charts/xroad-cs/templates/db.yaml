@@ -1,0 +1,17 @@
+apiVersion: rds.services.k8s.aws/v1alpha1
+kind: DBInstance
+metadata:
+  name: cs-db
+  namespace: govstack
+spec:
+  dbInstanceIdentifier: cs-db
+  engine: postgres
+  masterUsername: "postgres"
+  masterUserPassword:
+    namespace: govstack
+    name: "cs-db-secret"
+    key: password
+  dbSubnetGroupName: default
+  dbInstanceClass: db.t4g.micro
+  allocatedStorage: 20
+  deletionProtection: false
