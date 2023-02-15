@@ -33,6 +33,96 @@ jobs:
           name: Update IM with Helm charts
           command: |
             helm upgrade --install information-mediator ./information-mediator/
+      - run:
+          name: Run shell script for creation of X-Road CS image and push to AWS ECR
+          command: |
+            $db_name="cs-db"
+            $namespace="govstack"
+            $db_host=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
+            $db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
+            $db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
+            $secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
+            $db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
+            $container_name="cs"
+            $image_name="xroad-cs"
+            $centerui_user_pass=$(kubectl get cs-db-centerui-secret -o jsonpath='{.data}' --namespace $namespace)
+            $aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
+            $aws_profile="CircleCIRole"
+            ./Docker/centralserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -m $image_name -x $centerui_user_pass
+            ./Docker/push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+      - run:
+          name: Run shell script for creation of X-Road SSC image and push to AWS ECR
+          command: |
+            $db_name="ssc-db"
+            $namespace="govstack"
+            $db_host=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
+            $db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
+            $db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
+            $secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
+            $db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
+            $container_name="ss1"
+            $image_name="xroad-ssc"
+            $serverconf_admin_pass=$(kubectl get ssc-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $messagelog_admin_pass=$(kubectl get ssc-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $opmon_admin_pass=$(kubectl get ssc-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $serverconf_pass=$(kubectl get ssc-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
+            $messagelog_pass=$(kubectl get ssc-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
+            $opmon_pass=$(kubectl get ssc-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
+            $aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
+            $aws_profile="CircleCIRole"
+            ./Docker/centralserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
+            $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
+            ./Docker/push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name            
+      - run:
+          name: Run shell script for creation of X-Road SSM image and push to AWS ECR
+          command: |
+            $db_name="ssm-db"
+            $namespace="govstack"
+            $db_host=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
+            $db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
+            $db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
+            $secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
+            $db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
+            $container_name="ss2"
+            $image_name="xroad-ssm"
+            $serverconf_admin_pass=$(kubectl get ssm-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $messagelog_admin_pass=$(kubectl get ssm-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $opmon_admin_pass=$(kubectl get ssm-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $serverconf_pass=$(kubectl get ssm-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
+            $messagelog_pass=$(kubectl get ssm-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
+            $opmon_pass=$(kubectl get ssm-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
+            $aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
+            $aws_profile="CircleCIRole"
+            ./Docker/centralserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
+            $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
+            ./Docker/push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+      - run:
+          name: Run shell script for creation of X-Road SSP image and push to AWS ECR
+          command: |
+            $db_name="ssm-dp"
+            $namespace="govstack"
+            $db_host=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
+            $db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
+            $db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
+            $secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
+            $db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
+            $container_name="ss3"
+            $image_name="xroad-ssp"
+            $serverconf_admin_pass=$(kubectl get ssp-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $messagelog_admin_pass=$(kubectl get ssp-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $opmon_admin_pass=$(kubectl get ssp-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            $serverconf_pass=$(kubectl get ssp-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
+            $messagelog_pass=$(kubectl get ssp-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
+            $opmon_pass=$(kubectl get ssp-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
+            $aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
+            $aws_profile="CircleCIRole"
+            ./Docker/centralserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
+            $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
+            ./Docker/push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+      - run:
+          name: Update IM with Helm charts pulling update X-Road images from ECR
+          command: |
+            helm upgrade --install information-mediator ./information-mediator/                                    
 workflows:
   Deploy IM to EKS cluster:
     jobs:
