@@ -1,0 +1,17 @@
+apiVersion: rds.services.k8s.aws/v1alpha1
+kind: DBInstance
+metadata:
+  name: ssm-db
+  namespace: govstack
+spec:
+  dbInstanceIdentifier: ssm-db
+  engine: postgres
+  masterUsername: "postgres"
+  masterUserPassword:
+    namespace: govstack
+    name: "ssm-db-secret"
+    key: password
+  dbSubnetGroupName: default
+  dbInstanceClass: db.t4g.micro
+  allocatedStorage: 20
+  deletionProtection: false
