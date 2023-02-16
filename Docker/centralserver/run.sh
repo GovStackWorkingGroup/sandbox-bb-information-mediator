@@ -68,7 +68,6 @@ create_new_image() {
     image_name=$2
     while [ $(docker inspect -f {{.State.Running}} $container_name) != "true" ];
     do
-       echo "tere"
        sleep 1
     done
     container_id=$(docker ps -f name=$container_name --format '{{.ID}}')
@@ -110,7 +109,6 @@ if [[ $HOST == "" ]] | [[ $PORT == "" ]] | [[ $ADMUSER == "" ]] | [[ $ADMPASS ==
     exit_abnormal
 fi
 
-#build_docker "$HOST" "$PORT" "$ADMUSER" "$ADMPASS" "$PASS"
+build_docker "$HOST" "$PORT" "$ADMUSER" "$ADMPASS" "$PASS"
 run_docker "$CONTAINER_NAME"
-#create_new_image "$CONTAINER_NAME" "$IMAGE_NAME"
-#push_image_to_aws_ecr
+create_new_image "$CONTAINER_NAME" "$IMAGE_NAME"
