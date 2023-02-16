@@ -82,7 +82,7 @@ build_docker() {
 
 run_docker() {
     container_name=$1
-    docker run -p 4100:4000 -p 8081:8080 --name $container_name $DOCKER_IMG
+    docker run -d -p 4100:4000 -p 8081:8080 --name $container_name $DOCKER_IMG
 }
 
 create_new_image() {
