@@ -38,6 +38,8 @@ jobs:
       - run:
           name: Run shell script for creation of X-Road CS image and push to AWS ECR
           command: |
+            pwd
+            ls -la
             db_name="cs-db"
             namespace="govstack"
             db_host=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
