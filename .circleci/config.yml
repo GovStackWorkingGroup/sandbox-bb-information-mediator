@@ -45,7 +45,7 @@ jobs:
             db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
             container_name="cs"
             image_name="xroad-cs"
-            centerui_user_pass=$(kubectl get cs-db-centerui-secret -o jsonpath='{.data}' --namespace $namespace)
+            centerui_user_pass=$(kubectl get secret cs-db-centerui-secret -o jsonpath='{.data}' --namespace $namespace)
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             ./Docker/centralserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -m $image_name -x $centerui_user_pass
@@ -62,12 +62,12 @@ jobs:
             db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
             container_name="ss1"
             image_name="xroad-ssc"
-            serverconf_admin_pass=$(kubectl get ssc-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            messagelog_admin_pass=$(kubectl get ssc-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            opmon_admin_pass=$(kubectl get ssc-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            serverconf_pass=$(kubectl get ssc-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
-            messagelog_pass=$(kubectl get ssc-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
-            opmon_pass=$(kubectl get ssc-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
+            serverconf_admin_pass=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            messagelog_admin_pass=$(kubectl get secret ssc-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            opmon_admin_pass=$(kubectl get secret ssc-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            serverconf_pass=$(kubectl get secret ssc-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
+            messagelog_pass=$(kubectl get secret ssc-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
+            opmon_pass=$(kubectl get secret ssc-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             ./Docker/securityserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
@@ -85,12 +85,12 @@ jobs:
             db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
             container_name="ss2"
             image_name="xroad-ssm"
-            serverconf_admin_pass=$(kubectl get ssm-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            messagelog_admin_pass=$(kubectl get ssm-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            opmon_admin_pass=$(kubectl get ssm-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            serverconf_pass=$(kubectl get ssm-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
-            messagelog_pass=$(kubectl get ssm-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
-            opmon_pass=$(kubectl get ssm-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
+            serverconf_admin_pass=$(kubectl get secret ssm-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            messagelog_admin_pass=$(kubectl get secret ssm-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            opmon_admin_pass=$(kubectl get secret ssm-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            serverconf_pass=$(kubectl get secret ssm-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
+            messagelog_pass=$(kubectl get secret ssm-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
+            opmon_pass=$(kubectl get secret ssm-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             ./Docker/securityserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
@@ -108,12 +108,12 @@ jobs:
             db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
             container_name="ss3"
             image_name="xroad-ssp"
-            serverconf_admin_pass=$(kubectl get ssp-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            messagelog_admin_pass=$(kubectl get ssp-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            opmon_admin_pass=$(kubectl get ssp-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
-            serverconf_pass=$(kubectl get ssp-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
-            messagelog_pass=$(kubectl get ssp-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
-            opmon_pass=$(kubectl get ssp-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
+            serverconf_admin_pass=$(kubectl get secret ssp-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            messagelog_admin_pass=$(kubectl get secret ssp-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            opmon_admin_pass=$(kubectl get secret ssp-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace)
+            serverconf_pass=$(kubectl get secret ssp-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace)
+            messagelog_pass=$(kubectl get secret ssp-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace)
+            opmon_pass=$(kubectl get secret ssp-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             ./Docker/securityserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
