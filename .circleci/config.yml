@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Update IM with Helm charts
           command: |
-            helm install information-mediator ./information-mediator/
+            helm upgrade --install information-mediator ./information-mediator/
       - run:
           name: Run shell script for creation of X-Road CS image and push to AWS ECR
           command: |
