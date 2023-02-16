@@ -44,15 +44,10 @@ jobs:
             db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
             db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
             secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
-            
-            db_pass1=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace)
-            echo $db_pass1
-            db_pass=$($db_pass1 | base64 --decode)
-            
-            
+            db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             container_name="cs"
             image_name="xroad-cs"
-            centerui_user_pass=$(kubectl get secret cs-db-centerui-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
+            centerui_user_pass=$(kubectl get secret cs-db-centerui-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             cd Docker/centralserver
@@ -68,15 +63,15 @@ jobs:
             db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
             db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
             secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
-            db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
+            db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             container_name="ss1"
             image_name="xroad-ssc"
-            serverconf_admin_pass=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode
-            messagelog_admin_pass=$(kubectl get secret ssc-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            opmon_admin_pass=$(kubectl get secret ssc-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            serverconf_pass=$(kubectl get secret ssc-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            messagelog_pass=$(kubectl get secret ssc-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            opmon_pass=$(kubectl get secret ssc-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)            
+            serverconf_admin_pass=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode
+            messagelog_admin_pass=$(kubectl get secret ssc-db-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            opmon_admin_pass=$(kubectl get secret ssc-db-opmon-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            serverconf_pass=$(kubectl get secret ssc-db-serverconf-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            messagelog_pass=$(kubectl get secret ssc-db-messagelog-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            opmon_pass=$(kubectl get secret ssc-db-opmon-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             cd Docker/securityserver
@@ -93,15 +88,15 @@ jobs:
             db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
             db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
             secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
-            db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
+            db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             container_name="ss2"
             image_name="xroad-ssm"
-            serverconf_admin_pass=$(kubectl get secret ssm-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            messagelog_admin_pass=$(kubectl get secret ssm-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            opmon_admin_pass=$(kubectl get secret ssm-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            serverconf_pass=$(kubectl get secret ssm-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            messagelog_pass=$(kubectl get secret ssm-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            opmon_pass=$(kubectl get secret ssm-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)            
+            serverconf_admin_pass=$(kubectl get secret ssm-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            messagelog_admin_pass=$(kubectl get secret ssm-db-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            opmon_admin_pass=$(kubectl get secret ssm-db-opmon-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            serverconf_pass=$(kubectl get secret ssm-db-serverconf-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            messagelog_pass=$(kubectl get secret ssm-db-messagelog-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            opmon_pass=$(kubectl get secret ssm-db-opmon-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             cd Docker/securityserver
@@ -118,15 +113,15 @@ jobs:
             db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
             db_user=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
             secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
-            db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
+            db_pass=$(kubectl get secret $secret_name -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             container_name="ss3"
             image_name="xroad-ssp"
-            serverconf_admin_pass=$(kubectl get secret ssp-db-serverconf-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            messagelog_admin_pass=$(kubectl get secret ssp-db-messagelog-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            opmon_admin_pass=$(kubectl get secret ssp-db-opmon-admin-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            serverconf_pass=$(kubectl get secret ssp-db-serverconf-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            messagelog_pass=$(kubectl get secret ssp-db-messagelog-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)
-            opmon_pass=$(kubectl get secret ssp-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace | base64 --decode)            
+            serverconf_admin_pass=$(kubectl get secret ssp-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            messagelog_admin_pass=$(kubectl get secret ssp-db-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            opmon_admin_pass=$(kubectl get secret ssp-db-opmon-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            serverconf_pass=$(kubectl get secret ssp-db-serverconf-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            messagelog_pass=$(kubectl get secret ssp-db-messagelog-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
+            opmon_pass=$(kubectl get secret ssp-db-opmon-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             cd Docker/securityserver
