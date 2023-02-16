@@ -54,7 +54,7 @@ jobs:
             ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -x $centerui_user_pass
             cd ..
             ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
-          timeout: 1200
+          no_output_timeout: 30m  
       - run:
           name: Run shell script for creation of X-Road SSC image and push to AWS ECR
           command: |
@@ -78,9 +78,9 @@ jobs:
             cd Docker/securityserver
             ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
             $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
-            no_output_timeout: 20m
             cd ..
-            ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name            
+            ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name  
+          no_output_timeout: 30m          
       - run:
           name: Run shell script for creation of X-Road SSM image and push to AWS ECR
           command: |
@@ -104,9 +104,9 @@ jobs:
             cd Docker/securityserver
             ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
             $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
-            no_output_timeout: 20m
             cd ..
             ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+          no_output_timeout: 30m
       - run:
           name: Run shell script for creation of X-Road SSP image and push to AWS ECR
           command: |
@@ -130,9 +130,9 @@ jobs:
             cd Docker/securityserver
             ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
             $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
-            no_output_timeout: 20m
             cd ..
             ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+          no_output_timeout: 30m  
       - run:
           name: Update IM with Helm charts pulling update X-Road images from ECR
           command: |
