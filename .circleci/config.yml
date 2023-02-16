@@ -111,7 +111,7 @@ jobs:
       - run:
           name: Run shell script for creation of X-Road SSP image and push to AWS ECR
           command: |
-            db_name="ssm-dp"
+            db_name="ssm-db"
             namespace="govstack"
             db_host=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
             db_port=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
