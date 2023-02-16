@@ -11,6 +11,8 @@ jobs:
       - image: cimg/aws:2022.06
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 20.10.14
       - helm/install-helm-client:
           version: v3.0.0
       - aws-cli/setup:
