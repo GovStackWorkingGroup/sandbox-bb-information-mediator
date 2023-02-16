@@ -51,7 +51,7 @@ jobs:
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             cd Docker/centralserver
-            ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -m $image_name -x $centerui_user_pass
+            ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -x $centerui_user_pass
             cd ..
             ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
       - run:

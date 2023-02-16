@@ -5,7 +5,6 @@
 #              -u db_admin_user 
 #              -p db_admin_pass 
 #              -n container_name 
-#              -m image_name
 #              -x central_server_db_pass
 #
 # Description of required command line arguments:
@@ -15,7 +14,6 @@
 #   -u: remote database admin user
 #   -p: remote database admin password
 #   -n: container name
-#   -m: image_name
 #   -x: password of the user
 #
 
@@ -28,7 +26,6 @@ usage() {
   echo " -u db_admin_user"
   echo " -p db_admin_pass"
   echo " -n container_name"
-  echo " -m image_name"
   echo " -x central_server_db_pass"
 }
 
@@ -63,19 +60,8 @@ run_docker() {
     docker run -d -p 4000:4000 -p 4001:80 -p 4002:9998 --name $container_name $DOCKER_IMG
 }
 
-create_new_image() {
-    container_name=$1
-    image_name=$2
-    while [ $(docker inspect -f {{.State.Running}} $container_name) != "true" ];
-    do
-       sleep 1
-    done
-    container_id=$(docker ps -f name=$container_name --format '{{.ID}}')
-    docker commit $container_id $image_name
-}
 
-
-while getopts ":h:i:u:p:n:m:x:" options; do
+while getopts ":h:i:u:p:n:x:" options; do
   case "${options}" in
     h )
       HOST=${OPTARG}
@@ -91,10 +77,7 @@ while getopts ":h:i:u:p:n:m:x:" options; do
       ;;
     n )
       CONTAINER_NAME=${OPTARG}
-      ;;  
-    m )
-      IMAGE_NAME=${OPTARG}
-      ;;            
+      ;;           
     x )
       PASS=${OPTARG}
       ;;
@@ -105,10 +88,9 @@ while getopts ":h:i:u:p:n:m:x:" options; do
 done
 
 
-if [[ $HOST == "" ]] | [[ $PORT == "" ]] | [[ $ADMUSER == "" ]] | [[ $ADMPASS == "" ]] | [[ $CONTAINER_NAME == "" ]] | [[ $IMAGE_NAME == "" ]] | [[ $PASS == "" ]]; then
+if [[ $HOST == "" ]] | [[ $PORT == "" ]] | [[ $ADMUSER == "" ]] | [[ $ADMPASS == "" ]] | [[ $CONTAINER_NAME == "" ]] | [[ $PASS == "" ]]; then
     exit_abnormal
 fi
 
 build_docker "$HOST" "$PORT" "$ADMUSER" "$ADMPASS" "$PASS"
 run_docker "$CONTAINER_NAME"
-create_new_image "$CONTAINER_NAME" "$IMAGE_NAME"

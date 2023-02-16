@@ -5,7 +5,6 @@
 #              -u db_admin_user 
 #              -p db_admin_pass 
 #              -n container_name 
-#              -m image_name
 #              -r serverconf_admin_pass 
 #              -s messagelog_admin_pass 
 #              -t opmon_admin_pass 
@@ -20,7 +19,6 @@
 #   -u: remote database admin user
 #   -p: remote database admin password
 #   -n: container name
-#   -m: image name 
 #   -r: serverconf db admin password 
 #   -s: messagelog db admin password
 #   -t: opmon db admin password
@@ -36,7 +34,6 @@ usage() {
   echo "-u db_admin_user" 
   echo "-p db_admin_pass"
   echo "-n container_name" 
-  echo "-m image_name" 
   echo "-r serverconf_admin_pass" 
   echo "-s messagelog_admin_pass" 
   echo "-t opmon_admin_pass" 
@@ -96,7 +93,7 @@ create_new_image() {
     docker commit $container_id $image_name
 }
 
-while getopts ":h:i:u:p:n:m:r:s:t:v:w:x:" options; do
+while getopts ":h:i:u:p:n:r:s:t:v:w:x:" options; do
   case "${options}" in
     h )
       HOST=${OPTARG}
@@ -112,10 +109,7 @@ while getopts ":h:i:u:p:n:m:r:s:t:v:w:x:" options; do
       ;;
     n )
       CONTAINER_NAME=${OPTARG}
-      ;;  
-    m )
-      IMAGE_NAME=${OPTARG}
-      ;;   
+      ;;    
     r )
       SERVERCONF_ADM_PASS=${OPTARG}
       ;;
@@ -142,11 +136,10 @@ done
 
 
 if [[ $HOST == "" ]] | [[ $PORT == "" ]] | [[ $ADMUSER == "" ]] | [[ $ADMPASS == "" ]] | \
-   [[ $CONTAINER_NAME == "" ]] | [[ $IMAGE_NAME == "" ]] | [[ $SERVERCONF_ADM_PASS == "" ]] | [[ $MESSAGELOG_ADM_PASS == "" ]] | \
+   [[ $CONTAINER_NAME == "" ]] | [[ $SERVERCONF_ADM_PASS == "" ]] | [[ $MESSAGELOG_ADM_PASS == "" ]] | \
    [[ $OPMON_ADM_PASS == "" ]] | [[ $SERVERCONF_PASS == "" ]] | [[ $MESSAGELOG_PASS == "" ]] | [[ $OPMON_PASS == "" ]]; then
     exit_abnormal
 fi
 
 build_docker "$HOST" "$PORT" "$ADMUSER" "$ADMPASS" "$CONTAINER_NAME" "$SERVERCONF_ADM_PASS" "$MESSAGELOG_ADM_PASS" "$OPMON_ADM_PASS" "$SERVERCONF_PASS" "$MESSAGELOG_PASS" "$OPMON_PASS"
 run_docker "$CONTAINER_NAME"
-create_new_image "$CONTAINER_NAME" "$IMAGE_NAME"
