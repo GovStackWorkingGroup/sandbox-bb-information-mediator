@@ -53,9 +53,9 @@ jobs:
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             cd Docker/centralserver
-            ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -m $image_name -x $centerui_user_pass
+            #./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -m $image_name -x $centerui_user_pass
             cd ..
-            ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+            #./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
       - run:
           name: Run shell script for creation of X-Road SSC image and push to AWS ECR
           command: |
@@ -78,9 +78,11 @@ jobs:
             opmon_pass=$(kubectl get secret ssc-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
-            ./Docker/securityserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
-            $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
-            ./Docker/push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name            
+            cd Docker/securityserver
+            #./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
+            #$serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
+            cd ..
+            #./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name            
       - run:
           name: Run shell script for creation of X-Road SSM image and push to AWS ECR
           command: |
@@ -101,9 +103,11 @@ jobs:
             opmon_pass=$(kubectl get secret ssm-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
-            ./Docker/securityserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
-            $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
-            ./Docker/push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+            cd Docker/securityserver
+            #./securityserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
+            #$serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
+            cd ..
+            #./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
       - run:
           name: Run shell script for creation of X-Road SSP image and push to AWS ECR
           command: |
@@ -124,9 +128,11 @@ jobs:
             opmon_pass=$(kubectl get secret ssp-db-opmon-secret -o jsonpath='{.data}' --namespace $namespace)            
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
-            ./Docker/securityserver/run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
-            $serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
-            ./Docker/push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
+            cd Docker/securityserver
+            #./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -r \
+            #$serverconf_admin_pass -s $messagelog_admin_pass -t $opmon_admin_pass -v $serverconf_pass -w $messagelog_pass -x $opmon_pass
+            cd ..
+            #./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
       - run:
           name: Update IM with Helm charts pulling update X-Road images from ECR
           command: |
