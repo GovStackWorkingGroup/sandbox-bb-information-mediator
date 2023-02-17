@@ -32,13 +32,17 @@ jobs:
           command: |
             aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole
       - run:
-          name: Uninstall Information Mediator
+          name: Check DB status
           command: |
-            helm uninstall information-mediator           
+            status=$(kubectl get dbinstance cs-db -o jsonpath='{.status.dbInstanceStatus}' -n $namespace)
+            echo "db status: $status"
+            if [ $status != "true" ]; then
+                echo "true"
+            fi          
       - run:
           name: Install Information Mediator
           command: |
-            helm install information-mediator ./information-mediator/
+            helm upgrade --install information-mediator ./information-mediator/
       - run:
           name: Run shell script for creation of X-Road CS image and push to AWS ECR
           command: |
