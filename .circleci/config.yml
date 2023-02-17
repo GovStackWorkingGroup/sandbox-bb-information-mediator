@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Uninstall Information Mediator
           command: |
-            helm uninstall information-mediator ./information-mediator/            
+            helm uninstall information-mediator           
       - run:
           name: Install Information Mediator
           command: |
