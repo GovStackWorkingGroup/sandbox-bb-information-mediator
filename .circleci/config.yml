@@ -30,17 +30,7 @@ jobs:
       - run:
           name: Update kubectl
           command: |
-            aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole
-      - run:
-          name: Check DB status
-          command: |
-            db_name="cs-db"
-            namespace="govstack"
-            status=$(kubectl get dbinstance $db_name -o jsonpath='{.status.dbInstanceStatus}' -n $namespace)
-            echo "db status: $status"
-            if [ $status != "true" ]; then
-                echo "true"
-            fi          
+            aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole         
       - run:
           name: Install Information Mediator
           command: |
