@@ -32,9 +32,13 @@ jobs:
           command: |
             aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole
       - run:
-          name: Update IM with Helm charts
+          name: Uninstall Information Mediator
           command: |
-            helm upgrade --install information-mediator ./information-mediator/
+            helm uninstall information-mediator ./information-mediator/            
+      - run:
+          name: Install Information Mediator
+          command: |
+            helm install information-mediator ./information-mediator/
       - run:
           name: Run shell script for creation of X-Road CS image and push to AWS ECR
           command: |
@@ -51,8 +55,6 @@ jobs:
             aws_ecr="463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr"
             aws_profile="CircleCIRole"
             cd Docker/centralserver
-            status=$(kubectl get dbinstance $db_name -o jsonpath='{.status.dbInstanceStatus}' -n $namespace)
-            echo "db status: $status"
             ./run.sh -h $db_host -i $db_port -u $db_user -p $db_pass -n $container_name -x $centerui_user_pass
             cd ..
             ./push.sh -c $container_name -e $aws_ecr -i $image_name -p $aws_profile_name
