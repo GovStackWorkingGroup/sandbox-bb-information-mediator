@@ -34,7 +34,9 @@ jobs:
       - run:
           name: Check DB status
           command: |
-            status=$(kubectl get dbinstance cs-db -o jsonpath='{.status.dbInstanceStatus}' -n $namespace)
+            db_name="cs-db"
+            namespace="govstack"
+            status=$(kubectl get dbinstance $db_name -o jsonpath='{.status.dbInstanceStatus}' -n $namespace)
             echo "db status: $status"
             if [ $status != "true" ]; then
                 echo "true"
