@@ -1,1 +1,52 @@
-#
+db:
+  name: "ssp-db"
+  namespace: "govstack"
+  engine: postgres
+  masterUsername: "postgres"
+  masterUserPassword:
+    namespace: govstack
+    name: "ssp-db-secret"
+    key: password
+  dbSubnetGroupName: default
+  dbInstanceClass: db.t4g.micro
+  allocatedStorage: 20
+  deletionProtection: false
+secret:
+  db:
+    adminPassword:
+      name: ssp-db-secret
+      namespace: govstack
+      type: Opaque
+    uiPassword:
+      name: ssp-db-centerui-secret
+      namespace: govstack
+      type: Opaque
+service:
+  name: govstack-xroad-ssp
+  namespace: govstack
+  type: ClusterIP
+deployment:
+  name: govstack-xroad-ssp
+  namespace: govstack 
+  containers:
+    name: govstack-xroad-ssp
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:im-xroad-ssp
+    imagePullPolicy: "Always"
+    env:
+      - name: "DB_HOST"
+        value: ${SSP_DB_HOST}
+      - name: "DB_PORT"
+        value: ${SSP_DB_PORT}
+      - name: "DB_ADMIN_USER"
+        value: ${SSP_DB_ADMIN_USER}
+      - name: "DB_ADMIN_PASS"
+        value: ${SSP_DB_ADMIN_PASS}                    
+      - name: "DB_SERVERCONF_ADMIN_PASS"
+        value: ${SSP_DB_SERVERCONF_ADMIN_PASS}
+      - name: "DB_SERVERCONF_PASS"
+        value: ${SSP_DB_SERVERCONF_PASS}
+      - name: "DB_NESSAGELOG_ADMIN_PASS"
+        value: ${SSP_DB_NESSAGELOG_ADMIN_PASS}
+      - name: "DB_MESSAGELOG_PASS"
+        value: ${SSP_DB_MESSAGELOG_PASS}                                                                       
+

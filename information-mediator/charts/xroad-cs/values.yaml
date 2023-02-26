@@ -1,1 +1,46 @@
-#
+db:
+  name: "cs-db"
+  namespace: "govstack"
+  engine: postgres
+  masterUsername: "postgres"
+  masterUserPassword:
+    namespace: govstack
+    name: "cs-db-secret"
+    key: password
+  dbSubnetGroupName: default
+  dbInstanceClass: db.t4g.micro
+  allocatedStorage: 20
+  deletionProtection: false
+secret:
+  db:
+    adminPassword:
+      name: cs-db-secret
+      namespace: govstack
+      type: Opaque
+    uiPassword:
+      name: cs-db-centerui-secret
+      namespace: govstack
+      type: Opaque
+service:
+  name: govstack-xroad-cs
+  namespace: govstack
+  type: ClusterIP
+deployment:
+  name: govstack-xroad-cs
+  namespace: govstack 
+  containers:
+    name: govstack-xroad-cs
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:im-xroad-cs
+    imagePullPolicy: "Always"
+    env:
+      - name: "DB_HOST"
+        value: ${CS_DB_HOST}
+      - name: "DB_PORT"
+        value: ${CS_DB_PORT}
+      - name: "DB_ADMIN_USER"
+        value: ${CS_DB_ADMIN_USER}
+      - name: "DB_ADMIN_PASS"
+        value: ${CS_DB_ADMIN_PASS}                     
+      - name: "DB_UI_PASS"
+        value: ${CS_DB_UI_PASS}
+
