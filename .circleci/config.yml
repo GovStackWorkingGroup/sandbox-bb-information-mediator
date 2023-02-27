@@ -80,7 +80,7 @@ jobs:
             export SSP_DB_SERVERCONF_PASS=$(kubectl get secret ssc-db-serverconf-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret ssc-db-messagelog-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)         
  
-            helm upgrade --install information-mediator ./information-mediator/ -f ./information-mediator/values.yaml                              
+            helm upgrade --install information-mediator ./information-mediator/ -f ./information-mediator/values.yaml --debug --dry-run                           
 workflows:
   Deploy IM to EKS cluster:
     jobs:
