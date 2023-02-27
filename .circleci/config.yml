@@ -34,10 +34,9 @@ jobs:
       - run:
           name: Install db and secrets for Information Mediator
           command: |
-            helm uninstall information-mediator
-            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-partial.yaml
+            helm upgrade --install information-mediator ./information-mediator/ -f ./information-mediator/values-partial.yaml
       - run:
-          name: Update Information Mediator
+          name: Install X-Road components for Information Mediator
           command: |
             db_name="cs-db"
             namespace="govstack"
