@@ -1,22 +1,28 @@
+{{ if .Values.global.deployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: govstack-xroad-cs
-  namespace: govstack
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.deployment.namespace }}
 spec:
   selector:
     matchLabels:
-      run: govstack-xroad-cs
+      run: {{ .Values.deployment.name }}
   replicas: 1
   template:
     metadata:
       labels:
-        run: govstack-xroad-cs
+        run: {{ .Values.deployment.name }}
     spec:
       containers:
-        - name: govstack-xroad-cs
-          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:xroad-cs
-          imagePullPolicy: "Always"
+        - name: {{ .Values.deployment.containers.name }}
+          image: {{ .Values.deployment.containers.image }}
+          imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
+          env:
+            {{- range .Values.deployment.containers.env }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}                    
           ports:
             - containerPort: 8080
             - containerPort: 8443
@@ -24,3 +30,4 @@ spec:
             - containerPort: 5500
             - containerPort: 5577
             - containerPort: 5588
+{{ end }}

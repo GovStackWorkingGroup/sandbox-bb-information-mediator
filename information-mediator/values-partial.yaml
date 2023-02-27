@@ -2,8 +2,8 @@
 global:
   db: true
   secret: true
-  deployment: true
-  service: true
+  deployment: false
+  service: false
   
 ### Sub Charts Specific Values ###
 xroad-cs:

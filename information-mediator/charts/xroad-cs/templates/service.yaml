@@ -1,14 +1,15 @@
+{{ if .Values.global.service }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: govstack-xroad-cs
+  name: {{ .Values.service.name }}
   labels:
-    run: govstack-xroad-cs
-  namespace: govstack
+    run: {{ .Values.service.name }}
+  namespace: {{ .Values.service.namespace }}
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   selector:
-    run: govstack-xroad-cs
+    run: {{ .Values.service.name }}
   ports:
     - port: 80
       targetPort: 80
@@ -30,3 +31,4 @@ spec:
       targetPort: 4002
       protocol: TCP
       name: name2
+{{ end }}

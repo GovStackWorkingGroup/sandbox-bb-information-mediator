@@ -1,17 +1,19 @@
+{{ if .Values.global.db }}
 apiVersion: rds.services.k8s.aws/v1alpha1
 kind: DBInstance
 metadata:
-  name: cs-db
-  namespace: govstack
+  name: {{ .Values.db.name }}
+  namespace: {{ .Values.db.namespace }}
 spec:
-  dbInstanceIdentifier: cs-db
-  engine: postgres
-  masterUsername: "postgres"
+  dbInstanceIdentifier: {{ .Values.db.name }}
+  engine: {{ .Values.db.engine }}
+  masterUsername: {{ .Values.db.masterUsername }}
   masterUserPassword:
-    namespace: govstack
-    name: "cs-db-secret"
-    key: password
-  dbSubnetGroupName: default
-  dbInstanceClass: db.t4g.micro
-  allocatedStorage: 20
-  deletionProtection: false
+    namespace: {{ .Values.db.masterUserPassword.namespace }}
+    name: {{ .Values.db.masterUserPassword.name }}
+    key: {{ .Values.db.masterUserPassword.key }}
+  dbSubnetGroupName: {{ .Values.db.dbSubnetGroupName }}
+  dbInstanceClass: {{ .Values.db.dbInstanceClass }}
+  allocatedStorage: {{ .Values.db.allocatedStorage }}
+  deletionProtection: {{ .Values.db.deletionProtection }}
+{{ end }}
