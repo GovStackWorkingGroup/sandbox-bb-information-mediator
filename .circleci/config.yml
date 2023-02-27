@@ -32,10 +32,10 @@ jobs:
           command: |
             aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole         
       - run:
-          name: Install Information Mediator
+          name: Install db and secrets for Information Mediator
           command: |
             helm uninstall information-mediator
-            helm install information-mediator ./information-mediator/
+            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-partial.yaml
       - run:
           name: Update Information Mediator
           command: |

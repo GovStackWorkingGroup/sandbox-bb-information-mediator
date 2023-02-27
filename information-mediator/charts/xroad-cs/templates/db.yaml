@@ -1,3 +1,4 @@
+{{ if .Values.global.db }}
 apiVersion: rds.services.k8s.aws/v1alpha1
 kind: DBInstance
 metadata:
@@ -15,3 +16,4 @@ spec:
   dbInstanceClass: {{ .Values.db.dbInstanceClass }}
   allocatedStorage: {{ .Values.db.allocatedStorage }}
   deletionProtection: {{ .Values.db.deletionProtection }}
+{{ end }}

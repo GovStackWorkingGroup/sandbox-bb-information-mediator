@@ -1,3 +1,4 @@
+{{ if .Values.global.deployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,3 +30,4 @@ spec:
             - containerPort: 5500
             - containerPort: 5577
             - containerPort: 5588
+{{ end }}
