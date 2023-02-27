@@ -1,0 +1,16 @@
+### Global Values if any ###
+global:
+  db: true
+  secret: true
+  deployment: false
+  service: false
+  
+### Sub Charts Specific Values ###
+xroad-cs:
+  enabled: true
+xroad-ssm:
+  enabled: true
+xroad-ssc:
+  enabled: true
+xroad-ssp:
+  enabled: true
