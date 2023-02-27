@@ -17,10 +17,22 @@ secret:
       name: ssc-db-secret
       namespace: govstack
       type: Opaque
-    uiPassword:
-      name: ssc-db-centerui-secret
+    serverConfAdminPassword:
+      name: ssc-db-serverconf-admin-secret
       namespace: govstack
       type: Opaque
+    serverConfPassword:
+      name: ssc-db-serverconf-secret
+      namespace: govstack
+      type: Opaque
+    messageLogAdminPassword:
+      name: ssc-db-messagelog-admin-secret
+      namespace: govstack
+      type: Opaque
+    messageLogPassword:
+      name: ssc-db-messagelog-secret
+      namespace: govstack
+      type: Opaque                  
 service:
   name: govstack-xroad-ssc
   namespace: govstack

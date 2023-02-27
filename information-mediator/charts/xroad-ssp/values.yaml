@@ -17,8 +17,20 @@ secret:
       name: ssp-db-secret
       namespace: govstack
       type: Opaque
-    uiPassword:
-      name: ssp-db-centerui-secret
+    serverConfAdminPassword:
+      name: ssp-db-serverconf-admin-secret
+      namespace: govstack
+      type: Opaque
+    serverConfPassword:
+      name: ssp-db-serverconf-secret
+      namespace: govstack
+      type: Opaque
+    messageLogAdminPassword:
+      name: ssp-db-messagelog-admin-secret
+      namespace: govstack
+      type: Opaque
+    messageLogPassword:
+      name: ssp-db-messagelog-secret
       namespace: govstack
       type: Opaque
 service:

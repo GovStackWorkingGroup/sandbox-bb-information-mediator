@@ -17,8 +17,20 @@ secret:
       name: ssm-db-secret
       namespace: govstack
       type: Opaque
-    uiPassword:
-      name: ssm-db-centerui-secret
+    serverConfAdminPassword:
+      name: ssm-db-serverconf-admin-secret
+      namespace: govstack
+      type: Opaque
+    serverConfPassword:
+      name: ssm-db-serverconf-secret
+      namespace: govstack
+      type: Opaque
+    messageLogAdminPassword:
+      name: ssm-db-messagelog-admin-secret
+      namespace: govstack
+      type: Opaque
+    messageLogPassword:
+      name: ssm-db-messagelog-secret
       namespace: govstack
       type: Opaque
 service:
