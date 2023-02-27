@@ -34,6 +34,10 @@ jobs:
       - run:
           name: Install Information Mediator
           command: |
+            helm upgrade --install information-mediator ./information-mediator/
+      - run:
+          name: Update Information Mediator
+          command: |
             db_name="cs-db"
             namespace="govstack"
             export CS_DB_HOST=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
