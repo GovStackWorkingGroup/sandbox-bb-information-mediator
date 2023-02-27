@@ -34,7 +34,7 @@ jobs:
       - run:
           name: Install Information Mediator
           command: |
-            helm upgrade --install information-mediator ./information-mediator/
+            helm install information-mediator ./information-mediator/
       - run:
           name: Update Information Mediator
           command: |
