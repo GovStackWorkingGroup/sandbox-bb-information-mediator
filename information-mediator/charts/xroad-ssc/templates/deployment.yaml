@@ -19,9 +19,9 @@ spec:
           image: {{ .Values.deployment.containers.image }}
           imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
           env:
-            {{- range $name, $value := .Values.deployment.containers.env }}
-            - name: {{ $name }}
-              value: {{ $value | quote }}
+            {{- range .Values.deployment.containers.env }}
+            - name: {{ .name }}
+              value: {{ .value }}
             {{- end }}                                                                                       
           ports:
             - containerPort: 4000
