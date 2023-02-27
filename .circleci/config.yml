@@ -54,7 +54,7 @@ jobs:
             export SSC_DB_ADMIN_USER=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
             secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
             export SSC_DB_ADMIN_PASS=$(kubectl get secret $secret_name -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
-            export SSC_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode
+            export SSC_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSC_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret ssc-db-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSC_DB_SERVERCONF_PASS=$(kubectl get secret ssc-db-serverconf-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSC_DB_MESSAGELOG_PASS=$(kubectl get secret ssc-db-messagelog-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)          
@@ -65,7 +65,7 @@ jobs:
             export SSM_DB_ADMIN_USER=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
             secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
             export SSM_DB_ADMIN_PASS=$(kubectl get secret $secret_name -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
-            export SSM_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode
+            export SSM_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSM_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret ssc-db-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSM_DB_SERVERCONF_PASS=$(kubectl get secret ssc-db-serverconf-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSM_DB_MESSAGELOG_PASS=$(kubectl get secret ssc-db-messagelog-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)           
@@ -76,7 +76,7 @@ jobs:
             export SSP_DB_ADMIN_USER=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)
             secret_name=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUserPassword.name}' -n $namespace)
             export SSP_DB_ADMIN_PASS=$(kubectl get secret $secret_name -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
-            export SSP_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode
+            export SSP_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret ssc-db-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSP_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret ssc-db-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSP_DB_SERVERCONF_PASS=$(kubectl get secret ssc-db-serverconf-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)
             export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret ssc-db-messagelog-secret -o jsonpath='{.data.password}' --namespace $namespace | base64 --decode)         
