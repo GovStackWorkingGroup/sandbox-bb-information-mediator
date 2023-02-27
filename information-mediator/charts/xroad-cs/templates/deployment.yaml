@@ -20,7 +20,7 @@ spec:
           env:
             {{- range $name, $value := .Values.deployment.containers.env }}
             - name: {{ $name }}
-              value: {{ $value }}
+              value: {{ $value | quote }}
             {{- end }}                    
           ports:
             - containerPort: 8080
