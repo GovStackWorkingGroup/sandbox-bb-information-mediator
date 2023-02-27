@@ -34,13 +34,13 @@ deployment:
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"
-        value: ${CS_DB_HOST}
+        value: "${CS_DB_HOST}"
       - name: "DB_PORT"
-        value: ${CS_DB_PORT}
+        value: "${CS_DB_PORT}"
       - name: "DB_ADMIN_USER"
-        value: ${CS_DB_ADMIN_USER}
+        value: "${CS_DB_ADMIN_USER}"
       - name: "DB_ADMIN_PASS"
-        value: ${CS_DB_ADMIN_PASS}                     
+        value: "${CS_DB_ADMIN_PASS}"                     
       - name: "DB_UI_PASS"
-        value: ${CS_DB_UI_PASS}
+        value: "${CS_DB_UI_PASS}"
 
