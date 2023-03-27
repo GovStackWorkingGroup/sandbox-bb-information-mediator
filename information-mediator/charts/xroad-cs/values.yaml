@@ -1,10 +1,10 @@
 db:
   name: "cs-db"
-  namespace: "govstack"
+  namespace: ${NAMESPACE}
   engine: postgres
   masterUsername: "postgres"
   masterUserPassword:
-    namespace: govstack
+    namespace: ${NAMESPACE}
     name: "cs-db-secret"
     key: password
   dbSubnetGroupName: default
@@ -15,22 +15,22 @@ secret:
   db:
     adminPassword:
       name: cs-db-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     uiPassword:
       name: cs-db-centerui-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
 service:
   name: govstack-xroad-cs
-  namespace: govstack
+  namespace: ${NAMESPACE}
   type: ClusterIP
 deployment:
   name: govstack-xroad-cs
-  namespace: govstack 
+  namespace: ${NAMESPACE} 
   containers:
     name: govstack-xroad-cs
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:im-xroad-cs
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_CS_REPO_NAME}:xroad-cs
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"

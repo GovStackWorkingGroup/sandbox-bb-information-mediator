@@ -1,10 +1,10 @@
 db:
   name: "ssm-db"
-  namespace: "govstack"
+  namespace: ${NAMESPACE}
   engine: postgres
   masterUsername: "postgres"
   masterUserPassword:
-    namespace: govstack
+    namespace: ${NAMESPACE}
     name: "ssm-db-secret"
     key: password
   dbSubnetGroupName: default
@@ -15,34 +15,34 @@ secret:
   db:
     adminPassword:
       name: ssm-db-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     serverConfAdminPassword:
       name: ssm-db-serverconf-admin-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     serverConfPassword:
       name: ssm-db-serverconf-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     messageLogAdminPassword:
       name: ssm-db-messagelog-admin-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     messageLogPassword:
       name: ssm-db-messagelog-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
 service:
   name: govstack-xroad-ssm
-  namespace: govstack
+  namespace: ${NAMESPACE}
   type: ClusterIP
 deployment:
   name: govstack-xroad-ssm
-  namespace: govstack 
+  namespace: ${NAMESPACE} 
   containers:
     name: govstack-xroad-ssm
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:im-xroad-ssm
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_SS_REPO_NAME}:xroad-ssm
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"

@@ -22,15 +22,13 @@ jobs:
           role-session-name: CircleSession
           session-duration: '1800' 
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: GovStack_sandbox
-          cluster-authentication-role-arn: arn:aws:iam::463471358064:role/CircleCIRole
-      - run:
+          cluster-name: AWS_CLUSTER_NAME
           name: Debug
           command: aws sts get-caller-identity
       - run:
           name: Update kubectl
           command: |
-            aws eks update-kubeconfig --region eu-central-1 --name GovStack_sandbox --role-arn arn:aws:iam::463471358064:role/CircleCIRole         
+            aws eks update-kubeconfig --region AWS_DEFAULT_REGION --name AWS_CLUSTER_NAME --role-arn arn:aws:iam::463471358064:role/CircleCIRole         
       - run:
           name: Install db and secrets for Information Mediator
           command: |
@@ -39,7 +37,10 @@ jobs:
           name: Install X-Road components for Information Mediator
           command: |
             db_name="cs-db"
-            namespace="govstack"
+            namespace=AWS_NAMESPACE
+            export NAMESPACE=$namespace
+            export ECR_CS_REPO_NAME=AWS_ECR_CS_REPO
+            export ECR_SS_REPO_NAME=AWS_ECR_SS_REPO
             export CS_DB_HOST=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.address}' -n $namespace)
             export CS_DB_PORT=$(kubectl get DBInstance $db_name -o jsonpath='{.status.endpoint.port}' -n $namespace)
             export CS_DB_ADMIN_USER=$(kubectl get DBInstance $db_name -o jsonpath='{.spec.masterUsername}' -n $namespace)

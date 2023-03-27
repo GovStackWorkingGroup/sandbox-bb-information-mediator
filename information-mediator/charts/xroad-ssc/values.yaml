@@ -1,10 +1,10 @@
 db:
   name: "ssc-db"
-  namespace: "govstack"
+  namespace: ${NAMESPACE}
   engine: postgres
   masterUsername: "postgres"
   masterUserPassword:
-    namespace: govstack
+    namespace: ${NAMESPACE}
     name: "ssc-db-secret"
     key: password
   dbSubnetGroupName: default
@@ -15,34 +15,34 @@ secret:
   db:
     adminPassword:
       name: ssc-db-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     serverConfAdminPassword:
       name: ssc-db-serverconf-admin-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     serverConfPassword:
       name: ssc-db-serverconf-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     messageLogAdminPassword:
       name: ssc-db-messagelog-admin-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque
     messageLogPassword:
       name: ssc-db-messagelog-secret
-      namespace: govstack
+      namespace: ${NAMESPACE}
       type: Opaque                  
 service:
   name: govstack-xroad-ssc
-  namespace: govstack
+  namespace: ${NAMESPACE}
   type: ClusterIP
 deployment:
   name: govstack-xroad-ssc
-  namespace: govstack 
+  namespace: ${NAMESPACE} 
   containers:
     name: govstack-xroad-ssc
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:im-xroad-ssc
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_SS_REPO_NAME}:xroad-ssc
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"
