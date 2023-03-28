@@ -22,13 +22,13 @@ jobs:
           role-session-name: CircleSession
           session-duration: '1800' 
       - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: AWS_CLUSTER_NAME
+          cluster-name: "${AWS_CLUSTER_NAME}"
           name: Debug
           command: aws sts get-caller-identity
       - run:
           name: Update kubectl
           command: |
-            aws eks update-kubeconfig --region AWS_DEFAULT_REGION --name AWS_CLUSTER_NAME --role-arn arn:aws:iam::463471358064:role/CircleCIRole         
+            aws eks update-kubeconfig --region "${AWS_DEFAULT_REGION}" --name "${AWS_CLUSTER_NAME}" --role-arn arn:aws:iam::463471358064:role/CircleCIRole         
       - run:
           name: Install db and secrets for Information Mediator
           command: |
