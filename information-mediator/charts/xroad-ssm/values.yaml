@@ -1,4 +1,4 @@
-postgres-configmap:
+postgresConfigMap:
   name: govstack-xroad-ssm-postgres-config
   namespace: ${NAMESPACE}
   labels:
@@ -7,9 +7,9 @@ postgres-configmap:
     POSTGRES_DB: postgresdb
     POSTGRES_USER: "postgres"
     POSTGRES_PASSWORD: ${XROAD-SSM-POSTGRES-ADMIN-SECRET}
-postgres-storage:
-  vol-name: govstack-xroad-ssm-postgres-pv-volume
-  claim-name: govstack-xroad-ssm-postgres-pv-claim
+postgresStorage:
+  volName: govstack-xroad-ssm-postgres-pv-volume
+  claimName: govstack-xroad-ssm-postgres-pv-claim
   labels:
     type: local
     app: postgres
@@ -20,7 +20,7 @@ postgres-storage:
     accessMode: ReadWriteMany
     hostPath:
       path: "/mnt/data"
-postgres-deployment:
+postgresDeployment:
   name: govstack-xroad-ssm-postgres
   spec:
     replicas: 1
@@ -42,7 +42,7 @@ postgres-deployment:
             volumeMountName: postgredb
             volumeName: postgredb
             volumeClaimName: govstack-xroad-ssm-postgres-pv-claim
-postgres-service:
+postgresService:
   name: govstack-xroad-ssm-postgres
   labels:
     app: postgres

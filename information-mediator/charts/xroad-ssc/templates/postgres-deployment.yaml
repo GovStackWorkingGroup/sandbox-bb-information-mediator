@@ -2,31 +2,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.postgres-deployment.name }}
+  name: {{ .Values.postgresDeployment.name }}
 spec:
-  replicas: {{ .Values.postgres-deployment.spec.replicas }}
+  replicas: {{ .Values.postgresDeployment.spec.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.postgres-deployment.spec.selector.matchLabels.app }}
+      app: {{ .Values.postgresDeployment.spec.selector.matchLabels.app }}
   template:
     metadata:
       labels:
-        app: {{ .Values.postgres-deployment.spec.template.metadata.labels.app }}
+        app: {{ .Values.postgresDeployment.spec.template.metadata.labels.app }}
     spec:
       containers:
-        - name: {{ .Values.postgres-deployment.spec.template.spec.containers.name }}
-          image: {{ .Values.postgres-deployment.spec.template.spec.containers.image }}
-          imagePullPolicy: {{ .Values.postgres-deployment.spec.template.spec.containers.imagePullPolicy }}
+        - name: {{ .Values.postgresDeployment.spec.template.spec.containers.name }}
+          image: {{ .Values.postgresDeployment.spec.template.spec.containers.image }}
+          imagePullPolicy: {{ .Values.postgresDeployment.spec.template.spec.containers.imagePullPolicy }}
           ports:
-            - containerPort: {{ .Values.postgres-deployment.spec.template.spec.containers.containerPort }}
+            - containerPort: {{ .Values.postgresDeployment.spec.template.spec.containers.containerPort }}
           envFrom:
             - configMapRef:
-                name: {{ .Values.postgres-deployment.spec.template.spec.containers.configMapRef }}
+                name: {{ .Values.postgresDeployment.spec.template.spec.containers.configMapRef }}
           volumeMounts:
-            - mountPath: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeMountPath }}
-              name: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeMountName }}
+            - mountPath: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeMountPath }}
+              name: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeMountName }}
       volumes:
-        - name: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeName }}
+        - name: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeName }}
           persistentVolumeClaim:
-            claimName: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeClaimName }}
+            claimName: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeClaimName }}
 {{ end }}            

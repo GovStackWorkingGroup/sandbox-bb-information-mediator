@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.postgres-service.name }}
+  name: {{ .Values.postgresService.name }}
   labels:
-    app: {{ .Values.postgres-service.labels.app }}
+    app: {{ .Values.postgresService.labels.app }}
 spec:
-  type: {{ .Values.postgres-service.spec.type }}
+  type: {{ .Values.postgresService.spec.type }}
   ports:
-   - port: {{ .Values.postgres-service.spec.port }}
+   - port: {{ .Values.postgresService.spec.port }}
   selector:
-   app: {{ .Values.postgres-service.selector.app }}
+   app: {{ .Values.postgresService.selector.app }}
 {{ end }}   

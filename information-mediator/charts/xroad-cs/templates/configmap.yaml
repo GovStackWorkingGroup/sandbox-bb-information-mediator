@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.postgres-configmap.name }}
-  namespace: {{ .Values.postgres-configmap.namespace }}
+  name: {{ .Values.postgresConfigMap.name }}
+  namespace: {{ .Values.postgresConfigMap.namespace }}
   labels:
-    app: {{ .Values.postgres-configmap.labels.app }}
+    app: {{ .Values.postgresConfigMap.labels.app }}
 data:
-  POSTGRES_DB: {{ .Values.postgres-configmap.data.POSTGRES_DB }}
-  POSTGRES_USER: {{ .Values.postgres-configmap.data.POSTGRES_USER }}
-  POSTGRES_PASSWORD: {{ .Values.postgres-configmap.data.POSTGRES_PASSWORD }}
+  POSTGRES_DB: {{ .Values.postgresConfigMap.data.POSTGRES_DB }}
+  POSTGRES_USER: {{ .Values.postgresConfigMap.data.POSTGRES_USER }}
+  POSTGRES_PASSWORD: {{ .Values.postgresConfigMap.data.POSTGRES_PASSWORD }}
 {{ end }}  
