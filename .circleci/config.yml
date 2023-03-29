@@ -32,6 +32,11 @@ jobs:
           command: |
             aws eks update-kubeconfig --region "${AWS_DEFAULT_REGION}" --name "${AWS_CLUSTER_NAME}" --role-arn arn:aws:iam::463471358064:role/CircleCIRole
       - run:
+          name: Uninstall Information Mediator
+          command: |
+            export NAMESPACE="${AWS_NAMESPACE}"
+            helm uninstall information-mediator ./information-mediator/            
+      - run:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
