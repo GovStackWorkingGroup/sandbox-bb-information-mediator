@@ -1,0 +1,32 @@
+{{ if .Values.global.postgres }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.postgres-deployment.name }}
+spec:
+  replicas: {{ .Values.postgres-deployment.spec.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.postgres-deployment.spec.selector.matchLabels.app }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.postgres-deployment.spec.template.metadata.labels.app }}
+    spec:
+      containers:
+        - name: {{ .Values.postgres-deployment.spec.template.spec.containers.name }}
+          image: {{ .Values.postgres-deployment.spec.template.spec.containers.image }}
+          imagePullPolicy: {{ .Values.postgres-deployment.spec.template.spec.containers.imagePullPolicy }}
+          ports:
+            - containerPort: {{ .Values.postgres-deployment.spec.template.spec.containers.containerPort }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.postgres-deployment.spec.template.spec.containers.configMapRef }}
+          volumeMounts:
+            - mountPath: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeMountPath }}
+              name: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeMountName }}
+      volumes:
+        - name: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeName }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.postgres-deployment.spec.template.spec.containers.volumeClaimName }}
+{{ end }}            

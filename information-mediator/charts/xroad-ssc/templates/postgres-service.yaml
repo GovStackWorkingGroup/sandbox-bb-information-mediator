@@ -1,0 +1,14 @@
+{{ if .Values.global.postgres }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.postgres-service.name }}
+  labels:
+    app: {{ .Values.postgres-service.labels.app }}
+spec:
+  type: {{ .Values.postgres-service.spec.type }}
+  ports:
+   - port: {{ .Values.postgres-service.spec.port }}
+  selector:
+   app: {{ .Values.postgres-service.selector.app }}
+{{ end }}   

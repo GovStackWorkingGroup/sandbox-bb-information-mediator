@@ -1,0 +1,31 @@
+{{ if .Values.global.postgres }}
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ .Values.postgres-storage.vol-name }}
+  labels:
+    type: {{ .Values.postgres-storage.labels.type }}
+    app: {{ .Values.postgres-storage.labels.app }}
+spec:
+  storageClassName: {{ .Values.postgres-storage.spec.storageClassName }}
+  capacity:
+    storage: {{ .Values.postgres-storage.spec.capacity.storage }}
+  accessModes:
+    - {{ .Values.postgres-storage.spec.accessMode }}
+  hostPath:
+    path: {{ .Values.postgres-storage.spec.hostPath.path }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Values.postgres-storage.claim-name }}
+  labels:
+    app: {{ .Values.postgres-storage.labels.app }}
+spec:
+  storageClassName: {{ .Values.postgres-storage.spec.storageClassName }}
+  accessModes:
+    - {{ .Values.postgres-storage.spec.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.postgres-storage.spec.capacity.storage }}
+{{ end }}      

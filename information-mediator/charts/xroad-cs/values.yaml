@@ -1,24 +1,64 @@
-db:
-  name: "cs-db"
+postgres-configmap:
+  name: govstack-xroad-cs-postgres-config
   namespace: ${NAMESPACE}
-  engine: postgres
-  masterUsername: "postgres"
-  masterUserPassword:
-    namespace: ${NAMESPACE}
-    name: "cs-db-secret"
-    key: password
-  dbSubnetGroupName: default
-  dbInstanceClass: db.t4g.micro
-  allocatedStorage: 20
-  deletionProtection: false
+  labels:
+    app: postgres
+  data:
+    POSTGRES_DB: postgresdb
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: ${XROAD-CS-POSTGRES-ADMIN-SECRET}
+postgres-storage:
+  vol-name: govstack-xroad-cs-postgres-pv-volume
+  claim-name: govstack-xroad-cs-postgres-pv-claim
+  labels:
+    type: local
+    app: postgres
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 1Gi
+    accessMode: ReadWriteMany
+    hostPath:
+      path: "/mnt/data"
+postgres-deployment:
+  name: govstack-xroad-cs-postgres
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: postgres
+    template:
+      metadata:
+        labels:
+          app: postgres
+      spec:
+        containers:
+          - name: govstack-xroad-cs-postgres
+            image: postgres:12
+            imagePullPolicy: "IfNotPresent"
+            containerPort: 5432
+            configMapRef: govstack-xroad-cs-postgres-config
+            volumeMountPath: /var/lib/postgresql/data
+            volumeMountName: postgredb
+            volumeName: postgredb
+            volumeClaimName: govstack-xroad-cs-postgres-pv-claim
+postgres-service:
+  name: govstack-xroad-cs-postgres
+  labels:
+    app: postgres
+  spec:
+    type: NodePort
+    port: 5432
+    selector:
+      app: postgres
 secret:
-  db:
+  postgres:
     adminPassword:
-      name: cs-db-secret
+      name: govstack-xroad-cs-postgres-admin-secret
       namespace: ${NAMESPACE}
       type: Opaque
     uiPassword:
-      name: cs-db-centerui-secret
+      name: govstack-xroad-cs-postgres-centerui-secret
       namespace: ${NAMESPACE}
       type: Opaque
 service:
