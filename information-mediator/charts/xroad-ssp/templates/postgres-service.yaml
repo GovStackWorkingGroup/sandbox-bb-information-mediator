@@ -11,5 +11,5 @@ spec:
   ports:
    - port: {{ .Values.postgresService.spec.port }}
   selector:
-   app: {{ .Values.postgresService.selector.app }}
+   app: {{ .Values.postgresService.spec.selector.app }}
 {{ end }}   
