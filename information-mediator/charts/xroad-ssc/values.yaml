@@ -1,6 +1,6 @@
 postgresConfigMap:
   name: govstack-xroad-ssc-postgres-config
-  namespace: {{.Values.global.namespace}}
+  namespace: {{ .Values.global.namespace }}
   labels:
     app: postgres
   data:
@@ -8,7 +8,7 @@ postgresConfigMap:
     POSTGRES_USER: "postgres"
     POSTGRES_PASSWORD: ${XROAD-SSC-POSTGRES-ADMIN-SECRET}
 postgresStorage:
-  namespace: {{.Values.global.namespace}}
+  namespace: {{ .Values.global.namespace }}
   volName: govstack-xroad-ssc-postgres-pv-volume
   claimName: govstack-xroad-ssc-postgres-pv-claim
   labels:
@@ -22,7 +22,7 @@ postgresStorage:
     hostPath:
       path: "/mnt/data"
 postgresDeployment:
-  namespace: {{.Values.global.namespace}}
+  namespace: {{ .Values.global.namespace }}
   name: govstack-xroad-ssc-postgres
   spec:
     replicas: 1
@@ -45,7 +45,7 @@ postgresDeployment:
             volumeName: postgredb
             volumeClaimName: govstack-xroad-ssc-postgres-pv-claim
 postgresService:
-  namespace: {{.Values.global.namespace}}
+  namespace: {{ .Values.global.namespace }}
   name: govstack-xroad-ssc-postgres
   labels:
     app: postgres
@@ -58,31 +58,31 @@ secret:
   postgres:
     adminPassword:
       name: govstack-xroad-ssc-postgres-admin-secret
-      namespace: {{.Values.global.namespace}}
+      namespace: {{ .Values.global.namespace }}
       type: Opaque
     serverConfAdminPassword:
       name: govstack-xroad-ssc-postgres-serverconf-admin-secret
-      namespace: {{.Values.global.namespace}}
+      namespace: {{ .Values.global.namespace }}
       type: Opaque
     serverConfPassword:
       name: govstack-xroad-ssc-postgres-serverconf-secret
-      namespace: {{.Values.global.namespace}}
+      namespace: {{ .Values.global.namespace }}
       type: Opaque
     messageLogAdminPassword:
       name: govstack-xroad-ssc-postgres-messagelog-admin-secret
-      namespace: {{.Values.global.namespace}}
+      namespace: {{ .Values.global.namespace }}
       type: Opaque
     messageLogPassword:
       name: govstack-xroad-ssc-postgres-messagelog-secret
-      namespace: {{.Values.global.namespace}}
+      namespace: {{ .Values.global.namespace }}
       type: Opaque                  
 service:
   name: govstack-xroad-ssc
-  namespace: {{.Values.global.namespace}}
+  namespace: {{ .Values.global.namespace }}
   type: ClusterIP
 deployment:
   name: govstack-xroad-ssc
-  namespace: {{.Values.global.namespace}}
+  namespace: {{ .Values.global.namespace }}
   containers:
     name: govstack-xroad-ssc
     image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_SS_REPO_NAME}:xroad-ssc
