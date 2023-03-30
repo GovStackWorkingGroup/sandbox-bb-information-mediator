@@ -124,6 +124,10 @@ workflows:
     jobs:
       - hold:
           type: approval
+      - install-envsubst:
+          context: aws
+          requires: 
+            - hold
       - deploy-information-mediator:
           context: aws
           requires: 
