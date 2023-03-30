@@ -5,15 +5,7 @@ orbs:
   aws-eks: circleci/aws-eks@2.1.2
   helm: circleci/helm@1.0
   kubernetes: circleci/kubernetes@1.3.1
-  envsubst: sawadashota/envsubst@volatile
 jobs:
-  install-envsubst:
-    echo-version:
-      image:
-        - docker: circleci/python:3.8
-      steps:
-        - envsubst/install
-        - run: which envsubst
   deploy-information-mediator:
     docker:
       - image: cimg/aws:2022.06
@@ -43,11 +35,13 @@ jobs:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            helm install --post-renderer ./post-renderer.sh information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml
+            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' ./information-mediator/values-secrets.yaml
+            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml
       - run:
           name: Install postgres for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' ./information-mediator/values-postgres.yaml
             export XROAD-CS-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export XROAD-SSC-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export XROAD-SSM-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
@@ -57,6 +51,7 @@ jobs:
           name: Install X-Road components for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' ./information-mediator/values.yaml
             db_name="govstack-xroad-cs-postgres"
             config_name="govstack-xroad-cs-postgres-config"
             admin_secret="govstack-xroad-cs-postgres-admin-secret"
@@ -124,10 +119,6 @@ workflows:
     jobs:
       - hold:
           type: approval
-      - install-envsubst:
-          context: aws
-          requires: 
-            - hold
       - deploy-information-mediator:
           context: aws
           requires: 
