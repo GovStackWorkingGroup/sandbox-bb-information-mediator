@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.service.name }}
   labels:
     run: {{ .Values.service.name }}
-  namespace: {{ .Values.service.namespace }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   type: {{ .Values.service.type }}
   selector:

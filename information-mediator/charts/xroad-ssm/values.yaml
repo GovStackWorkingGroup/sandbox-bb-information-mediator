@@ -1,6 +1,5 @@
 postgresConfigMap:
   name: govstack-xroad-ssm-postgres-config
-  namespace: ${NAMESPACE}
   labels:
     app: postgres
   data:
@@ -8,7 +7,6 @@ postgresConfigMap:
     POSTGRES_USER: "postgres"
     POSTGRES_PASSWORD: ${XROAD-SSM-POSTGRES-ADMIN-SECRET}
 postgresStorage:
-  namespace: ${NAMESPACE}
   volName: govstack-xroad-ssm-postgres-pv-volume
   claimName: govstack-xroad-ssm-postgres-pv-claim
   labels:
@@ -22,7 +20,6 @@ postgresStorage:
     hostPath:
       path: "/mnt/data"
 postgresDeployment:
-  namespace: ${NAMESPACE}
   name: govstack-xroad-ssm-postgres
   spec:
     replicas: 1
@@ -45,7 +42,6 @@ postgresDeployment:
             volumeName: postgredb
             volumeClaimName: govstack-xroad-ssm-postgres-pv-claim
 postgresService:
-  namespace: ${NAMESPACE}
   name: govstack-xroad-ssm-postgres
   labels:
     app: postgres
@@ -58,31 +54,24 @@ secret:
   postgres:
     adminPassword:
       name: govstack-xroad-ssm-postgres-admin-secret
-      namespace: ${NAMESPACE}
       type: Opaque
     serverConfAdminPassword:
       name: govstack-xroad-ssm-postgres-serverconf-admin-secret
-      namespace: ${NAMESPACE}
       type: Opaque
     serverConfPassword:
       name: govstack-xroad-ssm-postgres-serverconf-secret
-      namespace: ${NAMESPACE}
       type: Opaque
     messageLogAdminPassword:
       name: govstack-xroad-ssm-postgres-messagelog-admin-secret
-      namespace: ${NAMESPACE}
       type: Opaque
     messageLogPassword:
       name: govstack-xroad-ssm-postgres-messagelog-secret
-      namespace: ${NAMESPACE}
       type: Opaque  
 service:
   name: govstack-xroad-ssm
-  namespace: ${NAMESPACE}
   type: ClusterIP
 deployment:
   name: govstack-xroad-ssm
-  namespace: ${NAMESPACE}
   containers:
     name: govstack-xroad-ssm
     image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_SS_REPO_NAME}:xroad-ssm

@@ -1,6 +1,5 @@
 postgresConfigMap:
   name: govstack-xroad-cs-postgres-config
-  namespace: ${NAMESPACE}
   labels:
     app: postgres
   data:
@@ -8,7 +7,6 @@ postgresConfigMap:
     POSTGRES_USER: "postgres"
     POSTGRES_PASSWORD: ${XROAD-CS-POSTGRES-ADMIN-SECRET}
 postgresStorage:
-  namespace: ${NAMESPACE}
   volName: govstack-xroad-cs-postgres-pv-volume
   claimName: govstack-xroad-cs-postgres-pv-claim
   labels:
@@ -22,7 +20,6 @@ postgresStorage:
     hostPath:
       path: "/mnt/data"
 postgresDeployment:
-  namespace: ${NAMESPACE}
   name: govstack-xroad-cs-postgres
   spec:
     replicas: 1
@@ -45,7 +42,6 @@ postgresDeployment:
             volumeName: postgredb
             volumeClaimName: govstack-xroad-cs-postgres-pv-claim
 postgresService:
-  namespace: ${NAMESPACE}
   name: govstack-xroad-cs-postgres
   labels:
     app: postgres
@@ -58,19 +54,15 @@ secret:
   postgres:
     adminPassword:
       name: govstack-xroad-cs-postgres-admin-secret
-      namespace: ${NAMESPACE}
       type: Opaque
     uiPassword:
       name: govstack-xroad-cs-postgres-centerui-secret
-      namespace: ${NAMESPACE}
       type: Opaque
 service:
   name: govstack-xroad-cs
-  namespace: ${NAMESPACE}
   type: ClusterIP
 deployment:
   name: govstack-xroad-cs
-  namespace: ${NAMESPACE}
   containers:
     name: govstack-xroad-cs
     image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_CS_REPO_NAME}:xroad-cs

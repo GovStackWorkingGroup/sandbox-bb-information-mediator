@@ -35,23 +35,26 @@ jobs:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' ./information-mediator/values-secrets.yaml
-            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml
+            cp ./information-mediator/values-secrets.yaml val.yaml
+            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            helm install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install postgres for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' ./information-mediator/values-postgres.yaml
+            cp ./information-mediator/values-postgres.yaml val.yaml
+            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             export XROAD-CS-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export XROAD-SSC-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export XROAD-SSM-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export XROAD-SSP-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            helm upgrade --install --post-renderer ./post-renderer.sh information-mediator ./information-mediator/ -f ./information-mediator/values-postgres.yaml
+            helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install X-Road components for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' ./information-mediator/values.yaml
+            cp ./information-mediator/values.yaml val.yaml
+            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             db_name="govstack-xroad-cs-postgres"
             config_name="govstack-xroad-cs-postgres-config"
             admin_secret="govstack-xroad-cs-postgres-admin-secret"
@@ -113,7 +116,7 @@ jobs:
             export SSP_DB_SERVERCONF_PASS=$(kubectl get secret $serverconf_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret $messagelog_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)        
  
-            helm upgrade --install --post-renderer ./post-renderer.sh information-mediator ./information-mediator/ -f ./information-mediator/values.yaml                   
+            helm upgrade --install information-mediator ./information-mediator/ -f val.yaml                   
 workflows:
   Deploy IM to EKS cluster:
     jobs:
