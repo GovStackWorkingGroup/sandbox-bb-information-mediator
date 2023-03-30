@@ -7,14 +7,14 @@ orbs:
   kubernetes: circleci/kubernetes@1.3.1
   envsubst: sawadashota/envsubst@volatile
 jobs:
+  install-envsubst:
+    echo-version:
+      image:
+        - docker: circleci/python:3.8
+      steps:
+        - envsubst/install
+        - run: which envsubst
   deploy-information-mediator:
-    job:
-      echo-version:
-        image:
-          - docker: circleci/python:3.8
-        steps:
-          - envsubst/install
-          - run: which envsubst
     docker:
       - image: cimg/aws:2022.06
     steps:
