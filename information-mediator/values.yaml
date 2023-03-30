@@ -1,6 +1,6 @@
 ### Global Values if any ###
 global:
-  namespace: ${NAMESPACE}
+  namespace: govstack
   postgres: true
   secret: true
   deployment: true
