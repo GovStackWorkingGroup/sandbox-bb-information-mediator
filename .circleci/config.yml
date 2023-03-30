@@ -8,7 +8,7 @@ orbs:
   envsubst: sawadashota/envsubst@volatile
 jobs:
   deploy-information-mediator:
-    envsubst:
+    job:
       echo-version:
         image:
           - docker: circleci/python:3.8
