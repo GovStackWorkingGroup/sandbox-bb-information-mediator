@@ -35,7 +35,7 @@ jobs:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml --namespace $NAMESPACE
+            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml --namespace govstack
       - run:
           name: Install postgres for Information Mediator
           command: |
