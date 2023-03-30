@@ -35,7 +35,7 @@ jobs:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml --namespace govstack
+            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml
       - run:
           name: Install postgres for Information Mediator
           command: |
@@ -110,7 +110,7 @@ jobs:
             export SSP_DB_SERVERCONF_PASS=$(kubectl get secret $serverconf_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret $messagelog_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)        
  
-            helm upgrade --install information-mediator ./information-mediator/ -f ./information-mediator/values.yaml --namespace $NAMESPACE                           
+            helm upgrade --install information-mediator ./information-mediator/ -f ./information-mediator/values.yaml                           
 workflows:
   Deploy IM to EKS cluster:
     jobs:
