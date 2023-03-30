@@ -34,12 +34,12 @@ jobs:
       - run:
           name: Install secrets for Information Mediator
           command: |
-            export NAMESPACE="${AWS_NAMESPACE}"
+            export NAMESPACE=$AWS_NAMESPACE
             helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml
       - run:
           name: Install postgres for Information Mediator
           command: |
-            export NAMESPACE="${AWS_NAMESPACE}"
+            export NAMESPACE=$AWS_NAMESPACE
             export XROAD-CS-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export XROAD-SSC-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export XROAD-SSM-POSTGRES-ADMIN-SECRET=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
@@ -48,7 +48,7 @@ jobs:
       - run:
           name: Install X-Road components for Information Mediator
           command: |
-            export NAMESPACE="${AWS_NAMESPACE}"
+            export NAMESPACE=$AWS_NAMESPACE
             db_name="govstack-xroad-cs-postgres"
             config_name="govstack-xroad-cs-postgres-config"
             admin_secret="govstack-xroad-cs-postgres-admin-secret"
