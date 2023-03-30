@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.postgresDeployment.name }}
+  namespace: {{ .Values.postgresDeployment.namespace }}  
 spec:
   replicas: {{ .Values.postgresDeployment.spec.replicas }}
   selector:

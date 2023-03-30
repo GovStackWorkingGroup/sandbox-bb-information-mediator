@@ -3,6 +3,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: {{ .Values.postgresStorage.volName }}
+  namespace: {{ .Values.postgresStorage.namespace }}  
   labels:
     type: {{ .Values.postgresStorage.labels.type }}
     app: {{ .Values.postgresStorage.labels.app }}
@@ -19,6 +20,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Values.postgresStorage.claimName }}
+  namespace: {{ .Values.postgresStorage.namespace }}
   labels:
     app: {{ .Values.postgresStorage.labels.app }}
 spec:
