@@ -32,16 +32,10 @@ jobs:
           command: |
             aws eks update-kubeconfig --region "${AWS_DEFAULT_REGION}" --name "${AWS_CLUSTER_NAME}" --role-arn arn:aws:iam::463471358064:role/CircleCIRole
       - run:
-          name: Print parameters
-          command: |
-            printenv
-            echo "Namespace=${AWS_NAMESPACE}"
-            echo "Cluster=${AWS_CLUSTER_NAME}"
-      - run:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            helm upgrade --install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml
+            helm install information-mediator ./information-mediator/ -f ./information-mediator/values-secrets.yaml
       - run:
           name: Install postgres for Information Mediator
           command: |
