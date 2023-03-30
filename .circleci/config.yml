@@ -35,7 +35,7 @@ jobs:
           name: Uninstall Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            helm delete information-mediator --purge
+            helm delete information-mediator
       - run:
           name: Install secrets for Information Mediator
           command: |
