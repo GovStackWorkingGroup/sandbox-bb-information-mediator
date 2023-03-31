@@ -5,7 +5,7 @@ postgresConfigMap:
   data:
     POSTGRES_DB: postgresdb
     POSTGRES_USER: "postgres"
-    POSTGRES_PASSWORD: ${XROAD-SSM-POSTGRES-ADMIN-SECRET}
+    POSTGRES_PASSWORD: ${XROAD_SSM_POSTGRES_ADMIN_SECRET}
 postgresStorage:
   volName: govstack-xroad-ssm-postgres-pv-volume
   claimName: govstack-xroad-ssm-postgres-pv-claim
