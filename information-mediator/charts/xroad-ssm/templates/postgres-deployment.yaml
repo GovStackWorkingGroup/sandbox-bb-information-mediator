@@ -15,19 +15,23 @@ spec:
         app: {{ .Values.postgresDeployment.spec.template.metadata.labels.app }}
     spec:
       containers:
-        - name: {{ .Values.postgresDeployment.spec.template.spec.containers.name }}
-          image: {{ .Values.postgresDeployment.spec.template.spec.containers.image }}
-          imagePullPolicy: {{ .Values.postgresDeployment.spec.template.spec.containers.imagePullPolicy }}
-          ports:
-            - containerPort: {{ .Values.postgresDeployment.spec.template.spec.containers.containerPort }}
+        {{- range .Values.postgresDeployment.spec.template.spec.containers }}
+        - name: {{ .name }}
+          image: {{ .image }}
+          imagePullPolicy: {{ .imagePullPolicy }}
+          ports: 
+            - containerPort: {{ .containerPort }}
           envFrom:
             - configMapRef:
-                name: {{ .Values.postgresDeployment.spec.template.spec.containers.configMapRef }}
+                name: {{ .configMapRef }}
           volumeMounts:
-            - mountPath: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeMountPath }}
-              name: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeMountName }}
+            - mountPath: {{ .volumeMountPath }}
+              name: {{ .volumeMountName }}            
+        {{- end }}  
       volumes:
-        - name: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeName }}
+        {{- range .Values.postgresDeployment.spec.template.spec.volumes }}
+        - name: {{ .name }}
           persistentVolumeClaim:
-            claimName: {{ .Values.postgresDeployment.spec.template.spec.containers.volumeClaimName }}
-{{ end }}            
+            claimName: {{ .claimName }}
+        {{- end }}    
+{{ end }}                     

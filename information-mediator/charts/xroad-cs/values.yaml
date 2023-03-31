@@ -41,6 +41,9 @@ postgresDeployment:
             volumeMountName: postgredb
             volumeName: postgredb
             volumeClaimName: govstack-xroad-cs-postgres-pv-claim
+        volumes:
+          - name: postgredb
+            claimName: govstack-xroad-cs-postgres-pv-claim           
 postgresService:
   name: govstack-xroad-cs-postgres
   labels:
