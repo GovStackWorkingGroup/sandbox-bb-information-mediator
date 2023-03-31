@@ -2,9 +2,9 @@
 global:
   namespace: ${NAMESPACE}
   postgres: true
-  secret: true
-  deployment: true
-  service: true
+  secret: false
+  deployment: false
+  service: false
   
 ### Sub Charts Specific Values ###
 xroad-cs:

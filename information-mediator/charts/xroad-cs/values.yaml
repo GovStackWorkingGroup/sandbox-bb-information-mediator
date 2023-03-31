@@ -1,36 +1,74 @@
-db:
-  name: "cs-db"
-  namespace: "govstack"
-  engine: postgres
-  masterUsername: "postgres"
-  masterUserPassword:
-    namespace: govstack
-    name: "cs-db-secret"
-    key: password
-  dbSubnetGroupName: default
-  dbInstanceClass: db.t4g.micro
-  allocatedStorage: 20
-  deletionProtection: false
+postgresConfigMap:
+  name: govstack-xroad-cs-postgres-config
+  labels:
+    app: postgres
+  data:
+    POSTGRES_DB: postgresdb
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: ${XROAD-CS-POSTGRES-ADMIN-SECRET}
+postgresStorage:
+  volName: govstack-xroad-cs-postgres-pv-volume
+  claimName: govstack-xroad-cs-postgres-pv-claim
+  labels:
+    type: local
+    app: postgres
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 1Gi
+    accessMode: ReadWriteMany
+    hostPath:
+      path: "/mnt/data"
+postgresDeployment:
+  name: govstack-xroad-cs-postgres
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: postgres
+    template:
+      metadata:
+        labels:
+          app: postgres
+      spec:
+        containers:
+          - name: govstack-xroad-cs-postgres
+            image: postgres:12
+            imagePullPolicy: "IfNotPresent"
+            containerPort: 5432
+            configMapRef: govstack-xroad-cs-postgres-config
+            volumeMountPath: /var/lib/postgresql/data
+            volumeMountName: postgredb
+            volumeName: postgredb
+            volumeClaimName: govstack-xroad-cs-postgres-pv-claim
+        volumes:
+          - name: postgredb
+            claimName: govstack-xroad-cs-postgres-pv-claim           
+postgresService:
+  name: govstack-xroad-cs-postgres
+  labels:
+    app: postgres
+  spec:
+    type: NodePort
+    port: 5432
+    selector:
+      app: postgres
 secret:
-  db:
+  postgres:
     adminPassword:
-      name: cs-db-secret
-      namespace: govstack
+      name: govstack-xroad-cs-postgres-admin-secret
       type: Opaque
     uiPassword:
-      name: cs-db-centerui-secret
-      namespace: govstack
+      name: govstack-xroad-cs-postgres-centerui-secret
       type: Opaque
 service:
   name: govstack-xroad-cs
-  namespace: govstack
   type: ClusterIP
 deployment:
   name: govstack-xroad-cs
-  namespace: govstack 
   containers:
     name: govstack-xroad-cs
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:im-xroad-cs
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_CS_REPO_NAME}:xroad-cs
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"

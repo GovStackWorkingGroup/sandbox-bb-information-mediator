@@ -1,0 +1,13 @@
+{{ if .Values.global.postgres }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.postgresConfigMap.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.postgresConfigMap.labels.app }}
+data:
+  POSTGRES_DB: {{ .Values.postgresConfigMap.data.POSTGRES_DB }}
+  POSTGRES_USER: {{ .Values.postgresConfigMap.data.POSTGRES_USER }}
+  POSTGRES_PASSWORD: {{ .Values.postgresConfigMap.data.POSTGRES_PASSWORD }}
+{{ end }}  

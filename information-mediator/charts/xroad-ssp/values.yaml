@@ -1,48 +1,83 @@
-db:
-  name: "ssp-db"
-  namespace: "govstack"
-  engine: postgres
-  masterUsername: "postgres"
-  masterUserPassword:
-    namespace: govstack
-    name: "ssp-db-secret"
-    key: password
-  dbSubnetGroupName: default
-  dbInstanceClass: db.t4g.micro
-  allocatedStorage: 20
-  deletionProtection: false
+postgresConfigMap:
+  name: govstack-xroad-ssp-postgres-config
+  labels:
+    app: postgres
+  data:
+    POSTGRES_DB: postgresdb
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: ${XROAD-SSP-POSTGRES-ADMIN-SECRET}
+postgresStorage:
+  volName: govstack-xroad-ssp-postgres-pv-volume
+  claimName: govstack-xroad-ssp-postgres-pv-claim
+  labels:
+    type: local
+    app: postgres
+  spec:
+    storageClassName: manual
+    capacity:
+      storage: 1Gi
+    accessMode: ReadWriteMany
+    hostPath:
+      path: "/mnt/data"
+postgresDeployment:
+  name: govstack-xroad-ssp-postgres
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: postgres
+    template:
+      metadata:
+        labels:
+          app: postgres
+      spec:
+        containers:
+          - name: govstack-xroad-ssp-postgres
+            image: postgres:12
+            imagePullPolicy: "IfNotPresent"
+            containerPort: 5432
+            configMapRef: govstack-xroad-ssp-postgres-config
+            volumeMountPath: /var/lib/postgresql/data
+            volumeMountName: postgredb
+            volumeName: postgredb
+            volumeClaimName: govstack-xroad-ssp-postgres-pv-claim
+        volumes:
+          - name: postgredb
+            claimName: govstack-xroad-ssp-postgres-pv-claim
+postgresService:
+  name: govstack-xroad-ssp-postgres
+  labels:
+    app: postgres
+  spec:
+    type: NodePort
+    port: 5432
+    selector:
+      app: postgres
 secret:
-  db:
+  postgres:
     adminPassword:
-      name: ssp-db-secret
-      namespace: govstack
+      name: govstack-xroad-ssp-postgres-admin-secret
       type: Opaque
     serverConfAdminPassword:
-      name: ssp-db-serverconf-admin-secret
-      namespace: govstack
+      name: govstack-xroad-ssp-postgres-serverconf-admin-secret
       type: Opaque
     serverConfPassword:
-      name: ssp-db-serverconf-secret
-      namespace: govstack
+      name: govstack-xroad-ssp-postgres-serverconf-secret
       type: Opaque
     messageLogAdminPassword:
-      name: ssp-db-messagelog-admin-secret
-      namespace: govstack
+      name: govstack-xroad-ssp-postgres-messagelog-admin-secret
       type: Opaque
     messageLogPassword:
-      name: ssp-db-messagelog-secret
-      namespace: govstack
-      type: Opaque
+      name: govstack-xroad-ssp-postgres-messagelog-secret
+      type: Opaque  
 service:
   name: govstack-xroad-ssp
-  namespace: govstack
   type: ClusterIP
 deployment:
   name: govstack-xroad-ssp
-  namespace: govstack 
   containers:
     name: govstack-xroad-ssp
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/govstackecr:im-xroad-ssp
+    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_SS_REPO_NAME}:xroad-ssp
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"
