@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.deployment.containers.name }}
-          image: "{{ .Values.global.xroadSecurityServerImageRepo }}:{{.Values.deployment.containers.imageName }}"
+          image: {{ .Values.global.xroadSecurityServerImageRepo }}:xroad-ssm
           imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
           env:
             {{- range .Values.deployment.containers.env }}
