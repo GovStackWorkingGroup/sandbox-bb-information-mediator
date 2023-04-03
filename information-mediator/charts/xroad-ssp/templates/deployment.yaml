@@ -18,11 +18,14 @@ spec:
         - name: {{ .Values.deployment.containers.name }}
           image: {{ .Values.global.xroadSecurityServerImageRepo }}:{{ .Values.deployment.containers.imageName }}
           imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
-          env:
-            {{- range .Values.deployment.containers.env }}
-            - name: {{ .name }}
-              value: {{ .value }}
-            {{- end }}                                                                                                    
+          #env:
+          #  {{- range .Values.deployment.containers.env }}
+          #  - name: {{ .name }}
+          #    value: {{ .value }}
+          #  {{- end }}                    
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.deployment.containers.configMapName }}                                                                                                   
           ports:
             - containerPort: 4000
             - containerPort: 80

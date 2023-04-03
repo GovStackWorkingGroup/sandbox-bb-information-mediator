@@ -1,3 +1,7 @@
+configMap:
+  name: govstack-xroad-ssc-config
+  labels:
+    app: govstack-xroad-ssc-config
 postgresStorage:
   volName: govstack-xroad-ssc-postgres-pv-volume
   claimName: govstack-xroad-ssc-postgres-pv-claim
@@ -89,21 +93,22 @@ deployment:
     name: govstack-xroad-ssc
     imageName: xroad-ssc
     imagePullPolicy: "Always"
-    env:
-      - name: "DB_HOST"
-        value: "${SSC_DB_HOST}"
-      - name: "DB_PORT"
-        value: "${SSC_DB_PORT}"
-      - name: "DB_ADMIN_USER"
-        value: "${SSC_DB_ADMIN_USER}"
-      - name: "DB_ADMIN_PASS"
-        value: "${SSC_DB_ADMIN_PASS}"        
-      - name: "DB_SERVERCONF_ADMIN_PASS"
-        value: "${SSC_DB_SERVERCONF_ADMIN_PASS}"
-      - name: "DB_SERVERCONF_PASS"
-        value: "${SSC_DB_SERVERCONF_PASS}"
-      - name: "DB_NESSAGELOG_ADMIN_PASS"
-        value: "${SSC_DB_NESSAGELOG_ADMIN_PASS}"
-      - name: "DB_MESSAGELOG_PASS"
-        value: "${SSC_DB_MESSAGELOG_PASS}"                                                                    
+    configMapName: govstack-xroad-ssc-config
+    #env:
+    #  - name: "DB_HOST"
+    #    value: "${SSC_DB_HOST}"
+    #  - name: "DB_PORT"
+    #    value: "${SSC_DB_PORT}"
+    #  - name: "DB_ADMIN_USER"
+    #    value: "${SSC_DB_ADMIN_USER}"
+    #  - name: "DB_ADMIN_PASS"
+    #    value: "${SSC_DB_ADMIN_PASS}"        
+    #  - name: "DB_SERVERCONF_ADMIN_PASS"
+    #    value: "${SSC_DB_SERVERCONF_ADMIN_PASS}"
+    #  - name: "DB_SERVERCONF_PASS"
+    #    value: "${SSC_DB_SERVERCONF_PASS}"
+    #  - name: "DB_NESSAGELOG_ADMIN_PASS"
+    #    value: "${SSC_DB_NESSAGELOG_ADMIN_PASS}"
+    #  - name: "DB_MESSAGELOG_PASS"
+    #    value: "${SSC_DB_MESSAGELOG_PASS}"                                                                    
 

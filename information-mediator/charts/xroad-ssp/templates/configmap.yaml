@@ -1,0 +1,18 @@
+{{ if .Values.global.deployment }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.configMap.labels.app }}
+data:
+  SSP_DB_HOST: {{ .Values.global.SSP_DB_HOST }}
+  SSP_DB_PORT: {{ .Values.global.SSP_DB_PORT }}     
+  SSP_DB_ADMIN_USER: {{ .Values.global.SSP_DB_ADMIN_USER }}
+  SSP_DB_ADMIN_PASS: {{ .Values.global.SSP_DB_ADMIN_PASS }}
+  SSP_DB_SERVERCONF_ADMIN_PASS: {{ .Values.global.SSP_DB_SERVERCONF_ADMIN_PASS }}
+  SSP_DB_MESSAGELOG_ADMIN_PASS: {{ .Values.global.SSP_DB_MESSAGELOG_ADMIN_PASS }}
+  SSP_DB_SERVERCONF_PASS: {{ .Values.global.SSP_DB_SERVERCONF_PASS }}
+  SSP_DB_MESSAGELOG_PASS: {{ .Values.global.SSP_DB_MESSAGELOG_PASS }} 
+{{ end }}  

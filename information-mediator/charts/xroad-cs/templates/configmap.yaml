@@ -1,0 +1,15 @@
+{{ if .Values.global.deployment }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.configMap.labels.app }}
+data:
+  CS_DB_HOST: {{ .Values.global.CS_DB_HOST }}
+  CS_DB_PORT: {{ .Values.global.CS_DB_PORT }}
+  CS_DB_ADMIN_USER: {{ .Values.global.CS_DB_ADMIN_USER }}
+  CS_DB_ADMIN_PASS: {{ .Values.global.CS_DB_ADMIN_PASS }}
+  CS_DB_UI_PASS: {{ .Values.global.CS_DB_UI_PASS }}
+{{ end }}  

@@ -1,0 +1,19 @@
+{{ if .Values.global.deployment }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configMap.name }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.configMap.labels.app }}
+data:
+  SSC_DB_HOST: {{ .Values.global.SSC_DB_HOST }}
+  SSC_DB_PORT: {{ .Values.global.SSC_DB_PORT }}     
+  SSC_DB_ADMIN_USER: {{ .Values.global.SSC_DB_ADMIN_USER }}
+  SSC_DB_ADMIN_PASS: {{ .Values.global.SSC_DB_ADMIN_PASS }}
+  SSC_DB_SERVERCONF_ADMIN_PASS: {{ .Values.global.SSC_DB_SERVERCONF_ADMIN_PASS }}
+  SSC_DB_MESSAGELOG_ADMIN_PASS: {{ .Values.global.SSC_DB_MESSAGELOG_ADMIN_PASS }}
+  SSC_DB_SERVERCONF_PASS: {{ .Values.global.SSC_DB_SERVERCONF_PASS }}
+  SSC_DB_MESSAGELOG_PASS: {{ .Values.global.SSC_DB_MESSAGELOG_PASS }}
+
+{{ end }}  

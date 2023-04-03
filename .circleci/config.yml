@@ -37,7 +37,7 @@ jobs:
             export NAMESPACE="${AWS_NAMESPACE}"
             cp ./information-mediator/values-secrets.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
-            helm install information-mediator ./information-mediator/ -f val.yaml
+            helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install postgres for Information Mediator
           command: |
@@ -51,70 +51,75 @@ jobs:
             export NAMESPACE="${AWS_NAMESPACE}"
             export ECR_CS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
             export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
+            export CS_DB_HOST=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
+            export CS_DB_PORT=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)
+            export CS_DB_ADMIN_USER=$(kubectl get secret govstack-xroad-cs-postgres-admin-db-info-secret -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
+            export CS_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export CS_DB_UI_PASS=$(kubectl get secret govstack-xroad-cs-postgres-centerui-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)              
+            export SSC_DB_HOST=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
+            export SSC_DB_PORT=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
+            export SSC_DB_ADMIN_USER=$(kubectl get secret govstack-xroad-ssc-postgres-admin-db-info-secret -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
+            export SSC_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSC_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSC_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSC_DB_SERVERCONF_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-serverconf-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSC_DB_MESSAGELOG_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-messagelog-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)               
+            export SSM_DB_HOST=$(kubectl get service govstack-xroad-ssm-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
+            export SSM_DB_PORT=$(kubectl get service govstack-xroad-ssm-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
+            export SSM_DB_ADMIN_USER=$(kubectl get secret govstack-xroad-ssm-postgres-admin-db-info-secret -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
+            export SSM_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSM_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSM_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSM_DB_SERVERCONF_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-serverconf-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSM_DB_MESSAGELOG_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-messagelog-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)               
+            export SSP_DB_HOST=$(kubectl get service govstack-xroad-ssp-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
+            export SSP_DB_PORT=$(kubectl get service govstack-xroad-ssp-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
+            export SSP_DB_ADMIN_USER=$(kubectl get secret govstack-xroad-ssp-postgres-admin-db-info-secret -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
+            export SSP_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSP_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSP_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSP_DB_SERVERCONF_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-serverconf-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-messagelog-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)        
+ 
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             sed -i 's/${ECR_CS_REPO}/'"$ECR_CS_REPO"'/g' val.yaml
             sed -i 's/${ECR_SS_REPO}/'"$ECR_SS_REPO"'/g' val.yaml
+            sed -i 's/${CS_DB_HOST}/'"$CS_DB_HOST"'/g' val.yaml
+            sed -i 's/${CS_DB_PORT}/'"$CS_DB_PORT"'/g' val.yaml
+            sed -i 's/${CS_DB_ADMIN_USER}/'"$CS_DB_ADMIN_USER"'/g' val.yaml
+            sed -i 's/${CS_DB_ADMIN_PASS}/'"$CS_DB_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${CS_DB_UI_PASS}/'"$CS_DB_UI_PASS"'/g' val.yaml
+            sed -i 's/${SSC_DB_HOST}/'"$SSC_DB_HOST"'/g' val.yaml
+            sed -i 's/${SSC_DB_PORT}/'"$SSC_DB_PORT"'/g' val.yaml
+            sed -i 's/${SSC_DB_ADMIN_USER}/'"$SSC_DB_ADMIN_USER"'/g' val.yaml
+            sed -i 's/${SSC_DB_ADMIN_PASS}/'"$SSC_DB_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSC_DB_SERVERCONF_ADMIN_PASS}/'"$SSC_DB_SERVERCONF_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSC_DB_MESSAGELOG_ADMIN_PASS}/'"$SSC_DB_MESSAGELOG_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSC_DB_SERVERCONF_PASS}/'"$SSC_DB_SERVERCONF_PASS"'/g' val.yaml
+            sed -i 's/${SSC_DB_MESSAGELOG_PASS}/'"$SSC_DB_MESSAGELOG_PASS"'/g' val.yaml
+            sed -i 's/${SSM_DB_HOST}/'"$SSM_DB_HOST"'/g' val.yaml
+            sed -i 's/${SSM_DB_PORT}/'"$SSM_DB_PORT"'/g' val.yaml
+            sed -i 's/${SSM_DB_ADMIN_USER}/'"$SSM_DB_ADMIN_USER"'/g' val.yaml
+            sed -i 's/${SSM_DB_ADMIN_PASS}/'"$SSM_DB_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSM_DB_SERVERCONF_ADMIN_PASS}/'"$SSM_DB_SERVERCONF_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSM_DB_MESSAGELOG_ADMIN_PASS}/'"$SSM_DB_MESSAGELOG_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSM_DB_SERVERCONF_PASS}/'"$SSM_DB_SERVERCONF_PASS"'/g' val.yaml
+            sed -i 's/${SSM_DB_MESSAGELOG_PASS}/'"$SSM_DB_MESSAGELOG_PASS"'/g' val.yaml
+            sed -i 's/${SSP_DB_HOST}/'"$SSP_DB_HOST"'/g' val.yaml
+            sed -i 's/${SSP_DB_PORT}/'"$SSP_DB_PORT"'/g' val.yaml
+            sed -i 's/${SSP_DB_ADMIN_USER}/'"$SSP_DB_ADMIN_USER"'/g' val.yaml
+            sed -i 's/${SSP_DB_ADMIN_PASS}/'"$SSP_DB_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSP_DB_SERVERCONF_ADMIN_PASS}/'"$SSP_DB_SERVERCONF_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSP_DB_MESSAGELOG_ADMIN_PASS}/'"$SSP_DB_MESSAGELOG_ADMIN_PASS"'/g' val.yaml
+            sed -i 's/${SSP_DB_SERVERCONF_PASS}/'"$SSP_DB_SERVERCONF_PASS"'/g' val.yaml
+            sed -i 's/${SSP_DB_MESSAGELOG_PASS}/'"$SSP_DB_MESSAGELOG_PASS"'/g' val.yaml
             
-            db_name="govstack-xroad-cs-postgres"
-            admin_db_info="govstack-xroad-cs-postgres-admin-db-info-secret"
-            admin_secret="govstack-xroad-cs-postgres-admin-secret"
-            centerui_secret="govstack-xroad-cs-postgres-centerui-secret"
-            export CS_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-            export CS_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)
-            export CS_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
-            export CS_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export CS_DB_UI_PASS=$(kubectl get secret $centerui_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-
-            db_name="govstack-xroad-ssc-postgres"
-            admin_db_info="govstack-xroad-ssc-postgres-admin-db-info-secret"
-            admin_secret="govstack-xroad-ssc-postgres-admin-secret"
-            serverconf_admin_secret="govstack-xroad-ssc-postgres-serverconf-admin-secret"
-            messagelog_admin_secret="govstack-xroad-ssc-postgres-messagelog-admin-secret"
-            serverconf_secret="govstack-xroad-ssc-postgres-serverconf-secret"
-            messagelog_secret="govstack-xroad-ssc-postgres-messagelog-secret"               
-            export SSC_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-            export SSC_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-            export SSC_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret $serverconf_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret $messagelog_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_DB_SERVERCONF_PASS=$(kubectl get secret $serverconf_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_DB_MESSAGELOG_PASS=$(kubectl get secret $messagelog_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            
-            db_name="govstack-xroad-ssm-postgres"
-            admin_db_info="govstack-xroad-ssm-postgres-admin-db-info-secret"
-            admin_secret="govstack-xroad-ssm-postgres-admin-secret"
-            serverconf_admin_secret="govstack-xroad-ssm-postgres-serverconf-admin-secret"
-            messagelog_admin_secret="govstack-xroad-ssm-postgres-messagelog-admin-secret"
-            serverconf_secret="govstack-xroad-ssm-postgres-serverconf-secret"
-            messagelog_secret="govstack-xroad-ssm-postgres-messagelog-secret"               
-            export SSM_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-            export SSM_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-            export SSM_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret $serverconf_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret $messagelog_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_DB_SERVERCONF_PASS=$(kubectl get secret $serverconf_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_DB_MESSAGELOG_PASS=$(kubectl get secret $messagelog_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-         
-            db_name="govstack-xroad-ssp-postgres"
-            admin_db_info="govstack-xroad-ssp-postgres-admin-db-info-secret"
-            admin_secret="govstack-xroad-ssp-postgres-admin-secret"
-            serverconf_admin_secret="govstack-xroad-ssp-postgres-serverconf-admin-secret"
-            messagelog_admin_secret="govstack-xroad-ssp-postgres-messagelog-admin-secret"
-            serverconf_secret="govstack-xroad-ssp-postgres-serverconf-secret"
-            messagelog_secret="govstack-xroad-ssp-postgres-messagelog-secret"               
-            export SSP_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-            export SSP_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-            export SSP_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret $serverconf_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret $messagelog_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_DB_SERVERCONF_PASS=$(kubectl get secret $serverconf_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret $messagelog_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)        
- 
-            helm upgrade --install information-mediator ./information-mediator/ -f val.yaml                   
+            helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
+      - run:
+          name: Delete temporary values file
+          command: |
+            rm val.yaml               
 workflows:
   Deploy IM to EKS cluster:
     jobs:
