@@ -53,8 +53,8 @@ jobs:
           name: Install X-Road components for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            export ECR_CS_REPO="463471358064.dkr.ecr.eu-central-1.amazonaws.com\/x-road\/central-server"
-            export ECR_SS_REPO="463471358064.dkr.ecr.eu-central-1.amazonaws.com\/x-road\/security-server"
+            export ECR_CS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
+            export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             sed -i 's/${ECR_CS_REPO}/'"$ECR_CS_REPO"'/g' val.yaml
