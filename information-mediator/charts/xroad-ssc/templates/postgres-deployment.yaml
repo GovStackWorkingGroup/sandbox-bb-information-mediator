@@ -21,9 +21,6 @@ spec:
           imagePullPolicy: {{ .imagePullPolicy }}
           ports: 
             - containerPort: {{ .containerPort }}
-          #envFrom:
-          #  - configMapRef:
-          #      name: {{ .configMapRef }}
           env:
             {{- range .env }}
             - name: {{ .name }}

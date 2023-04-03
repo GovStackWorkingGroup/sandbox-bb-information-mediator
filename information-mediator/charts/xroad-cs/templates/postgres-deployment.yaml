@@ -16,14 +16,11 @@ spec:
     spec:
       containers:
         {{- range .Values.postgresDeployment.spec.template.spec.containers }}
-        - name: {{ .name }}
+        - name: {{ name }}
           image: {{ .image }}
           imagePullPolicy: {{ .imagePullPolicy }}
           ports: 
             - containerPort: {{ .containerPort }}
-          #envFrom:
-          #  - configMapRef:
-          #      name: {{ .configMapRef }}
           env:
             {{- range .env }}
             - name: {{ .name }}
