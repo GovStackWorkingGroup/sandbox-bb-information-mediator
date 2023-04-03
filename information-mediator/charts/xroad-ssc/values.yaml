@@ -54,7 +54,7 @@ postgresDeployment:
                     key: password             
         volumes:
           - name: postgredb
-            claimName: govstack-xroad-cs-postgres-pv-claim
+            claimName: govstack-xroad-ssc-postgres-pv-claim
 postgresService:
   name: govstack-xroad-ssc-postgres
   labels:
