@@ -57,17 +57,20 @@ jobs:
             sed -i 's/${ECR_SS_REPO}/'"$ECR_SS_REPO"'/g' val.yaml
             
             db_name="govstack-xroad-cs-postgres"
-            config_name="govstack-xroad-cs-postgres-config"
+            #config_name="govstack-xroad-cs-postgres-config"
+            admin_db_info="govstack-xroad-cs-postgres-admin-db-info-secret"
             admin_secret="govstack-xroad-cs-postgres-admin-secret"
             centerui_secret="govstack-xroad-cs-postgres-centerui-secret"
             export CS_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export CS_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-            export CS_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            #export CS_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            export CS_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
             export CS_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export CS_DB_UI_PASS=$(kubectl get secret $centerui_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
 
             db_name="govstack-xroad-ssc-postgres"
-            config_name="govstack-xroad-ssc-postgres-config"
+            #config_name="govstack-xroad-ssc-postgres-config"
+            admin_db_info="govstack-xroad-ssc-postgres-admin-db-info-secret"
             admin_secret="govstack-xroad-ssc-postgres-admin-secret"
             serverconf_admin_secret="govstack-xroad-ssc-postgres-serverconf-admin-secret"
             messagelog_admin_secret="govstack-xroad-ssc-postgres-messagelog-admin-secret"
@@ -75,7 +78,8 @@ jobs:
             messagelog_secret="govstack-xroad-ssc-postgres-messagelog-secret"               
             export SSC_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export SSC_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-            export SSC_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            #export SSC_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            export SSC_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
             export SSC_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSC_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret $serverconf_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSC_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret $messagelog_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
@@ -83,7 +87,8 @@ jobs:
             export SSC_DB_MESSAGELOG_PASS=$(kubectl get secret $messagelog_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             
             db_name="govstack-xroad-ssm-postgres"
-            config_name="govstack-xroad-ssm-postgres-config"
+            #config_name="govstack-xroad-ssm-postgres-config"
+            admin_db_info="govstack-xroad-ssm-postgres-admin-db-info-secret"
             admin_secret="govstack-xroad-ssm-postgres-admin-secret"
             serverconf_admin_secret="govstack-xroad-ssm-postgres-serverconf-admin-secret"
             messagelog_admin_secret="govstack-xroad-ssm-postgres-messagelog-admin-secret"
@@ -91,7 +96,8 @@ jobs:
             messagelog_secret="govstack-xroad-ssm-postgres-messagelog-secret"               
             export SSM_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export SSM_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-            export SSM_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            #export SSM_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            export SSM_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
             export SSM_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSM_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret $serverconf_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSM_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret $messagelog_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
@@ -99,7 +105,8 @@ jobs:
             export SSM_DB_MESSAGELOG_PASS=$(kubectl get secret $messagelog_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
          
             db_name="govstack-xroad-ssp-postgres"
-            config_name="govstack-xroad-ssp-postgres-config"
+            #config_name="govstack-xroad-ssp-postgres-config"
+            admin_db_info="govstack-xroad-ssp-postgres-admin-db-info-secret"
             admin_secret="govstack-xroad-ssp-postgres-admin-secret"
             serverconf_admin_secret="govstack-xroad-ssp-postgres-serverconf-admin-secret"
             messagelog_admin_secret="govstack-xroad-ssp-postgres-messagelog-admin-secret"
@@ -107,7 +114,8 @@ jobs:
             messagelog_secret="govstack-xroad-ssp-postgres-messagelog-secret"               
             export SSP_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export SSP_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-            export SSP_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            #export SSP_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)
+            export SSP_DB_ADMIN_USER=$(kubectl get secret $admin_db_info -o jsonpath='{.data.username}' --namespace $NAMESPACE | base64 --decode)
             export SSP_DB_ADMIN_PASS=$(kubectl get secret $admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSP_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret $serverconf_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSP_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret $messagelog_admin_secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)

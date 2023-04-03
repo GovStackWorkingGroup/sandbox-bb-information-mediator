@@ -1,23 +1,23 @@
-postgresConfigMap:
-  name: govstack-xroad-cs-postgres-config
-  labels:
-    app: postgres
-  env:
-    - name: POSTGRES_DB
-      valueFrom:
-        secretKeyRef:
-           name: govstack-xroad-cs-postgres-admin-db-info-secret
-           key: dbname 
-    - name: POSTGRES_USER
-      valueFrom:
-        secretKeyRef:
-           name: govstack-xroad-cs-postgres-admin-db-info-secret
-           key: username             
-    - name: POSTGRES_PASSWORD
-      valueFrom:
-        secretKeyRef:
-           name: govstack-xroad-cs-postgres-admin-secret
-           key: password 
+#postgresConfigMap:
+#  name: govstack-xroad-cs-postgres-config
+#  labels:
+#    app: postgres
+#  env:
+#    - name: POSTGRES_DB
+#      valueFrom:
+#        secretKeyRef:
+#           name: govstack-xroad-cs-postgres-admin-db-info-secret
+#           key: dbname 
+#    - name: POSTGRES_USER
+#      valueFrom:
+#        secretKeyRef:
+#           name: govstack-xroad-cs-postgres-admin-db-info-secret
+#           key: username             
+#    - name: POSTGRES_PASSWORD
+#      valueFrom:
+#        secretKeyRef:
+#           name: govstack-xroad-cs-postgres-admin-secret
+#           key: password 
 postgresStorage:
   volName: govstack-xroad-cs-postgres-pv-volume
   claimName: govstack-xroad-cs-postgres-pv-claim
@@ -48,11 +48,27 @@ postgresDeployment:
             image: postgres:12
             imagePullPolicy: "IfNotPresent"
             containerPort: 5432
-            configMapRef: govstack-xroad-cs-postgres-config
+            #configMapRef: govstack-xroad-cs-postgres-config
             volumeMountPath: /var/lib/postgresql/data
             volumeMountName: postgredb
             volumeName: postgredb
             volumeClaimName: govstack-xroad-cs-postgres-pv-claim
+            env:
+              - name: POSTGRES_DB
+                valueFrom:
+                  secretKeyRef:
+                    name: govstack-xroad-cs-postgres-admin-db-info-secret
+                    key: dbname 
+              - name: POSTGRES_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: govstack-xroad-cs-postgres-admin-db-info-secret
+                    key: username             
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: govstack-xroad-cs-postgres-admin-secret
+                    key: password 
         volumes:
           - name: postgredb
             claimName: govstack-xroad-cs-postgres-pv-claim           
