@@ -53,15 +53,17 @@ jobs:
           name: Install X-Road components for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            export ECR_CS_REPO="463471358064.dkr.ecr.eu-central-1.amazonaws.com/${AWS_ECR_CS_REPO_NAME}"
+            export ECR_SS_REPO="463471358064.dkr.ecr.eu-central-1.amazonaws.com/${AWS_ECR_SS_REPO_NAME}"
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${ECR_CS_REPO}/'"$ECR_CS_REPO"'/g' val.yaml
+            sed -i 's/${ECR_SS_REPO}/'"$ECR_SS_REPO"'/g' val.yaml
+            
             db_name="govstack-xroad-cs-postgres"
             config_name="govstack-xroad-cs-postgres-config"
             admin_secret="govstack-xroad-cs-postgres-admin-secret"
             centerui_secret="govstack-xroad-cs-postgres-centerui-secret"
-            export NAMESPACE=${AWS_NAMESPACE}
-            export ECR_CS_REPO_NAME=${AWS_ECR_CS_REPO}
-            export ECR_SS_REPO_NAME=${AWS_ECR_SS_REPO}
             export CS_DB_HOST=$(kubectl get service $db_name -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export CS_DB_PORT=$(kubectl get service $db_name -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
             export CS_DB_ADMIN_USER=$(kubectl get configmap $config_name -o jsonpath='{.data.POSTGRES_USER}' -n $NAMESPACE)

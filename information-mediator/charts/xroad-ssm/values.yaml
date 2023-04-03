@@ -77,7 +77,7 @@ deployment:
   name: govstack-xroad-ssm
   containers:
     name: govstack-xroad-ssm
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_SS_REPO_NAME}:xroad-ssm
+    imageName: xroad-ssm
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"

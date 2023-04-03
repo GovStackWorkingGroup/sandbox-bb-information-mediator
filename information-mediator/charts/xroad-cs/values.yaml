@@ -68,7 +68,7 @@ deployment:
   name: govstack-xroad-cs
   containers:
     name: govstack-xroad-cs
-    image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/${ECR_CS_REPO_NAME}:xroad-cs
+    imageName: xroad-cs
     imagePullPolicy: "Always"
     env:
       - name: "DB_HOST"

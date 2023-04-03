@@ -1,6 +1,8 @@
 ### Global Values if any ###
 global:
   namespace: ${NAMESPACE}
+  xroadCentralServerImageRepo: ${ECR_CS_REPO}
+  xroadSecurityServerImageRepo: ${ECR_SS_REPO}
   postgres: true
   secret: true
   deployment: true
