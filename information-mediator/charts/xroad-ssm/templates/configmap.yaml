@@ -7,7 +7,11 @@ metadata:
   labels:
     app: {{ .Values.postgresConfigMap.labels.app }}
 data:
-  POSTGRES_DB: {{ .Values.postgresConfigMap.data.POSTGRES_DB }}
-  POSTGRES_USER: {{ .Values.postgresConfigMap.data.POSTGRES_USER }}
-  POSTGRES_PASSWORD: {{ .Values.postgresConfigMap.data.POSTGRES_PASSWORD }}
+  {{- range .Values.postgresConfigMap.env }}
+  - name: {{ .name }}
+    valueFrom:
+      secretKeyRef:
+        name: {{ .valueFrom.secretKeyRef.name }}
+        key: {{ .valueFrom.secretKeyRef.key }}
+  {{- end }} 
 {{ end }}  

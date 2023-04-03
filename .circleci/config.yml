@@ -44,10 +44,6 @@ jobs:
             export NAMESPACE="${AWS_NAMESPACE}"
             cp ./information-mediator/values-postgres.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
-            export XROAD_CS_POSTGRES_ADMIN_SECRET=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export XROAD_SSC_POSTGRES_ADMIN_SECRET=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export XROAD_SSM_POSTGRES_ADMIN_SECRET=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export XROAD_SSP_POSTGRES_ADMIN_SECRET=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install X-Road components for Information Mediator

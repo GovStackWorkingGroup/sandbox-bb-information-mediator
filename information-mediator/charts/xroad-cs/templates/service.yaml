@@ -23,6 +23,9 @@ spec:
       targetPort: 8899
       protocol: TCP
       name: tsa
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP      
     - port: 4001
       targetPort: 4001
       protocol: TCP
