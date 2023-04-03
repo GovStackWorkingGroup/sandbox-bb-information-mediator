@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.deployment.containers.name }}
-          image: 463471358064.dkr.ecr.eu-central-1.amazonaws.com/x-road/central-server:xroad-cs
+          image: {{ .Values.global.xroadCentralServerImageRepo }}:{{ .Values.deployment.containers.imageName }}
           imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
           env:
             {{- range .Values.deployment.containers.env }}
