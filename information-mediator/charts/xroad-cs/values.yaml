@@ -37,21 +37,21 @@ postgresDeployment:
             volumeName: postgredb-cs
             volumeClaimName: govstack-xroad-cs-postgres-pv-claim
             env:
-              - name: POSTGRES_DB
-                valueFrom:
-                  secretKeyRef:
-                    name: govstack-xroad-cs-postgres-admin-db-info-secret
-                    key: dbname 
-              - name: POSTGRES_USER
-                valueFrom:
-                  secretKeyRef:
-                    name: govstack-xroad-cs-postgres-admin-db-info-secret
-                    key: username             
+            #  - name: POSTGRES_DB
+            #    valueFrom:
+            #      secretKeyRef:
+            #        name: govstack-xroad-cs-postgres-admin-db-info-secret
+            #        key: dbname 
+            #  - name: POSTGRES_USER
+            #    valueFrom:
+            #      secretKeyRef:
+            #        name: govstack-xroad-cs-postgres-admin-db-info-secret
+            #        key: username             
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
                     name: govstack-xroad-cs-postgres-admin-secret
-                    key: password 
+                    key: password
         volumes:
           - name: postgredb-cs
             claimName: govstack-xroad-cs-postgres-pv-claim           
