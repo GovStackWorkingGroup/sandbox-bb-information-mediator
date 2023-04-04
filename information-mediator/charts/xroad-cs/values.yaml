@@ -53,7 +53,7 @@ postgresDeployment:
                     name: govstack-xroad-cs-postgres-admin-secret
                     key: password 
         volumes:
-          - name: postgredb
+          - name: postgredb-cs
             claimName: govstack-xroad-cs-postgres-pv-claim           
 postgresService:
   name: govstack-xroad-cs-postgres
