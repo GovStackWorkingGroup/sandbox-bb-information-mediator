@@ -36,17 +36,17 @@ postgresDeployment:
             volumeMountName: postgredb-ssc
             volumeName: postgredb-ssc
             volumeClaimName: govstack-xroad-ssc-postgres-pv-claim
-            env:     
+            env:
             #  - name: POSTGRES_DB
             #    valueFrom:
             #      secretKeyRef:
             #        name: govstack-xroad-ssc-postgres-admin-db-info-secret
-            #        key: dbname 
+            #        key: dbname
             #  - name: POSTGRES_USER
             #    valueFrom:
             #      secretKeyRef:
             #        name: govstack-xroad-ssc-postgres-admin-db-info-secret
-            #        key: username       
+            #        key: username
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:

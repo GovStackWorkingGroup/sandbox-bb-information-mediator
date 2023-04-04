@@ -46,7 +46,7 @@ postgresDeployment:
             #    valueFrom:
             #      secretKeyRef:
             #        name: govstack-xroad-cs-postgres-admin-db-info-secret
-            #        key: username                   
+            #        key: username
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
