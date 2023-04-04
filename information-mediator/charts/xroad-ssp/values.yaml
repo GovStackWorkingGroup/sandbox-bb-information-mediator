@@ -36,7 +36,7 @@ postgresDeployment:
             volumeMountName: postgredb-ssp
             volumeName: postgredb-ssp
             volumeClaimName: govstack-xroad-ssp-postgres-pv-claim
-            env:           
+            env:             
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
@@ -56,6 +56,9 @@ postgresService:
       app: postgres-ssp
 secret:
   postgres:
+    adminDbInfo:
+      name: govstack-xroad-ssp-postgres-admin-db-info-secret
+      type: Opaque  
     adminPassword:
       name: govstack-xroad-ssp-postgres-admin-secret
       type: Opaque

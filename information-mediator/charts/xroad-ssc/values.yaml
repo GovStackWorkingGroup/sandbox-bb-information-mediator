@@ -55,7 +55,10 @@ postgresService:
     selector:
       app: postgres-ssc
 secret:
-  postgres: 
+  postgres:
+    adminDbInfo:
+      name: govstack-xroad-ssc-postgres-admin-db-info-secret
+      type: Opaque  
     adminPassword:
       name: govstack-xroad-ssc-postgres-admin-secret
       type: Opaque
