@@ -22,13 +22,19 @@ spec:
           ports: 
             - containerPort: {{ .containerPort }}
           env:
-            {{- range .env }}
-            - name: {{ .name }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .valueFrom.secretKeyRef.name }}
-                  key: {{ .valueFrom.secretKeyRef.key }}
-            {{- end }}
+            #{{- range .env }}
+            #- name: {{ .name }}
+            #  valueFrom:
+            #    secretKeyRef:
+            #      name: {{ .valueFrom.secretKeyRef.name }}
+            #      key: {{ .valueFrom.secretKeyRef.key }}
+            #{{- end }}
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: secret
             - name: PGDATA
               value: /var/lib/postgresql/data
           volumeMounts:
