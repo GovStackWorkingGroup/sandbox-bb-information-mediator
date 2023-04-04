@@ -11,7 +11,7 @@ postgresStorage:
   spec:
     storageClassName: manual
     capacity:
-      storage: 1Gi
+      storage: 5Gi
     accessMode: ReadWriteMany
     hostPath:
       path: "/data/postgresql"
@@ -37,16 +37,16 @@ postgresDeployment:
             volumeName: postgredb-ssm
             volumeClaimName: govstack-xroad-ssm-postgres-pv-claim
             env:
-              - name: POSTGRES_DB
-                valueFrom:
-                  secretKeyRef:
-                    name: govstack-xroad-ssm-postgres-admin-db-info-secret
-                    key: dbname 
-              - name: POSTGRES_USER
-                valueFrom:
-                  secretKeyRef:
-                    name: govstack-xroad-ssm-postgres-admin-db-info-secret
-                    key: username             
+              #- name: POSTGRES_DB
+              #  valueFrom:
+              #    secretKeyRef:
+              #      name: govstack-xroad-ssm-postgres-admin-db-info-secret
+              #      key: dbname 
+              #- name: POSTGRES_USER
+              #  valueFrom:
+              #    secretKeyRef:
+              #      name: govstack-xroad-ssm-postgres-admin-db-info-secret
+              #      key: username             
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:
@@ -66,9 +66,9 @@ postgresService:
       app: postgres-ssm
 secret:
   postgres:
-    adminDbInfo:
-      name: govstack-xroad-ssm-postgres-admin-db-info-secret
-      type: Opaque  
+    #adminDbInfo:
+    #  name: govstack-xroad-ssm-postgres-admin-db-info-secret
+    #  type: Opaque  
     adminPassword:
       name: govstack-xroad-ssm-postgres-admin-secret
       type: Opaque

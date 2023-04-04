@@ -28,9 +28,7 @@ spec:
                 secretKeyRef:
                   name: {{ .valueFrom.secretKeyRef.name }}
                   key: {{ .valueFrom.secretKeyRef.key }}
-            {{- end }}  
-           #- name: PGDATA
-           #  value: /var/lib/postgresql/data/pgdata 
+            {{- end }}   
           volumeMounts:
             - mountPath: {{ .volumeMountPath }}
               name: {{ .volumeMountName }}            

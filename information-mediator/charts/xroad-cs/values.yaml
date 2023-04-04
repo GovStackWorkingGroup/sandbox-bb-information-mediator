@@ -11,7 +11,7 @@ postgresStorage:
   spec:
     storageClassName: manual
     capacity:
-      storage: 1Gi
+      storage: 5Gi
     accessMode: ReadWriteMany
     hostPath:
       path: "/data/postgresql"
@@ -66,9 +66,9 @@ postgresService:
       app: postgres-cs
 secret:
   postgres:
-    adminDbInfo:
-      name: govstack-xroad-cs-postgres-admin-db-info-secret
-      type: Opaque
+    #adminDbInfo:
+    #  name: govstack-xroad-cs-postgres-admin-db-info-secret
+    #  type: Opaque
     adminPassword:
       name: govstack-xroad-cs-postgres-admin-secret
       type: Opaque
