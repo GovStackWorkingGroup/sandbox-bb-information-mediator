@@ -3,7 +3,7 @@ global:
   namespace: ${NAMESPACE}
   xroadCentralServerImageRepo: ${ECR_CS_REPO}
   xroadSecurityServerImageRepo: ${ECR_SS_REPO}
-  postgres: false
+  postgres: true
   secret: false
   deployment: true
   service: true
