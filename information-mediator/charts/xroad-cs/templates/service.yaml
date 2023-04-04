@@ -25,13 +25,14 @@ spec:
       name: tsa
     - port: 4000
       targetPort: 4000
-      protocol: TCP      
+      protocol: TCP 
+      name: name1     
     - port: 4001
       targetPort: 4001
       protocol: TCP
-      name: name1
+      name: name2
     - port: 4002
       targetPort: 4002
       protocol: TCP
-      name: name2
+      name: name3
 {{ end }}
