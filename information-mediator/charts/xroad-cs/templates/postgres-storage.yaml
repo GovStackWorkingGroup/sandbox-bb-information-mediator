@@ -6,6 +6,7 @@ metadata:
   namespace: {{ .Values.global.namespace }}
   labels:
     type: {{ .Values.postgresStorage.labels.type }}
+    app: {{ .Values.postgresStorage.labels.app }}
 spec:
   storageClassName: {{ .Values.postgresStorage.spec.storageClassName }}
   capacity:
@@ -20,6 +21,8 @@ apiVersion: v1
 metadata:
   name: {{ .Values.postgresStorage.claimName }}
   namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.postgresStorage.labels.app }}
 spec:
   storageClassName: {{ .Values.postgresStorage.spec.storageClassName }}
   accessModes:

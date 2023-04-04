@@ -7,13 +7,14 @@ postgresStorage:
   claimName: govstack-xroad-cs-postgres-pv-claim
   labels:
     type: local
+    app: postgres-cs
   spec:
     storageClassName: manual
     capacity:
-      storage: 2Gi
-    accessMode: ReadWriteOnce
+      storage: 1Gi
+    accessMode: ReadWriteMany
     hostPath:
-      path: "/mnt/data"
+      path: "/data/postgresql"
 postgresDeployment:
   name: govstack-xroad-cs-postgres
   spec:
@@ -29,7 +30,7 @@ postgresDeployment:
         containers:
           - name: govstack-xroad-cs-postgres
             image: postgres:12
-            imagePullPolicy: "Always"
+            imagePullPolicy: "IfNotPresent"
             containerPort: 5432
             volumeMountPath: /var/lib/postgresql/data
             volumeMountName: postgredb-cs
@@ -52,7 +53,7 @@ postgresDeployment:
                     name: govstack-xroad-cs-postgres-admin-secret
                     key: password 
         volumes:
-          - name: postgredb-cs
+          - name: postgredb
             claimName: govstack-xroad-cs-postgres-pv-claim           
 postgresService:
   name: govstack-xroad-cs-postgres
