@@ -17,12 +17,7 @@ spec:
       containers:
         - name: {{ .Values.deployment.containers.name }}
           image: {{ .Values.global.xroadCentralServerImageRepo }}:{{ .Values.deployment.containers.imageName }}
-          imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
-          #env:
-          #  {{- range .Values.deployment.containers.env }}
-          #  - name: {{ .name }}
-          #    value: {{ .value }}
-          #  {{- end }}                    
+          imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}                   
           envFrom:
             - configMapRef:
                 name: {{ .Values.deployment.containers.configMapName }}

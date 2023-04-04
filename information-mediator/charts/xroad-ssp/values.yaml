@@ -93,22 +93,4 @@ deployment:
     name: govstack-xroad-ssp
     imageName: xroad-ssp
     imagePullPolicy: "Always"
-    configMapName: govstack-xroad-ssp-config    
-    #env:
-    #  - name: "DB_HOST"
-    #    value: "${SSP_DB_HOST}"
-    #  - name: "DB_PORT"
-    #    value: "${SSP_DB_PORT}"
-    #  - name: "DB_ADMIN_USER"
-    #    value: "${SSP_DB_ADMIN_USER}"
-    #  - name: "DB_ADMIN_PASS"
-    #    value: "${SSP_DB_ADMIN_PASS}"                   
-    #  - name: "DB_SERVERCONF_ADMIN_PASS"
-    #    value: "${SSP_DB_SERVERCONF_ADMIN_PASS}"
-    #  - name: "DB_SERVERCONF_PASS"
-    #    value: "${SSP_DB_SERVERCONF_PASS}"
-    #  - name: "DB_NESSAGELOG_ADMIN_PASS"
-    #    value: "${SSP_DB_NESSAGELOG_ADMIN_PASS}"
-    #  - name: "DB_MESSAGELOG_PASS"
-    #    value: "${SSP_DB_MESSAGELOG_PASS}"                                                                
-
+    configMapName: govstack-xroad-ssp-config
