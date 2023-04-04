@@ -20,7 +20,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Values.postgresStorage.claimName }}
-  namespace: {{ .Values.postgresStorage.namespace }}  
+  namespace: {{ .Values.global.namespace }}  
   labels:
     app: {{ .Values.postgresStorage.labels.app }}
 spec:
