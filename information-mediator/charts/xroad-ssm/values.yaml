@@ -7,7 +7,6 @@ postgresStorage:
   claimName: govstack-xroad-ssm-postgres-pv-claim
   labels:
     type: local
-    app: postgres-ssm
   spec:
     storageClassName: manual
     capacity:
