@@ -30,7 +30,7 @@ spec:
                   key: {{ .valueFrom.secretKeyRef.key }}
             {{- end }}
             - name: PGDATA
-              value: /var/lib/postgresql/data
+              value: /var/lib/postgresql/data/pgdata
           volumeMounts:
             - mountPath: {{ .volumeMountPath }}
               name: {{ .volumeMountName }}            
