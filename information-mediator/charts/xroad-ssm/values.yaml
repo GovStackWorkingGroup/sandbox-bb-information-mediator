@@ -7,12 +7,12 @@ postgresStorage:
   claimName: govstack-xroad-ssm-postgres-pv-claim
   labels:
     type: local
-    app: postgres
+    app: postgres-ssm
   spec:
     storageClassName: manual
     capacity:
-      storage: 1Gi
-    accessMode: ReadWriteMany
+      storage: 2Gi
+    accessMode: ReadWriteOnce
     hostPath:
       path: "/mnt/data"
 postgresDeployment:
@@ -21,20 +21,20 @@ postgresDeployment:
     replicas: 1
     selector:
       matchLabels:
-        app: postgres
+        app: postgres-ssm
     template:
       metadata:
         labels:
-          app: postgres
+          app: postgres-ssm
       spec:
         containers:
           - name: govstack-xroad-ssm-postgres
             image: postgres:12
-            imagePullPolicy: "IfNotPresent"
+            imagePullPolicy: "Always"
             containerPort: 5432
             volumeMountPath: /var/lib/postgresql/data
-            volumeMountName: postgredb
-            volumeName: postgredb
+            volumeMountName: postgredb-ssm
+            volumeName: postgredb-ssm
             volumeClaimName: govstack-xroad-ssm-postgres-pv-claim
             env:
               - name: POSTGRES_DB
@@ -53,17 +53,17 @@ postgresDeployment:
                     name: govstack-xroad-ssm-postgres-admin-secret
                     key: password             
         volumes:
-          - name: postgredb
+          - name: postgredb-ssm
             claimName: govstack-xroad-ssm-postgres-pv-claim
 postgresService:
   name: govstack-xroad-ssm-postgres
   labels:
-    app: postgres
+    app: postgres-ssm
   spec:
     type: NodePort
     port: 5432
     selector:
-      app: postgres
+      app: postgres-ssm
 secret:
   postgres:
     adminDbInfo:
