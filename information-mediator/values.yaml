@@ -3,8 +3,8 @@ global:
   namespace: ${NAMESPACE}
   xroadCentralServerImageRepo: ${ECR_CS_REPO}
   xroadSecurityServerImageRepo: ${ECR_SS_REPO}
-  postgres: false
-  secret: false
+  postgres: true
+  secret: true
   deployment: true
   service: true
   CS_DB_HOST: ${CS_DB_HOST}
