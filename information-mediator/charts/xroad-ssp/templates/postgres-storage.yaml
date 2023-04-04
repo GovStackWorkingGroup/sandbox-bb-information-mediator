@@ -9,6 +9,7 @@ metadata:
     app: {{ .Values.postgresStorage.labels.app }}
 spec:
   storageClassName: {{ .Values.postgresStorage.spec.storageClassName }}
+  persistentVolumeReclaimPolicy: {{ .Values.postgresStorage.spec.persistentVolumeReclaimPolicy }}
   capacity:
     storage: {{ .Values.postgresStorage.spec.capacity.storage }}
   accessModes:

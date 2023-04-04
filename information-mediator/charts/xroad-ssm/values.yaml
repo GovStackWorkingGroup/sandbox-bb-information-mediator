@@ -10,6 +10,7 @@ postgresStorage:
     app: postgres-ssm
   spec:
     storageClassName: manual
+    persistentVolumeReclaimPolicy: Delete
     capacity:
       storage: 5Gi
     accessMode: ReadWriteMany
@@ -30,23 +31,13 @@ postgresDeployment:
         containers:
           - name: govstack-xroad-ssm-postgres
             image: postgres:12
-            imagePullPolicy: "IfNotPresent"
+            imagePullPolicy: "Always"
             containerPort: 5432
             volumeMountPath: /var/lib/postgresql/data
             volumeMountName: postgredb-ssm
             volumeName: postgredb-ssm
             volumeClaimName: govstack-xroad-ssm-postgres-pv-claim
             env:
-            #  - name: POSTGRES_DB
-            #    valueFrom:
-            #      secretKeyRef:
-            #        name: govstack-xroad-ssm-postgres-admin-db-info-secret
-            #        key: dbname
-            #  - name: POSTGRES_USER
-            #    valueFrom:
-            #      secretKeyRef:
-            #        name: govstack-xroad-ssm-postgres-admin-db-info-secret
-            #        key: username
               - name: POSTGRES_PASSWORD
                 valueFrom:
                   secretKeyRef:

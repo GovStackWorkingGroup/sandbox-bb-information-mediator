@@ -10,6 +10,7 @@ postgresStorage:
     app: postgres-cs
   spec:
     storageClassName: manual
+    persistentVolumeReclaimPolicy: Delete
     capacity:
       storage: 5Gi
     accessMode: ReadWriteMany
