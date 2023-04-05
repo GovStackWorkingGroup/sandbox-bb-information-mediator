@@ -55,8 +55,8 @@ global:
 xroad-cs:
   enabled: true
 xroad-ssm:
-  enabled: true
+  enabled: false
 xroad-ssc:
-  enabled: true
+  enabled: false
 xroad-ssp:
-  enabled: true
+  enabled: false
