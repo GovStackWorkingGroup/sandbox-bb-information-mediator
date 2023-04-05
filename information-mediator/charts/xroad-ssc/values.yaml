@@ -2,6 +2,10 @@ configMap:
   name: govstack-xroad-ssc-config
   labels:
     app: govstack-xroad-ssc-config
+postgresConfigMap:
+  name: govstack-xroad-ssc-postgres-config
+  labels:
+    app: govstack-xroad-ssc-postgres-config
 postgresStorage:
   volName: govstack-xroad-ssc-postgres-pv-volume
   claimName: govstack-xroad-ssc-postgres-pv-claim
@@ -37,6 +41,7 @@ postgresDeployment:
             volumeMountName: postgredb-ssc
             volumeName: postgredb-ssc
             volumeClaimName: govstack-xroad-ssc-postgres-pv-claim
+            configMapName: govstack-xroad-ssc-postgres-config
             env:
               - name: POSTGRES_DB
                 valueFrom:
@@ -67,9 +72,6 @@ postgresService:
       app: postgres-ssc
 secret:
   postgres:
-    adminDbInfo:
-      name: govstack-xroad-ssc-postgres-admin-db-info-secret
-      type: Opaque  
     adminPassword:
       name: govstack-xroad-ssc-postgres-admin-secret
       type: Opaque

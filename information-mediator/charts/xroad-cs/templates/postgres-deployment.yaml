@@ -21,14 +21,9 @@ spec:
           imagePullPolicy: {{ .imagePullPolicy }}
           ports: 
             - containerPort: {{ .containerPort }}
-          env:
-            {{- range .env }}
-            - name: {{ .name }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .valueFrom.secretKeyRef.name }}
-                  key: {{ .valueFrom.secretKeyRef.key }}
-            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ .configMapName }}
           volumeMounts:
             - mountPath: {{ .volumeMountPath }}
               name: {{ .volumeMountName }}            
