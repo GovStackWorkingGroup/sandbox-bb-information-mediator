@@ -4,6 +4,7 @@ global:
   xroadCentralServerImageRepo: ${ECR_CS_REPO}
   xroadSecurityServerImageRepo: ${ECR_SS_REPO}
   postgres: true
+  postgresSecret: true
   secret: false
   deployment: true
   service: true

@@ -39,7 +39,7 @@ jobs:
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
-          name: Install postgres for Information Mediator
+          name: Install postgres secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
             export CS_POSTGRES_DB="postgres"
@@ -55,7 +55,7 @@ jobs:
             export SSP_POSTGRES_USER="postgres"
             export SSP_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             
-            cp ./information-mediator/values-postgres.yaml val.yaml
+            cp ./information-mediator/values-postgres-secrets.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
@@ -70,6 +70,13 @@ jobs:
             sed -i 's/${SSP_POSTGRES_USER}/'"$SSP_POSTGRES_USER"'/g' val.yaml
             sed -i 's/${SSP_POSTGRES_PASSWORD}/'"$SSP_POSTGRES_PASSWORD"'/g' val.yaml
             
+            helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
+      - run:
+          name: Install postgres for Information Mediator
+          command: |
+            export NAMESPACE="${AWS_NAMESPACE}"
+            cp ./information-mediator/values-postgres.yaml val.yaml
+            sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install X-Road components for Information Mediator
