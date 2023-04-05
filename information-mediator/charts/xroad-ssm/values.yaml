@@ -41,6 +41,7 @@ postgresDeployment:
             volumeMountName: postgredb-ssm
             volumeName: postgredb-ssm
             volumeClaimName: govstack-xroad-ssm-postgres-pv-claim
+            configMapName: govstack-xroad-ssm-postgres-config
         volumes:
           - name: postgredb-ssm
             claimName: govstack-xroad-ssm-postgres-pv-claim

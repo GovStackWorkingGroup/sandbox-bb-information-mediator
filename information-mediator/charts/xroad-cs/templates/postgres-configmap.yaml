@@ -1,4 +1,4 @@
-{{ if .Values.global.postgresSecrets }}
+{{ if .Values.global.postgres }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
