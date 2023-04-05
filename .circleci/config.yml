@@ -53,8 +53,8 @@ jobs:
             export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
             export CS_DB_HOST=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export CS_DB_PORT=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)
-            export CS_DB_ADMIN_USER="postgres"
-            export CS_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export CS_DB_ADMIN_USER="admin"
+            export CS_DB_ADMIN_PASS="test123"
             export CS_DB_UI_PASS=$(kubectl get secret govstack-xroad-cs-postgres-centerui-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)              
             export SSC_DB_HOST=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export SSC_DB_PORT=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
