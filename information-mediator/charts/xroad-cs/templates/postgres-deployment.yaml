@@ -22,12 +22,12 @@ spec:
           ports: 
             - containerPort: {{ .containerPort }}
           env:
-            - name: POSTGRES_USER
-              value: postgres
+          #  - name: POSTGRES_USER
+          #    value: postgres
             - name: POSTGRES_PASSWORD
               value: secret
-            - name: PGDATA
-              value: /var/lib/postgresql/data/pgdata
+          #  - name: PGDATA
+          #    value: /var/lib/postgresql/data/pgdata
           #envFrom:
           #  - configMapRef:
           #      name: {{ .configMapName }}
