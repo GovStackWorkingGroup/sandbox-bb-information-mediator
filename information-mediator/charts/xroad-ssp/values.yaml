@@ -7,7 +7,7 @@ postgresStorage:
   claimName: govstack-xroad-ssp-postgres-pv-claim
   labels:
     type: local
-    app: postgres-ssp
+    app: postgredb-ssp
   spec:
     storageClassName: manual
     persistentVolumeReclaimPolicy: Delete
