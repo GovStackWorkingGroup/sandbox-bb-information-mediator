@@ -22,8 +22,10 @@ spec:
           ports: 
             - containerPort: {{ .containerPort }}
           env:
-          #  - name: POSTGRES_USER
-          #    value: postgres
+            - name: POSTGRES_DB
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
             - name: POSTGRES_PASSWORD
               value: secret
           #  - name: PGDATA
