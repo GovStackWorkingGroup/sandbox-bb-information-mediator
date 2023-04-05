@@ -58,17 +58,17 @@ jobs:
             export SECRETS_ENABLED="false"
             export DEPLOYMENT_ENABLED="false"
             export SERVICE_ENABLED="false"
-            export CS_POSTGRES_DB="postgres-cs"
-            export CS_POSTGRES_USER="postgres-cs"
+            export CS_POSTGRES_DB="postgres"
+            export CS_POSTGRES_USER="postgres"
             export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_POSTGRES_DB="postgres-ssc"
-            export SSC_POSTGRES_USER="postgres-ssc"
+            export SSC_POSTGRES_DB="postgres"
+            export SSC_POSTGRES_USER="postgres"
             export SSC_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_POSTGRES_DB="postgres-ssm"
-            export SSM_POSTGRES_USER="postgres-ssm"
+            export SSM_POSTGRES_DB="postgres"
+            export SSM_POSTGRES_USER="postgres"
             export SSM_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_POSTGRES_DB="postgres-ssp"
-            export SSP_POSTGRES_USER="postgres-ssp"
+            export SSP_POSTGRES_DB="postgres"
+            export SSP_POSTGRES_USER="postgres"
             export SSP_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             
             cp ./information-mediator/values.yaml val.yaml
@@ -101,17 +101,17 @@ jobs:
             export SECRETS_ENABLED="false"
             export DEPLOYMENT_ENABLED="false"
             export SERVICE_ENABLED="false"
-            export CS_POSTGRES_DB="postgres-cs"
-            export CS_POSTGRES_USER="postgres-cs"
+            export CS_POSTGRES_DB="postgres"
+            export CS_POSTGRES_USER="postgres"
             export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_POSTGRES_DB="postgres-ssc"
-            export SSC_POSTGRES_USER="postgres-ssc"
+            export SSC_POSTGRES_DB="postgres"
+            export SSC_POSTGRES_USER="postgres"
             export SSC_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_POSTGRES_DB="postgres-ssm"
-            export SSM_POSTGRES_USER="postgres-ssm"
+            export SSM_POSTGRES_DB="postgres"
+            export SSM_POSTGRES_USER="postgres"
             export SSM_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_POSTGRES_DB="postgres-ssp"
-            export SSP_POSTGRES_USER="postgres-ssp"
+            export SSP_POSTGRES_DB="postgres"
+            export SSP_POSTGRES_USER="postgres"
             export SSP_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             
             cp ./information-mediator/values.yaml val.yaml
@@ -144,17 +144,17 @@ jobs:
             export SECRETS_ENABLED="false"
             export DEPLOYMENT_ENABLED="true"
             export SERVICE_ENABLED="true"
-            export CS_POSTGRES_DB="postgres-cs"
-            export CS_POSTGRES_USER="postgres-cs"
+            export CS_POSTGRES_DB="postgres"
+            export CS_POSTGRES_USER="postgres"
             export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSC_POSTGRES_DB="postgres-ssc"
-            export SSC_POSTGRES_USER="postgres-ssc"
+            export SSC_POSTGRES_DB="postgres"
+            export SSC_POSTGRES_USER="postgres"
             export SSC_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSM_POSTGRES_DB="postgres-ssm"
-            export SSM_POSTGRES_USER="postgres-ssm"
+            export SSM_POSTGRES_DB="postgres"
+            export SSM_POSTGRES_USER="postgres"
             export SSM_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export SSP_POSTGRES_DB="postgres-ssp"
-            export SSP_POSTGRES_USER="postgres-ssp"
+            export SSP_POSTGRES_DB="postgres"
+            export SSP_POSTGRES_USER="postgres"
             export SSP_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export ECR_CS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
             export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
