@@ -21,9 +21,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ .Values.postgresStorage.claimName }}
-  namespace: {{ .Values.global.namespace }}  
-  labels:
-    app: {{ .Values.postgresStorage.labels.app }}
+  namespace: {{ .Values.global.namespace }}
 spec:
   storageClassName: {{ .Values.postgresStorage.spec.storageClassName }}
   accessModes:
@@ -31,4 +29,7 @@ spec:
   resources:
     requests:
       storage: {{ .Values.postgresStorage.spec.capacity.storage }}
+  selector:
+    matchLabels:
+      app: {{ .Values.postgresStorage.labels.app }}
 {{ end }}      
