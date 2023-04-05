@@ -34,7 +34,7 @@ postgresDeployment:
       spec:
         containers:
           - name: govstack-xroad-cs-postgres
-            image: postgres:12
+            image: postgres:latest
             imagePullPolicy: "Always"
             containerPort: 5432
             volumeMountPath: /var/lib/postgresql/data
