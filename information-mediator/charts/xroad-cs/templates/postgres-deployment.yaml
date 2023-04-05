@@ -28,8 +28,8 @@ spec:
               value: secret
             - name: POSTGRES_DB
               value: postgres
-            #- name: PGDATA
-            #  value: /var/lib/postgresql/data/pgdata
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           #envFrom:
           #  - configMapRef:
           #      name: {{ .configMapName }}
