@@ -35,13 +35,29 @@ jobs:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            cp ./information-mediator/values-secrets.yaml val.yaml
+            export POSTGRES_ENABLED="false"
+            export POSTGRES_SECRETS_ENABLED="false"
+            export SECRETS_ENABLED="true"
+            export DEPLOYMENT_ENABLED="false"
+            export SERVICE_ENABLED="false"
+            
+            cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
+            sed -i 's/${POSTGRES_SECRETS_ENABLED}/'"$POSTGRES_SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
+            sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
             helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install postgres secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            export POSTGRES_ENABLED="false"
+            export POSTGRES_SECRETS_ENABLED="true"
+            export SECRETS_ENABLED="true"
+            export DEPLOYMENT_ENABLED="false"
+            export SERVICE_ENABLED="false"
             export CS_POSTGRES_DB="postgres"
             export CS_POSTGRES_USER="postgres"
             export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
@@ -55,8 +71,13 @@ jobs:
             export SSP_POSTGRES_USER="postgres"
             export SSP_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             
-            cp ./information-mediator/values-postgres-secrets.yaml val.yaml
+            cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
+            sed -i 's/${POSTGRES_SECRETS_ENABLED}/'"$POSTGRES_SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
+            sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_PASSWORD}/'"$CS_POSTGRES_PASSWORD"'/g' val.yaml
@@ -75,13 +96,66 @@ jobs:
           name: Install postgres for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
-            cp ./information-mediator/values-postgres.yaml val.yaml
+            export POSTGRES_ENABLED="true"
+            export POSTGRES_SECRETS_ENABLED="true"
+            export SECRETS_ENABLED="true"
+            export DEPLOYMENT_ENABLED="false"
+            export SERVICE_ENABLED="false"
+            export CS_POSTGRES_DB="postgres"
+            export CS_POSTGRES_USER="postgres"
+            export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSC_POSTGRES_DB="postgres"
+            export SSC_POSTGRES_USER="postgres"
+            export SSC_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSM_POSTGRES_DB="postgres"
+            export SSM_POSTGRES_USER="postgres"
+            export SSM_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSP_POSTGRES_DB="postgres"
+            export SSP_POSTGRES_USER="postgres"
+            export SSP_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            
+            cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
+            sed -i 's/${POSTGRES_SECRETS_ENABLED}/'"$POSTGRES_SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
+            sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_PASSWORD}/'"$CS_POSTGRES_PASSWORD"'/g' val.yaml
+            sed -i 's/${SSC_POSTGRES_DB}/'"$SSC_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${SSC_POSTGRES_USER}/'"$SSC_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${SSC_POSTGRES_PASSWORD}/'"$SSC_POSTGRES_PASSWORD"'/g' val.yaml
+            sed -i 's/${SSM_POSTGRES_DB}/'"$SSM_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${SSM_POSTGRES_USER}/'"$SSM_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${SSM_POSTGRES_PASSWORD}/'"$SSM_POSTGRES_PASSWORD"'/g' val.yaml
+            sed -i 's/${SSP_POSTGRES_DB}/'"$SSP_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${SSP_POSTGRES_USER}/'"$SSP_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${SSP_POSTGRES_PASSWORD}/'"$SSP_POSTGRES_PASSWORD"'/g' val.yaml
+            
             helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install X-Road components for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            export POSTGRES_ENABLED="true"
+            export POSTGRES_SECRETS_ENABLED="true"
+            export SECRETS_ENABLED="true"
+            export DEPLOYMENT_ENABLED="true"
+            export SERVICE_ENABLED="true"
+            export CS_POSTGRES_DB="postgres"
+            export CS_POSTGRES_USER="postgres"
+            export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSC_POSTGRES_DB="postgres"
+            export SSC_POSTGRES_USER="postgres"
+            export SSC_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSM_POSTGRES_DB="postgres"
+            export SSM_POSTGRES_USER="postgres"
+            export SSM_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
+            export SSP_POSTGRES_DB="postgres"
+            export SSP_POSTGRES_USER="postgres"
+            export SSP_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export ECR_CS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
             export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
             export CS_DB_HOST=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
@@ -116,6 +190,23 @@ jobs:
  
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
+            sed -i 's/${POSTGRES_SECRETS_ENABLED}/'"$POSTGRES_SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
+            sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
+            sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_PASSWORD}/'"$CS_POSTGRES_PASSWORD"'/g' val.yaml
+            sed -i 's/${SSC_POSTGRES_DB}/'"$SSC_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${SSC_POSTGRES_USER}/'"$SSC_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${SSC_POSTGRES_PASSWORD}/'"$SSC_POSTGRES_PASSWORD"'/g' val.yaml
+            sed -i 's/${SSM_POSTGRES_DB}/'"$SSM_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${SSM_POSTGRES_USER}/'"$SSM_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${SSM_POSTGRES_PASSWORD}/'"$SSM_POSTGRES_PASSWORD"'/g' val.yaml
+            sed -i 's/${SSP_POSTGRES_DB}/'"$SSP_POSTGRES_DB"'/g' val.yaml
+            sed -i 's/${SSP_POSTGRES_USER}/'"$SSP_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${SSP_POSTGRES_PASSWORD}/'"$SSP_POSTGRES_PASSWORD"'/g' val.yaml
             sed -i 's/${ECR_CS_REPO}/'"$ECR_CS_REPO"'/g' val.yaml
             sed -i 's/${ECR_SS_REPO}/'"$ECR_SS_REPO"'/g' val.yaml
             sed -i 's/${CS_DB_HOST}/'"$CS_DB_HOST"'/g' val.yaml
