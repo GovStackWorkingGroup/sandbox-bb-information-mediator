@@ -60,7 +60,12 @@ jobs:
             export SERVICE_ENABLED="false"
             export CS_POSTGRES_DB="postgres"
             export CS_POSTGRES_USER="postgres"
-            export CS_POSTGRES_PASSWORD="secret"
+            
+            export PGUSER="postgres"
+            export PGPASS="secret"
+            export POSTGRES_PASS=$(echo -n "${PGPASS}${PGUSER}" | md5sum | sed 's/.$//')
+            
+            export CS_POSTGRES_PASSWORD=$POSTGRES_PASS
             #export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSC_POSTGRES_DB="postgres"
             export SSC_POSTGRES_USER="postgres"
@@ -104,7 +109,12 @@ jobs:
             export SERVICE_ENABLED="false"
             export CS_POSTGRES_DB="postgres"
             export CS_POSTGRES_USER="postgres"
-            export CS_POSTGRES_PASSWORD="secret"
+            
+            export PGUSER="postgres"
+            export PGPASS="secret"
+            export POSTGRES_PASS=$(echo -n "${PGPASS}${PGUSER}" | md5sum | sed 's/.$//')
+            
+            export CS_POSTGRES_PASSWORD="${POSTGRES_PASS}"
             #export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSC_POSTGRES_DB="postgres"
             export SSC_POSTGRES_USER="postgres"
@@ -149,7 +159,13 @@ jobs:
             export CS_POSTGRES_DB="postgres"
             export CS_POSTGRES_USER="postgres"
             export XROAD_TOKEN_PIN="1234"
-            export CS_POSTGRES_PASSWORD="secret"
+            
+            export PGUSER="postgres"
+            export PGPASS="secret"
+            export POSTGRES_PASS=$(echo -n "${PGPASS}${PGUSER}" | md5sum | sed 's/.$//')
+            
+            export CS_POSTGRES_PASSWORD="${POSTGRES_PASS}"
+            
             #export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSC_POSTGRES_DB="postgres"
             export SSC_POSTGRES_USER="postgres"
@@ -167,7 +183,7 @@ jobs:
             export CS_DB_ADMIN_USER="postgres"
             #export CS_DB_ADMIN_USER=$(kubectl get configmaps govstack-xroad-cs-postgres-config -o jsonpath='{.data.POSTGRES_USER}' --namespace $NAMESPACE)
             #export CS_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-            export CS_DB_ADMIN_PASS="secret"
+            export CS_DB_ADMIN_PASS="${POSTGRES_PASS}"
             export CS_DB_UI_PASS=$(kubectl get secret govstack-xroad-cs-postgres-centerui-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)              
             export SSC_DB_HOST=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
             export SSC_DB_PORT=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
