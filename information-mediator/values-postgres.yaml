@@ -2,8 +2,8 @@
 global:
   namespace: ${NAMESPACE}
   postgres: true
-  postgresSecret: false
-  secret: false
+  postgresSecret: true
+  secret: true
   deployment: false
   service: false
 
