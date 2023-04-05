@@ -27,7 +27,7 @@ postgresDeployment:
     selector:
       matchLabels:
         app: postgres-ssc
-    template:
+    temp:
       metadata:
         labels:
           app: postgres-ssc

@@ -27,7 +27,7 @@ postgresDeployment:
     selector:
       matchLabels:
         app: postgres-cs
-    template:
+    temp:
       metadata:
         labels:
           app: postgres-cs
