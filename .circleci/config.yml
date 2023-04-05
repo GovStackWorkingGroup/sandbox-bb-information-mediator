@@ -146,6 +146,7 @@ jobs:
             export SERVICE_ENABLED="true"
             export CS_POSTGRES_DB="postgres"
             export CS_POSTGRES_USER="postgres"
+            export XROAD_TOKEN_PIN="1234"
             export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSC_POSTGRES_DB="postgres"
             export SSC_POSTGRES_USER="postgres"
@@ -195,6 +196,7 @@ jobs:
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
             sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
             sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_PASSWORD}/'"$CS_POSTGRES_PASSWORD"'/g' val.yaml
