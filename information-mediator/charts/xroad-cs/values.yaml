@@ -17,7 +17,7 @@ postgresStorage:
     persistentVolumeReclaimPolicy: Delete
     capacity:
       storage: 5Gi
-    accessMode: ReadWriteMany
+    accessMode: ReadWriteOnce
     hostPath:
       path: "/data/postgresql"
 postgresDeployment:
