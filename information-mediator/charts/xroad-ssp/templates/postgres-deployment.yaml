@@ -21,12 +21,15 @@ spec:
           imagePullPolicy: {{ .imagePullPolicy }}
           ports: 
             - containerPort: {{ .containerPort }}
-          envFrom:
-            - configMapRef:
-                name: {{ .configMapName }}
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .passwordSecretName }}
+                  key: password
           volumeMounts:
             - mountPath: {{ .volumeMountPath }}
-              name: {{ .volumeMountName }}            
+              name: {{ .volumeMountName }}
         {{- end }}  
       volumes:
         {{- range .Values.postgresDeployment.spec.temp.spec.volumes }}

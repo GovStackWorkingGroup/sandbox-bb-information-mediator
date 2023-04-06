@@ -18,9 +18,19 @@ spec:
         - name: {{ .Values.deployment.containers.name }}
           image: {{ .Values.global.xroadCentralServerImageRepo }}:{{ .Values.deployment.containers.imageName }}
           imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: {{ .Values.deployment.containers.configMapName }}
+          env:
+            - name: XROAD_TOKEN_PIN
+              value: {{ .Values.global.XROAD_TOKEN_PIN }}
+            - name: DB_HOST
+              value: {{ .Values.global.CS_DB_HOST }}
+            - name: DB_PORT
+              value: {{ .Values.global.CS_DB_PORT }}
+            - name: DB_ADMIN_USER
+              value: {{ .Values.global.CS_DB_ADMIN_USER }}
+            - name: DB_ADMIN_PASS
+              value: {{ .Values.global.CS_DB_ADMIN_PASS }}
+            - name: DB_UI_PASS
+              value: {{ .Values.global.CS_DB_UI_PASS }}
           ports:
             - containerPort: 8080
             - containerPort: 8443

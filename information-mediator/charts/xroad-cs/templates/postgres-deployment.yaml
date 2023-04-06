@@ -27,9 +27,6 @@ spec:
                 secretKeyRef:
                   name: {{ .passwordSecretName }}
                   key: password
-          #envFrom:
-          #  - configMapRef:
-          #      name: {{ .configMapName }}
           volumeMounts:
             - mountPath: {{ .volumeMountPath }}
               name: {{ .volumeMountName }}

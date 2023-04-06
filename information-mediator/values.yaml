@@ -1,27 +1,12 @@
-### Global Values if any ###
 global:
   namespace: ${NAMESPACE}
   xroadCentralServerImageRepo: ${ECR_CS_REPO}
   xroadSecurityServerImageRepo: ${ECR_SS_REPO}
   postgres: ${POSTGRES_ENABLED}
-  postgresSecret: ${POSTGRES_SECRETS_ENABLED}
   secret: ${SECRETS_ENABLED}
   deployment: ${DEPLOYMENT_ENABLED}
   service: ${SERVICE_ENABLED}
   XROAD_TOKEN_PIN: ${XROAD_TOKEN_PIN}
-  CS_POSTGRES_DB: ${CS_POSTGRES_DB}
-  CS_POSTGRES_USER: ${CS_POSTGRES_USER}
-  CS_POSTGRES_PASSWORD: ${CS_POSTGRES_PASSWORD}
-  CS_POSTGRES_PGDATA: ${CS_POSTGRES_PGDATA}
-  SSC_POSTGRES_DB: ${SSC_POSTGRES_DB}
-  SSC_POSTGRES_USER: ${SSC_POSTGRES_USER}
-  SSC_POSTGRES_PASSWORD: ${SSC_POSTGRES_PASSWORD}
-  SSM_POSTGRES_DB: ${SSM_POSTGRES_DB}
-  SSM_POSTGRES_USER: ${SSM_POSTGRES_USER}
-  SSM_POSTGRES_PASSWORD: ${SSM_POSTGRES_PASSWORD}
-  SSP_POSTGRES_DB: ${SSP_POSTGRES_DB}
-  SSP_POSTGRES_USER: ${SSP_POSTGRES_USER}
-  SSP_POSTGRES_PASSWORD: ${SSP_POSTGRES_PASSWORD}
   CS_DB_HOST: ${CS_DB_HOST}
   CS_DB_PORT: ${CS_DB_PORT}
   CS_DB_ADMIN_USER: ${CS_DB_ADMIN_USER}
@@ -52,12 +37,11 @@ global:
   SSP_DB_SERVERCONF_PASS: ${SSP_DB_SERVERCONF_PASS}
   SSP_DB_MESSAGELOG_PASS: ${SSP_DB_MESSAGELOG_PASS}
 
-### Sub Charts Specific Values ###
 xroad-cs:
   enabled: true
 xroad-ssm:
-  enabled: false
+  enabled: true
 xroad-ssc:
-  enabled: false
+  enabled: true
 xroad-ssp:
-  enabled: false
+  enabled: true

@@ -1,11 +1,3 @@
-configMap:
-  name: govstack-xroad-cs-config
-  labels:
-    app: govstack-xroad-cs-config
-postgresConfigMap:
-  name: govstack-xroad-cs-postgres-config
-  labels:
-    app: govstack-xroad-cs-postgres-config
 postgresStorage:
   volName: govstack-xroad-cs-postgres-pv-volume
   claimName: govstack-xroad-cs-postgres-pv-claim
@@ -42,7 +34,6 @@ postgresDeployment:
             volumeName: postgredb-cs
             passwordSecretName: govstack-xroad-cs-postgres-admin-secret
             volumeClaimName: govstack-xroad-cs-postgres-pv-claim
-            configMapName: govstack-xroad-cs-postgres-config
         volumes:
           - name: postgredb-cs
             claimName: govstack-xroad-cs-postgres-pv-claim           
@@ -72,5 +63,4 @@ deployment:
     name: govstack-xroad-cs
     imageName: xroad-cs
     imagePullPolicy: "Always"
-    configMapName: govstack-xroad-cs-config
 
