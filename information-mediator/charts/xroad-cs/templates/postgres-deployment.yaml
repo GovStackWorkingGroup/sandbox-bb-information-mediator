@@ -10,6 +10,9 @@ spec:
     matchLabels:
       app: {{ .Values.postgresDeployment.spec.selector.matchLabels.app }}
   serviceName: {{ .Values.service.name }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Delete
+    whenScaled: Delete
   template:
     metadata:
       labels:
