@@ -1,6 +1,6 @@
 {{ if .Values.global.postgres }}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ .Values.postgresDeployment.name }}
   namespace: {{ .Values.global.namespace }}
@@ -9,10 +9,6 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.postgresDeployment.spec.selector.matchLabels.app }}
-  serviceName: {{ .Values.service.name }}
-  persistentVolumeClaimRetentionPolicy:
-    whenDeleted: Delete
-    whenScaled: Delete
   template:
     metadata:
       labels:
