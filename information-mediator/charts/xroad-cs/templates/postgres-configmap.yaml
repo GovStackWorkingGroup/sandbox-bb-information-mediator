@@ -7,8 +7,8 @@ metadata:
   labels:
     app: {{ .Values.postgresConfigMap.labels.app }}
 data:
-  POSTGRES_DB: postgres
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: qwerty123
-  PGDATA: /var/lib/postgresql/data/pgdata
+  POSTGRES_DB: {{ .Values.global.CS_POSTGRES_DB | quote }}
+  POSTGRES_USER: {{ .Values.global.CS_POSTGRES_USER | quote }}
+  POSTGRES_PASSWORD: {{ .Values.global.CS_POSTGRES_PASSWORD | quote }}
+  PGDATA: {{ .Values.global.CS_POSTGRES_PGDATA | quote }}
 {{ end }}  
