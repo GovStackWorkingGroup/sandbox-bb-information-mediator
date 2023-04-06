@@ -21,9 +21,12 @@ spec:
           imagePullPolicy: {{ .imagePullPolicy }}
           ports: 
             - containerPort: {{ .containerPort }}
-          envFrom:
-            - configMapRef:
-                name: {{ .configMapName }}
+          env:
+            - name: POSTGRES_PASSWORD
+              value: terebert
+          #envFrom:
+          #  - configMapRef:
+          #      name: {{ .configMapName }}
           volumeMounts:
             - mountPath: {{ .volumeMountPath }}
               name: {{ .volumeMountName }}            
