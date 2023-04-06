@@ -1,11 +1,14 @@
 {{ if .Values.global.postgres }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Values.postgresDeployment.name }}
   namespace: {{ .Values.global.namespace }}
+  labels:
+    app: {{ .Values.postgresDeployment.spec.temp.metadata.labels.app }}
 spec:
   replicas: {{ .Values.postgresDeployment.spec.replicas }}
+  serviceName: {{ .Values.service.name }}
   selector:
     matchLabels:
       app: {{ .Values.postgresDeployment.spec.selector.matchLabels.app }}
@@ -23,18 +26,24 @@ spec:
             - containerPort: {{ .containerPort }}
           env:
             - name: POSTGRES_PASSWORD
-              value: terebert
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .passwordSecretName }}
+                  key: password
           #envFrom:
           #  - configMapRef:
           #      name: {{ .configMapName }}
           volumeMounts:
-            - mountPath: {{ .volumeMountPath }}
-              name: {{ .volumeMountName }}            
+            - name: {{ .volumeMountName }}
+              mountPath: {{ .volumeMountPath }}
         {{- end }}  
-      volumes:
-        {{- range .Values.postgresDeployment.spec.temp.spec.volumes }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .claimName }}
-        {{- end }}    
+  volumeClaimTemplates:
+      - metadata:
+          name: {{ .Values.postgresStorage.claimName }}
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 5Gi
 {{ end }}            

@@ -40,6 +40,7 @@ postgresDeployment:
             volumeMountPath: /var/lib/postgresql/data
             volumeMountName: postgredb-cs
             volumeName: postgredb-cs
+            passwordSecretName: govstack-xroad-cs-postgres-admin-secret
             volumeClaimName: govstack-xroad-cs-postgres-pv-claim
             configMapName: govstack-xroad-cs-postgres-config
         volumes:
