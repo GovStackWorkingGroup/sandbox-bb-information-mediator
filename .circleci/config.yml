@@ -60,6 +60,7 @@ jobs:
             export SERVICE_ENABLED="false"
             export CS_POSTGRES_DB="postgres"
             export CS_POSTGRES_USER="postgres"
+            export CS_POSTGRES_PGDATA="/var/lib/postgresql/data/pgdata"
             export CS_POSTGRES_PASSWORD="qwerty123"
             #export CS_POSTGRES_PASSWORD=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSC_POSTGRES_DB="postgres"
@@ -81,6 +82,7 @@ jobs:
             sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_PGDATA}/'"$CS_POSTGRES_PGDATA"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_PASSWORD}/'"$CS_POSTGRES_PASSWORD"'/g' val.yaml
             sed -i 's/${SSC_POSTGRES_DB}/'"$SSC_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${SSC_POSTGRES_USER}/'"$SSC_POSTGRES_USER"'/g' val.yaml
@@ -128,6 +130,7 @@ jobs:
             sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_PGDATA}/'"$CS_POSTGRES_PGDATA"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_PASSWORD}/'"$CS_POSTGRES_PASSWORD"'/g' val.yaml
             sed -i 's/${SSC_POSTGRES_DB}/'"$SSC_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${SSC_POSTGRES_USER}/'"$SSC_POSTGRES_USER"'/g' val.yaml
@@ -213,6 +216,7 @@ jobs:
             sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_DB}/'"$CS_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_USER}/'"$CS_POSTGRES_USER"'/g' val.yaml
+            sed -i 's/${CS_POSTGRES_PGDATA}/'"$CS_POSTGRES_PGDATA"'/g' val.yaml
             sed -i 's/${CS_POSTGRES_PASSWORD}/'"$CS_POSTGRES_PASSWORD"'/g' val.yaml
             sed -i 's/${SSC_POSTGRES_DB}/'"$SSC_POSTGRES_DB"'/g' val.yaml
             sed -i 's/${SSC_POSTGRES_USER}/'"$SSC_POSTGRES_USER"'/g' val.yaml
