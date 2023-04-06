@@ -37,7 +37,7 @@ jobs:
             export NAMESPACE="${AWS_NAMESPACE}"
             export POSTGRES_ENABLED="false"
             export POSTGRES_SECRETS_ENABLED="false"
-            export SECRETS_ENABLED="true"
+            export SECRETS_ENABLED="false"
             export DEPLOYMENT_ENABLED="false"
             export SERVICE_ENABLED="false"
             
