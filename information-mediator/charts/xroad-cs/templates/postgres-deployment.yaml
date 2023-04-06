@@ -1,6 +1,6 @@
 {{ if .Values.global.postgres }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Values.postgresDeployment.name }}
   namespace: {{ .Values.global.namespace }}
