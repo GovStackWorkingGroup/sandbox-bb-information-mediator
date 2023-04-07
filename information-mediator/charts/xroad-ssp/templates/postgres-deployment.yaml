@@ -21,6 +21,8 @@ spec:
           ports: 
             - containerPort: {{ .Values.postgresDeployment.spec.temp.spec.containers.containerPort }}
           env:
+            - name: POSTGRES_USER
+              value: {{ .Values.global.POSTGRES_USER }}
             - name: PGDATA
               value: {{ .Values.global.PGDATA }}
             - name: POSTGRES_PASSWORD
