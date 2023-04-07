@@ -15,24 +15,22 @@ spec:
         app: {{ .Values.postgresDeployment.spec.temp.metadata.labels.app }}
     spec:
       containers:
-        {{- range .Values.postgresDeployment.spec.temp.spec.containers }}
-        - name: {{ .name }}
-          image: {{ .image }}
-          imagePullPolicy: {{ .imagePullPolicy }}
+        - name: {{ .Values.postgresDeployment.spec.temp.spec.containers.name }}
+          image: {{ .Values.postgresDeployment.spec.temp.spec.containers.image }}
+          imagePullPolicy: {{ .Values.postgresDeployment.spec.temp.spec.containers.imagePullPolicy }}
           ports: 
-            - containerPort: {{ .containerPort }}
+            - containerPort: {{ .Values.postgresDeployment.spec.temp.spec.containers.containerPort }}
           env:
             - name: PGDATA
               value: {{ .Values.global.PGDATA }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .passwordSecretName }}
+                  name: {{ .Values.postgresDeployment.spec.temp.spec.containers.passwordSecretName }}
                   key: password
           volumeMounts:
             - mountPath: {{ .Values.global.PGDATA }}
-              name: {{ .volumeMountName }}
-        {{- end }}  
+              name: {{ .Values.postgresDeployment.spec.temp.spec.containers.volumeMountName }}
       volumes:
         {{- range .Values.postgresDeployment.spec.temp.spec.volumes }}
         - name: {{ .name }}

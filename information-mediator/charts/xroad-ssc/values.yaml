@@ -25,7 +25,7 @@ postgresDeployment:
           app: postgres-ssc
       spec:
         containers:
-          - name: govstack-xroad-ssc-postgres
+            name: govstack-xroad-ssc-postgres
             image: postgres:12
             imagePullPolicy: "Always"
             containerPort: 5432
