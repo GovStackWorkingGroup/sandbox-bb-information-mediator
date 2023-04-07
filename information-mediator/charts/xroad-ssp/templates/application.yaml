@@ -1,23 +1,23 @@
-{{ if .Values.global.deployment }}
+{{ if .Values.global.application }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.deployment.name }}
+  name: {{ .Values.application.deployment.name }}
   namespace: {{ .Values.global.namespace }}
 spec:
   selector:
     matchLabels:
-      run: {{ .Values.deployment.name }}
+      run: {{ .Values.application.deployment.name }}
   replicas: 1
   template:
     metadata:
       labels:
-        run: {{ .Values.deployment.name }}
+        run: {{ .Values.application.deployment.name }}
     spec:
       containers:
-        - name: {{ .Values.deployment.containers.name }}
-          image: {{ .Values.global.xroadSecurityServerImageRepo }}:{{ .Values.deployment.containers.imageName }}
-          imagePullPolicy: {{ .Values.deployment.containers.imagePullPolicy }}
+        - name: {{ .Values.application.deployment.containers.name }}
+          image: {{ .Values.global.xroadSecurityServerImageRepo }}:{{ .Values.application.deployment.containers.imageName }}
+          imagePullPolicy: {{ .Values.application.deployment.containers.imagePullPolicy }}
           env:
             - name: XROAD_TOKEN_PIN
               value: {{ .Values.global.XROAD_TOKEN_PIN | quote }}
@@ -40,4 +40,25 @@ spec:
           ports:
             - containerPort: 4000
             - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.application.service.name }}
+  labels:
+    run: {{ .Values.application.service.name }}
+  namespace: {{ .Values.global.namespace }}
+spec:
+  type: {{ .Values.application.service.type }}
+  selector:
+    run: {{ .Values.application.service.name }}
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      name: config
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
 {{ end }}

@@ -4,8 +4,7 @@ global:
   xroadSecurityServerImageRepo: ${ECR_SS_REPO}
   postgres: ${POSTGRES_ENABLED}
   secret: ${SECRETS_ENABLED}
-  deployment: ${DEPLOYMENT_ENABLED}
-  service: ${SERVICE_ENABLED}
+  application: ${APPLICATION_ENABLED}
   XROAD_TOKEN_PIN: ${XROAD_TOKEN_PIN}
   PGDATA: ${PGDATA}
   POSTGRES_USER: ${POSTGRES_USER}

@@ -1,50 +1,51 @@
-postgresStorage:
-  volName: govstack-xroad-ssp-postgres-pv-volume
-  claimName: govstack-xroad-ssp-postgres-pv-claim
-  labels:
-    type: local
-    app: postgredb-ssp
-  spec:
-    storageClassName: manual
-    persistentVolumeReclaimPolicy: Delete
-    capacity:
-      storage: 5Gi
-    accessMode: "ReadWriteOnce"
-    hostPath:
-      path: "/data/postgresql"
-postgresDeployment:
-  name: govstack-xroad-ssp-postgres
-  spec:
-    replicas: 1
-    selector:
-      matchLabels:
-        app: postgres-ssp
-    temp:
-      metadata:
-        labels:
-          app: postgres-ssp
-      spec:
-        containers:
-            name: govstack-xroad-ssp-postgres
-            image: postgres:12
-            imagePullPolicy: "Always"
-            containerPort: 5432
-            volumeMountName: postgredb-ssp
-            volumeName: postgredb-ssp
-            passwordSecretName: govstack-xroad-ssp-postgres-admin-secret
-            volumeClaimName: govstack-xroad-ssp-postgres-pv-claim
-        volumes:
-          - name: postgredb-ssp
-            claimName: govstack-xroad-ssp-postgres-pv-claim
-postgresService:
-  name: govstack-xroad-ssp-postgres
-  labels:
-    app: postgres-ssp
-  spec:
-    type: NodePort
-    port: 5432
-    selector:
+postgres:
+  storage:
+    volName: govstack-xroad-ssp-postgres-pv-volume
+    claimName: govstack-xroad-ssp-postgres-pv-claim
+    labels:
+      type: local
       app: postgres-ssp
+    spec:
+      storageClassName: manual
+      persistentVolumeReclaimPolicy: Delete
+      capacity:
+        storage: 5Gi
+      accessMode: ReadWriteOnce
+      hostPath:
+        path: "/mnt/data"
+  deployment:
+    name: govstack-xroad-ssp-postgres
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: postgres-ssp
+      temp:
+        metadata:
+          labels:
+            app: postgres-ssp
+        spec:
+          containers:
+              name: govstack-xroad-ssp-postgres
+              image: postgres:12
+              imagePullPolicy: "Always"
+              containerPort: 5432
+              volumeMountName: postgredb-ssp
+              volumeName: postgredb-ssp
+              passwordSecretName: govstack-xroad-ssp-postgres-admin-secret
+              volumeClaimName: govstack-xroad-ssp-postgres-pv-claim
+          volumes:
+            - name: postgredb-ssp
+              claimName: govstack-xroad-ssp-postgres-pv-claim
+  service:
+    name: govstack-xroad-ssp-postgres
+    labels:
+      app: postgres-ssp
+    spec:
+      type: NodePort
+      port: 5432
+      selector:
+        app: postgres-ssp
 secret:
   postgres:
     adminPassword:
@@ -62,12 +63,13 @@ secret:
     messageLogPassword:
       name: govstack-xroad-ssp-postgres-messagelog-secret
       type: Opaque  
-service:
-  name: govstack-xroad-ssp
-  type: ClusterIP
-deployment:
-  name: govstack-xroad-ssp
-  containers:
+application:
+  service:
     name: govstack-xroad-ssp
-    imageName: xroad-ssp
-    imagePullPolicy: "Always"
+    type: ClusterIP
+  deployment:
+    name: govstack-xroad-ssp
+    containers:
+      name: govstack-xroad-ssp
+      imageName: xroad-ssp
+      imagePullPolicy: "Always"

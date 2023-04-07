@@ -41,9 +41,7 @@ jobs:
             export XROAD_SSP_ENABLED="${XROAD_SSP_ENABLED}"
             export SECRETS_ENABLED="${GENERATE_NEW_SECRETS}"
             export POSTGRES_ENABLED="false"
-            export DEPLOYMENT_ENABLED="false"
-            export SERVICE_ENABLED="false"
-            
+            export APPLICATION_ENABLED="false"
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
@@ -52,8 +50,7 @@ jobs:
             sed -i 's/${XROAD_SSP_ENABLED}/'"$XROAD_SSP_ENABLED"'/g' val.yaml
             sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
-            sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
-            sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
+            sed -i 's/${APPLICATION_ENABLED}/'"$APPLICATION_ENABLED"'/g' val.yaml
             helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install postgres for Information Mediator
@@ -69,9 +66,7 @@ jobs:
             export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="true"
             export SECRETS_ENABLED="false"
-            export DEPLOYMENT_ENABLED="false"
-            export SERVICE_ENABLED="false"
-          
+            export APPLICATION_ENABLED="false"
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
@@ -83,8 +78,7 @@ jobs:
             sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
-            sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
-            sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
+            sed -i 's/${APPLICATION_ENABLED}/'"$APPLICATION_ENABLED"'/g' val.yaml
                         
             helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
       - run:
@@ -101,8 +95,7 @@ jobs:
             export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="true"
             export SECRETS_ENABLED="false"
-            export DEPLOYMENT_ENABLED="true"
-            export SERVICE_ENABLED="true"
+            export APPLICATION_ENABLED="false"
             export ECR_CS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
             export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
             export CS_DB_HOST=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
@@ -134,7 +127,6 @@ jobs:
             export SSP_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSP_DB_SERVERCONF_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-serverconf-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
             export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-messagelog-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)        
- 
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
             sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
@@ -146,8 +138,7 @@ jobs:
             sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
-            sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
-            sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
+            sed -i 's/${APPLICATION_ENABLED}/'"$APPLICATION_ENABLED"'/g' val.yaml
             sed -i 's/${ECR_CS_REPO}/'"$ECR_CS_REPO"'/g' val.yaml
             sed -i 's/${ECR_SS_REPO}/'"$ECR_SS_REPO"'/g' val.yaml
             sed -i 's/${CS_DB_HOST}/'"$CS_DB_HOST"'/g' val.yaml
