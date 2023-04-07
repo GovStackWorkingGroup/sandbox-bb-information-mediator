@@ -40,7 +40,8 @@ jobs:
             export XROAD_SSM_ENABLED="${XROAD_SSM_ENABLED}"
             export XROAD_SSP_ENABLED="${XROAD_SSP_ENABLED}"
             export SECRETS_ENABLED="${GENERATE_NEW_SECRETS}"
-            export PGDATA="${PGDATA}"
+            export PGDATA_FOLDER="${PGDATA}"
+            export PGDATA=$(echo ${PGDATA_FOLDER//\//\\/})
             export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="false"
             export DEPLOYMENT_ENABLED="false"
@@ -67,7 +68,8 @@ jobs:
             export XROAD_SSC_ENABLED="${XROAD_SSC_ENABLED}"
             export XROAD_SSM_ENABLED="${XROAD_SSM_ENABLED}"
             export XROAD_SSP_ENABLED="${XROAD_SSP_ENABLED}"
-            export PGDATA="${PGDATA}"
+            export PGDATA_FOLDER="${PGDATA}"
+            export PGDATA=$(echo ${PGDATA_FOLDER//\//\\/})
             export POSTGRES_USER="${POSTGRES_USER}"
             export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="true"
@@ -97,7 +99,8 @@ jobs:
             export XROAD_SSC_ENABLED="${XROAD_SSC_ENABLED}"
             export XROAD_SSM_ENABLED="${XROAD_SSM_ENABLED}"
             export XROAD_SSP_ENABLED="${XROAD_SSP_ENABLED}"
-            export PGDATA="${PGDATA}"
+            export PGDATA_FOLDER="${PGDATA}"
+            export PGDATA=$(echo ${PGDATA_FOLDER//\//\\/})
             export ADMIN_USER="${POSTGRES_USER}"
             export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="true"
