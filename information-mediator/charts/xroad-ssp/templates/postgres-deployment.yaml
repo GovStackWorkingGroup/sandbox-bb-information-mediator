@@ -1,11 +1,12 @@
 {{ if .Values.global.postgres }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Values.postgresDeployment.name }}
   namespace: {{ .Values.global.namespace }}  
 spec:
   replicas: {{ .Values.postgresDeployment.spec.replicas }}
+  serviceName: {{ .Values.postgresService.name }}
   selector:
     matchLabels:
       app: {{ .Values.postgresDeployment.spec.selector.matchLabels.app }}
@@ -33,10 +34,20 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.global.PGDATA }}
               name: {{ .Values.postgresDeployment.spec.temp.spec.containers.volumeMountName }}
-      volumes:
-        {{- range .Values.postgresDeployment.spec.temp.spec.volumes }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .claimName }}
-        {{- end }}    
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Values.postgresStorage.claimName }}
+        namespace: {{ .Values.global.namespace }}
+      spec:
+        accessModes: [ {{ .Values.postgresStorage.spec.accessMode }} ]
+        resources:
+          requests:
+            storage: {{ .Values.postgresStorage.spec.capacity.storage }}
+
+{{/*      volumes:*/}}
+{{/*        {{- range .Values.postgresDeployment.spec.temp.spec.volumes }}*/}}
+{{/*        - name: {{ .name }}*/}}
+{{/*          persistentVolumeClaim:*/}}
+{{/*            claimName: {{ .claimName }}*/}}
+{{/*        {{- end }}    */}}
 {{ end }}            

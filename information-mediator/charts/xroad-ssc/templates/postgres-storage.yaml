@@ -1,4 +1,4 @@
-{{ if .Values.global.postgres }}
+{{/*{{ if .Values.global.postgres }}
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -32,4 +32,4 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.postgresStorage.labels.app }}
-{{ end }}      
+{{ end }}  */}}
