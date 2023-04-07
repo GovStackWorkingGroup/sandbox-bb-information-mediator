@@ -21,14 +21,10 @@ spec:
           ports:
             - containerPort: {{ .Values.postgres.deployment.spec.temp.spec.containers.containerPort }}
           env:
-{{/*            - name: POSTGRES_USER*/}}
-{{/*              value: {{ .Values.global.POSTGRES_USER }}*/}}
-{{/*            - name: PGDATA*/}}
-{{/*              value: {{ .Values.global.PGDATA }}*/}}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.postgres.postgresDeployment.spec.temp.spec.containers.passwordSecretName }}
+                  name: {{ .Values.postgres.deployment.spec.temp.spec.containers.passwordSecretName }}
                   key: password
           volumeMounts:
             - mountPath: {{ .Values.global.PGDATA }}
