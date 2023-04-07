@@ -7,9 +7,10 @@ metadata:
   labels:
     app: {{ .Values.postgresService.labels.app }}
 spec:
-  type: {{ .Values.postgresService.spec.type }}
+{{/*  type: {{ .Values.postgresService.spec.type }}*/}}
   ports:
    - port: {{ .Values.postgresService.spec.port }}
   selector:
-   app: {{ .Values.postgresService.spec.selector.app }}
+    app: {{ .Values.postgresService.spec.selector.app }}
+  clusterIP: None
 {{ end }}   
