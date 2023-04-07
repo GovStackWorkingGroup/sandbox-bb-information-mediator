@@ -35,13 +35,25 @@ jobs:
           name: Install secrets for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            export XROAD_CS_ENABLED="${XROAD_CS_ENABLED}"
+            export XROAD_SSC_ENABLED="${XROAD_SSC_ENABLED}"
+            export XROAD_SSM_ENABLED="${XROAD_SSM_ENABLED}"
+            export XROAD_SSP_ENABLED="${XROAD_SSP_ENABLED}"
+            export SECRETS_ENABLED="${GENERATE_NEW_SECRETS}"
+            export PGDATA="${PGDATA}"
+            export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="false"
-            export SECRETS_ENABLED="${AWS_GENERATE_NEW_SECRETS}"
             export DEPLOYMENT_ENABLED="false"
             export SERVICE_ENABLED="false"
             
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSC_ENABLED}/'"$XROAD_SSC_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSM_ENABLED}/'"$XROAD_SSM_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSP_ENABLED}/'"$XROAD_SSP_ENABLED"'/g' val.yaml
+            sed -i 's/${PGDATA}/'"$PGDATA"'/g' val.yaml
+            sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
             sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
@@ -51,6 +63,13 @@ jobs:
           name: Install postgres for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            export XROAD_CS_ENABLED="${XROAD_CS_ENABLED}"
+            export XROAD_SSC_ENABLED="${XROAD_SSC_ENABLED}"
+            export XROAD_SSM_ENABLED="${XROAD_SSM_ENABLED}"
+            export XROAD_SSP_ENABLED="${XROAD_SSP_ENABLED}"
+            export PGDATA="${PGDATA}"
+            export POSTGRES_USER="${POSTGRES_USER}"
+            export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="true"
             export SECRETS_ENABLED="false"
             export DEPLOYMENT_ENABLED="false"
@@ -58,6 +77,12 @@ jobs:
           
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSC_ENABLED}/'"$XROAD_SSC_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSM_ENABLED}/'"$XROAD_SSM_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSP_ENABLED}/'"$XROAD_SSP_ENABLED"'/g' val.yaml
+            sed -i 's/${PGDATA}/'"$PGDATA"'/g' val.yaml
+            sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
             sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
@@ -68,12 +93,17 @@ jobs:
           name: Install X-Road components for Information Mediator
           command: |
             export NAMESPACE="${AWS_NAMESPACE}"
+            export XROAD_CS_ENABLED="${XROAD_CS_ENABLED}"
+            export XROAD_SSC_ENABLED="${XROAD_SSC_ENABLED}"
+            export XROAD_SSM_ENABLED="${XROAD_SSM_ENABLED}"
+            export XROAD_SSP_ENABLED="${XROAD_SSP_ENABLED}"
+            export PGDATA="${PGDATA}"
+            export ADMIN_USER="${POSTGRES_USER}"
+            export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="true"
             export SECRETS_ENABLED="false"
             export DEPLOYMENT_ENABLED="true"
             export SERVICE_ENABLED="true"
-            export ADMIN_USER="postgres"
-            export XROAD_TOKEN_PIN="1234"
             export ECR_CS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
             export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
             export CS_DB_HOST=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
@@ -108,11 +138,16 @@ jobs:
  
             cp ./information-mediator/values.yaml val.yaml
             sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
+            sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSC_ENABLED}/'"$XROAD_SSC_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSM_ENABLED}/'"$XROAD_SSM_ENABLED"'/g' val.yaml
+            sed -i 's/${XROAD_SSP_ENABLED}/'"$XROAD_SSP_ENABLED"'/g' val.yaml
+            sed -i 's/${PGDATA}/'"$PGDATA"'/g' val.yaml
+            sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
             sed -i 's/${DEPLOYMENT_ENABLED}/'"$DEPLOYMENT_ENABLED"'/g' val.yaml
             sed -i 's/${SERVICE_ENABLED}/'"$SERVICE_ENABLED"'/g' val.yaml
-            sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
             sed -i 's/${ECR_CS_REPO}/'"$ECR_CS_REPO"'/g' val.yaml
             sed -i 's/${ECR_SS_REPO}/'"$ECR_SS_REPO"'/g' val.yaml
             sed -i 's/${CS_DB_HOST}/'"$CS_DB_HOST"'/g' val.yaml

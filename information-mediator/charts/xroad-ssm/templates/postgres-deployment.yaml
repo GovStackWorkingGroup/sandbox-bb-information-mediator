@@ -22,13 +22,15 @@ spec:
           ports: 
             - containerPort: {{ .containerPort }}
           env:
+            - name: PGDATA
+              value: {{ .Values.global.PGDATA }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .passwordSecretName }}
                   key: password
           volumeMounts:
-            - mountPath: {{ .volumeMountPath }}
+            - mountPath: {{ .Values.global.PGDATA }}
               name: {{ .volumeMountName }}            
         {{- end }}  
       volumes:

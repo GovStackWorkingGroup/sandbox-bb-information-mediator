@@ -7,6 +7,7 @@ global:
   deployment: ${DEPLOYMENT_ENABLED}
   service: ${SERVICE_ENABLED}
   XROAD_TOKEN_PIN: ${XROAD_TOKEN_PIN}
+  PGDATA: ${PGDATA}
   CS_DB_HOST: ${CS_DB_HOST}
   CS_DB_PORT: ${CS_DB_PORT}
   CS_DB_ADMIN_USER: ${CS_DB_ADMIN_USER}
@@ -38,10 +39,10 @@ global:
   SSP_DB_MESSAGELOG_PASS: ${SSP_DB_MESSAGELOG_PASS}
 
 xroad-cs:
-  enabled: true
+  enabled: ${XROAD_CS_ENABLED}
 xroad-ssm:
-  enabled: true
+  enabled: ${XROAD_SSM_ENABLED}
 xroad-ssc:
-  enabled: true
+  enabled: ${XROAD_SSC_ENABLED}
 xroad-ssp:
-  enabled: true
+  enabled: ${XROAD_SSP_ENABLED}

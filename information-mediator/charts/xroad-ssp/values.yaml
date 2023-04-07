@@ -29,7 +29,6 @@ postgresDeployment:
             image: postgres:12
             imagePullPolicy: "Always"
             containerPort: 5432
-            volumeMountPath: /var/lib/postgresql/data
             volumeMountName: postgredb-ssp
             volumeName: postgredb-ssp
             passwordSecretName: govstack-xroad-ssp-postgres-admin-secret
