@@ -95,7 +95,7 @@ jobs:
             export XROAD_TOKEN_PIN="${XROAD_TOKEN_PIN}"
             export POSTGRES_ENABLED="true"
             export SECRETS_ENABLED="false"
-            export APPLICATION_ENABLED="false"
+            export APPLICATION_ENABLED="true"
             export ECR_CS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
             export ECR_SS_REPO="463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_NAME_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
             export CS_DB_HOST=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
