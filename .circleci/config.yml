@@ -80,7 +80,7 @@ jobs:
             sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
             sed -i 's/${APPLICATION_ENABLED}/'"$APPLICATION_ENABLED"'/g' val.yaml
                         
-            helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
+            helm install information-mediator ./information-mediator/ -f val.yaml
       - run:
           name: Install X-Road components for Information Mediator
           command: |
