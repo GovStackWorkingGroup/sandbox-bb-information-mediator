@@ -1,13 +1,4 @@
 {{ if .Values.global.postgres }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgresql-cs-initdb-config
-  namespace: {{ .Values.global.namespace }}
-data:
-  init.sql: |
-    ALTER USER postgres WITH PASSWORD 'secret';
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,9 +34,6 @@ spec:
         - name: {{ .name }}
           persistentVolumeClaim:
             claimName: {{ .claimName }}
-        - name: postgresql-initdb
-          configMap:
-            name: postgresql-initdb-config
         {{- end }}
 ---
 apiVersion: v1
