@@ -38,8 +38,12 @@ spec:
             - name: DB_MESSAGELOG_PASS
               value: {{ .Values.global.SSM_DB_MESSAGELOG_PASS | quote }}
           ports:
+            - containerPort: 8080
+            - containerPort: 8443
             - containerPort: 4000
-            - containerPort: 80
+            - containerPort: 5500
+            - containerPort: 5577
+            - containerPort: 5588
 ---
 apiVersion: v1
 kind: Service
@@ -61,4 +65,12 @@ spec:
       targetPort: 80
       protocol: TCP
       name: http
+    - port: 5500
+      targetPort: 5500
+      protocol: TCP
+      name: messaging
+    - port: 5577
+      targetPort: 5577
+      protocol: TCP
+      name: ocsp
 {{ end }}
