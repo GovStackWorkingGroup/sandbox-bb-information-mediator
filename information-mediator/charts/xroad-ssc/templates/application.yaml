@@ -39,6 +39,7 @@ spec:
               value: {{ .Values.global.SSC_DB_MESSAGELOG_PASS | quote }}
           ports:
             - containerPort: 4000
+            - containerPort: 8080
             - containerPort: 80
 ---
 apiVersion: v1
