@@ -130,22 +130,7 @@ jobs:
                   # docker commit $CID ${IM_XROAD_SSP_IMAGE_NAME}
                   # aws ecr get-login-password --region ${AWS_DEFAULT_REGION} --profile ${AWS_ROLE} | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
                   # docker tag ${IM_XROAD_SSP_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSP_IMAGE_NAME}
-                  # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSP_IMAGE_NAME}                                                                                                                
-  deploy-information-mediator:
-    docker:
-      - image: cimg/aws:2022.06
-    parameters:
-      deploy_to_cluster:
-        default: IM_XROAD_DEPLOY_TO_CLUSTER
-        type: env_var_name
-    - when:
-        condition:
-          equal: [ false, "${<< parameters.deploy_to_cluster >>}" ]      
-        steps:  
-          - run:
-              name: Command
-              command: |
-                echo "Do not deploy"              
+                  # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSP_IMAGE_NAME}                                                                                                                              
 workflows:
   Deploy IM to EKS cluster:
     jobs:
@@ -155,9 +140,9 @@ workflows:
           context: aws
           requires: 
             - wait
-      - hold:
-          type: approval       
-      - deploy-information-mediator:
-          context: aws
-          requires: 
-            - hold
+      #- hold:
+      #    type: approval       
+      #- deploy-information-mediator:
+      #    context: aws
+      #    requires: 
+      #      - hold
