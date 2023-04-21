@@ -341,7 +341,9 @@ workflows:
       - deploy-information-mediator-images:
           context: aws
           requires: 
-            - hold          
+            - hold
+      - hold:
+          type: approval       
       - deploy-information-mediator:
           context: aws
           requires: 
