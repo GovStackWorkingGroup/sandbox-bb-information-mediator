@@ -21,15 +21,6 @@ parameters:
   deploy_to_cluster:
     default: IM_XROAD_DEPLOY_TO_CLUSTER
     type: env_var_name
-
-parameters:
-  run_integration_tests:
-    type: boolean
-    default: false
-  deploy:
-    type: boolean
-    default: false
-
 jobs:
   deploy-information-mediator-images:
     docker:
