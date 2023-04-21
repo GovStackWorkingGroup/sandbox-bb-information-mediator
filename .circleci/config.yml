@@ -14,21 +14,21 @@ jobs:
       - setup_remote_docker:
           version: 20.10.14
       - aws-cli/setup:
-          role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
+          role-arn: 'arn:aws:iam::463471358064:role/CICDPipeline_sandbox-bb-information-mediator_Role_dev'
           aws-region: AWS_DEFAULT_REGION
-          profile-name: ${AWS_ROLE}
+          profile-name: CICDPipeline_sandbox-bb-information-mediator_Role_dev
           role-session-name: CircleSession
           session-duration: '1800' 
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: "${AWS_CLUSTER_NAME}"
-          cluster-authentication-role-arn: arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}
+          cluster-authentication-role-arn: arn:aws:iam::463471358064:role/CICDPipeline_sandbox-bb-information-mediator_Role_dev
       - run:
           name: Debug
           command: aws sts get-caller-identity
       - run:
           name: Update kubectl
           command: |
-            aws eks update-kubeconfig --region "${AWS_DEFAULT_REGION}" --name "${AWS_CLUSTER_NAME}" --role-arn arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}          
+            aws eks update-kubeconfig --region "${AWS_DEFAULT_REGION}" --name "${AWS_CLUSTER_NAME}" --role-arn arn:aws:iam::463471358064:role/CICDPipeline_sandbox-bb-information-mediator_Role_dev         
       - run:
           name: Create and deploy container for X-Road Central Server
           command: |
