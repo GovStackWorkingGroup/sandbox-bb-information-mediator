@@ -6,6 +6,74 @@ orbs:
   helm: circleci/helm@1.0
   kubernetes: circleci/kubernetes@1.3.1
 jobs:
+  deploy-information-mediator-images:
+    docker:
+      - image: cimg/aws:2022.06
+    steps:
+      - when:
+          condition: <<parameters.create_images>>
+          steps:
+            - checkout
+            - setup_remote_docker:
+                version: 20.10.14
+            - aws-cli/setup:
+                role-arn: 'arn:aws:iam::463471358064:role/CircleCIRole'
+                aws-region: AWS_DEFAULT_REGION
+                profile-name: CircleCIRole
+                role-session-name: CircleSession
+                session-duration: '1800' 
+            - run:
+                name: Create and deploy container for X-Road Central Server
+                command: |
+                  docker run -p 4000:4000 -p 4001:80 -p 4002:9998 --name cs ${XROAD_CENTRAL_SERVER_DOCKERHUB_IMAGE}
+                  export CID=$(docker ps -aqf "name=cs")
+                  docker cp central-server-entrypoint.sh $CID:/root/entrypoint.sh
+                  aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_CS_FOLDER}/${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} . --profile "CircleCIRole"
+                  docker cp ${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.tar
+                  docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_center_configuration.sh -i ${XROAD_INSTANCE} -f /var/lib/xroad/backup/conf_backup.tar'
+                  docker commit $CID ${IM_XROAD_CS_IMAGE_NAME}
+                  aws ecr get-login-password --region ${AWS_DEFAULT_REGION} --profile "CircleCIRole" | docker login --username AWS --password-stdin 463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
+                  docker tag ${IM_XROAD_CS_IMAGE_NAME}:latest 463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_CS_REPO_NAME}:${IM_XROAD_CS_IMAGE_NAME}
+                  docker push 463471358064.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_CS_REPO_NAME}:${IM_XROAD_CS_IMAGE_NAME}
+            - run:
+                name: Create and deploy container for X-Road Security Server with management services 
+                command: |
+                  docker run -p 4100:4000 -p 8081:8080 --name ssm -e XROAD_TOKEN_PIN=1234 ${XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
+                  export CID=$(docker ps -aqf "name=ssm")
+                  docker cp security-server-entrypoint.sh $CID:/root/entrypoint.sh
+                  aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/conf_backup_ssm.gpg . --profile "CircleCIRole"
+                  docker cp conf_backup_ssm.gpg $CID:/var/lib/xroad/backup/conf_backup.gpg
+                  docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s DEV/GOV/1234/SS1 -f /var/lib/xroad/backup/conf_backup.gpg'
+                  docker commit $CID xroad-ssm
+                  aws ecr get-login-password --region eu-central-1 --profile "CircleCIRole" | docker login --username AWS --password-stdin 463471358064.dkr.ecr.eu-central-1.amazonaws.com
+                  docker tag xroad-ssm:latest 463471358064.dkr.ecr.eu-central-1.amazonaws.com/im/x-road/security-server:im-xroad-ssm
+                  docker push 463471358064.dkr.ecr.eu-central-1.amazonaws.com/im/x-road/security-server:im-xroad-ssm
+            - run:
+                name: Create and deploy container for X-Road consumer Security Server 
+                command: |
+                  docker run -p 4200:4000 -p 8082:8080 --name ssc -e XROAD_TOKEN_PIN=1234 niis/xroad-security-server:latest
+                  export CID=$(docker ps -aqf "name=ssc")
+                  docker cp security-server-entrypoint.sh $CID:/root/entrypoint.sh
+                  aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/conf_backup_ssc.gpg. --profile "CircleCIRole"
+                  docker cp conf_backup_ssc.gpg $CID:/var/lib/xroad/backup/conf_backup.gpg
+                  docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s DEV/GOV/111/SS2 -f /var/lib/xroad/backup/conf_backup.gpg'
+                  docker commit $CID xroad-ssc
+                  aws ecr get-login-password --region eu-central-1 --profile "CircleCIRole" | docker login --username AWS --password-stdin 463471358064.dkr.ecr.eu-central-1.amazonaws.com
+                  docker tag xroad-ssc:latest 463471358064.dkr.ecr.eu-central-1.amazonaws.com/im/x-road/security-server:im-xroad-ssc
+                  docker push 463471358064.dkr.ecr.eu-central-1.amazonaws.com/im/x-road/security-server:im-xroad-ssc
+             - run:
+                name: Create and deploy container for X-Road provider Security Server 
+                command: |
+                  docker run -p 4300:4000 -p 8083:8080 --name ssp -e XROAD_TOKEN_PIN=1234 niis/xroad-security-server:latest
+                  export CID=$(docker ps -aqf "name=ssp")
+                  docker cp security-server-entrypoint.sh $CID:/root/entrypoint.sh
+                  aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/conf_backup_ssp.gpg. --profile "CircleCIRole"
+                  docker cp conf_backup_ssp.gpg $CID:/var/lib/xroad/backup/conf_backup.gpg
+                  docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s DEV/GOV/222/SS3 -f /var/lib/xroad/backup/conf_backup.gpg'
+                  docker commit $CID xroad-ssp
+                  aws ecr get-login-password --region eu-central-1 --profile "CircleCIRole" | docker login --username AWS --password-stdin 463471358064.dkr.ecr.eu-central-1.amazonaws.com
+                  docker tag xroad-ssp:latest 463471358064.dkr.ecr.eu-central-1.amazonaws.com/im/x-road/security-server:im-xroad-ssp
+                  docker push 463471358064.dkr.ecr.eu-central-1.amazonaws.com/im/x-road/security-server:im-xroad-ssp                                                     
   deploy-information-mediator:
     docker:
       - image: cimg/aws:2022.06
@@ -194,6 +262,10 @@ workflows:
     jobs:
       - hold:
           type: approval
+      - deploy-information-mediator-images:
+          context: aws
+          requires: 
+            - hold          
       - deploy-information-mediator:
           context: aws
           requires: 
