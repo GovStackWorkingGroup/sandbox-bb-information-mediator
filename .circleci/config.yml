@@ -141,6 +141,14 @@ jobs:
     steps:
       - when:
           condition:
+            equal: [ false, "${<< parameters.deploy_to_cluster >>}" ]      
+          steps:  
+            - run:
+                name: Command
+                command: |
+                  echo "Do not deploy"    
+      - when:
+          condition:
             equal: [ true, "${<< parameters.deploy_to_cluster >>}" ]      
           steps:
             - checkout
