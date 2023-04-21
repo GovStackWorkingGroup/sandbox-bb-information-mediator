@@ -21,6 +21,15 @@ parameters:
   deploy_to_cluster:
     default: IM_XROAD_DEPLOY_TO_CLUSTER
     type: env_var_name
+
+parameters:
+  run_integration_tests:
+    type: boolean
+    default: false
+  deploy:
+    type: boolean
+    default: false
+
 jobs:
   deploy-information-mediator-images:
     docker:
@@ -28,7 +37,7 @@ jobs:
     steps:
       - checkout
       - when:
-          condition: << pipeline.parameters.create_cs_image >>          
+          condition: "${<< pipeline.parameters.create_cs_image >>}"        
           steps:
             - setup_remote_docker:
                 version: 20.10.14
@@ -53,7 +62,7 @@ jobs:
                   # docker tag ${IM_XROAD_CS_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_CS_REPO_NAME}:${IM_XROAD_CS_IMAGE_NAME}
                   # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_CS_REPO_NAME}:${IM_XROAD_CS_IMAGE_NAME}
       - when:
-          condition: << pipeline.parameters.create_ssm_image >>
+          condition: "${<< pipeline.parameters.create_ssm_image >>}"
           steps:
             - setup_remote_docker:
                 version: 20.10.14
@@ -78,7 +87,7 @@ jobs:
                   # docker tag ${IM_XROAD_SSM_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSM_IMAGE_NAME}
                   # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSM_IMAGE_NAME}            
       - when:
-          condition: << pipeline.parameters.create_ssc_image >>
+          condition: "${<< pipeline.parameters.create_ssc_image >>}"
           steps:
             - setup_remote_docker:
                 version: 20.10.14
@@ -103,7 +112,7 @@ jobs:
                   # docker tag ${IM_XROAD_SSC_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSC_IMAGE_NAME}
                   # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSC_IMAGE_NAME}                         
       - when:
-          condition: << pipeline.parameters.create_ssp_image >>
+          condition: "${<< pipeline.parameters.create_ssp_image >>}"
           steps:
             - setup_remote_docker:
                 version: 20.10.14
@@ -133,7 +142,7 @@ jobs:
     steps:
       - checkout   
       - when:
-          condition: << pipeline.parameters.deploy_to_cluster >>      
+          condition: "${<< pipeline.parameters.deploy_to_cluster >>}"      
           steps:
             - setup_remote_docker:
                 version: 20.10.14
