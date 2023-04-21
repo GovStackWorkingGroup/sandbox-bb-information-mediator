@@ -336,12 +336,12 @@ jobs:
 workflows:
   Deploy IM to EKS cluster:
     jobs:
-      - hold:
+      - wait:
           type: approval
       - deploy-information-mediator-images:
           context: aws
           requires: 
-            - hold
+            - wait
       - hold:
           type: approval       
       - deploy-information-mediator:
