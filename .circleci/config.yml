@@ -1,339 +1,77 @@
 version: 2.1
-setup: true
 orbs:
   aws-cli: circleci/aws-cli@3.1
   aws-ecr: circleci/aws-ecr@8.2.1
   aws-eks: circleci/aws-eks@2.1.2
   helm: circleci/helm@1.0
   kubernetes: circleci/kubernetes@1.3.1
-parameters:
-  create_cs_image:
-    default: IM_XROAD_CREATE_CS_IMAGE
-    type: env_var_name
-  create_ssm_image:
-    default: IM_XROAD_CREATE_SSM_IMAGE
-    type: env_var_name
-  create_ssc_image:
-    default: IM_XROAD_CREATE_SSC_IMAGE
-    type: env_var_name
-  create_ssp_image:
-    default: IM_XROAD_CREATE_SSP_IMAGE
-    type: env_var_name
-  deploy_to_cluster:
-    default: IM_XROAD_DEPLOY_TO_CLUSTER
-    type: env_var_name
 jobs:
-  deploy-information-mediator-images:
+  deploy-information-mediator:
     docker:
       - image: cimg/aws:2022.06                
     steps:
-      - checkout
-      - when:
-          condition: "${<< pipeline.parameters.create_cs_image >>}"        
-          steps:
-            - setup_remote_docker:
-                version: 20.10.14
-            - aws-cli/setup:
-                role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
-                aws-region: AWS_DEFAULT_REGION
-                profile-name: ${AWS_ROLE}
-                role-session-name: CircleSession
-                session-duration: '1800' 
-            - run:
-                name: Create and deploy container for X-Road Central Server
-                command: |
-                  echo "Create and deploy container for X-Road Central Server"
-                  # docker run -p 4000:4000 -p 4001:80 -p 4002:9998 --name cs ${IM_XROAD_CENTRAL_SERVER_DOCKERHUB_IMAGE}
-                  # export CID=$(docker ps -aqf "name=cs")
-                  # docker cp central-server-entrypoint.sh $CID:/root/entrypoint.sh
-                  # aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_CS_FOLDER}/${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} . --profile ${AWS_ROLE}
-                  # docker cp ${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.tar
-                  # docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_center_configuration.sh -i ${IM_XROAD_INSTANCE} -f /var/lib/xroad/backup/conf_backup.tar'
-                  # docker commit $CID ${IM_XROAD_CS_IMAGE_NAME}
-                  # aws ecr get-login-password --region ${AWS_DEFAULT_REGION} --profile ${AWS_ROLE} | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-                  # docker tag ${IM_XROAD_CS_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_CS_REPO_NAME}:${IM_XROAD_CS_IMAGE_NAME}
-                  # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_CS_REPO_NAME}:${IM_XROAD_CS_IMAGE_NAME}
-      - when:
-          condition: "${<< pipeline.parameters.create_ssm_image >>}"
-          steps:
-            - setup_remote_docker:
-                version: 20.10.14
-            - aws-cli/setup:
-                role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
-                aws-region: AWS_DEFAULT_REGION
-                profile-name: ${AWS_ROLE}
-                role-session-name: CircleSession
-                session-duration: '1800' 
-            - run:
-                name: Create and deploy container for X-Road Security Server with management services 
-                command: |
-                  echo "Create and deploy container for X-Road Security Server with management services"
-                  # docker run -p 4100:4000 -p 8081:8080 --name ssm -e XROAD_TOKEN_PIN=${IM_XROAD_TOKEN_PIN} ${IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
-                  # export CID=$(docker ps -aqf "name=ssm")
-                  # docker cp security-server-entrypoint.sh $CID:/root/entrypoint.sh
-                  # aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} . --profile ${AWS_ROLE}
-                  # docker cp ${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
-                  # docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSM_ID} -f /var/lib/xroad/backup/conf_backup.gpg'
-                  # docker commit $CID ${IM_XROAD_SSM_IMAGE_NAME}
-                  # aws ecr get-login-password --region ${AWS_DEFAULT_REGION} --profile ${AWS_ROLE} | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-                  # docker tag ${IM_XROAD_SSM_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSM_IMAGE_NAME}
-                  # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSM_IMAGE_NAME}            
-      - when:
-          condition: "${<< pipeline.parameters.create_ssc_image >>}"
-          steps:
-            - setup_remote_docker:
-                version: 20.10.14
-            - aws-cli/setup:
-                role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
-                aws-region: AWS_DEFAULT_REGION
-                profile-name: ${AWS_ROLE}
-                role-session-name: CircleSession
-                session-duration: '1800'
-            - run:
-                name: Create and deploy container for X-Road consumer Security Server 
-                command: |
-                  echo "Create and deploy container for X-Road consumer Security Server"
-                  # docker run -p 4200:4000 -p 8082:8080 --name ssc -e XROAD_TOKEN_PIN=${IM_XROAD_TOKEN_PIN} ${IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
-                  # export CID=$(docker ps -aqf "name=ssc")
-                  # docker cp security-server-entrypoint.sh $CID:/root/entrypoint.sh
-                  # aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSC_BACKUP_FILE} . --profile ${AWS_ROLE}
-                  # docker cp ${AWS_IM_S3_BUCKET_SSC_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
-                  # docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSC_ID} -f /var/lib/xroad/backup/conf_backup.gpg'
-                  # docker commit $CID ${IM_XROAD_SSC_IMAGE_NAME}
-                  # aws ecr get-login-password --region ${AWS_DEFAULT_REGION} --profile ${AWS_ROLE} | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-                  # docker tag ${IM_XROAD_SSC_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSC_IMAGE_NAME}
-                  # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSC_IMAGE_NAME}                         
-      - when:
-          condition: "${<< pipeline.parameters.create_ssp_image >>}"
-          steps:
-            - setup_remote_docker:
-                version: 20.10.14
-            - aws-cli/setup:
-                role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
-                aws-region: AWS_DEFAULT_REGION
-                profile-name: ${AWS_ROLE}
-                role-session-name: CircleSession
-                session-duration: '1800'
-            - run:
-                name: Create and deploy container for X-Road provider Security Server 
-                command: |
-                  echo "Create and deploy container for X-Road provider Security Server"
-                  # docker run -p 4300:4000 -p 8083:8080 --name ssp -e XROAD_TOKEN_PIN=${IM_XROAD_TOKEN_PIN} ${IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
-                  # export CID=$(docker ps -aqf "name=ssp")
-                  # docker cp security-server-entrypoint.sh $CID:/root/entrypoint.sh
-                  # aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSP_BACKUP_FILE} . --profile ${AWS_ROLE}
-                  # docker cp ${AWS_IM_S3_BUCKET_SSP_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
-                  # docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSP_ID} -f /var/lib/xroad/backup/conf_backup.gpg'
-                  # docker commit $CID ${IM_XROAD_SSP_IMAGE_NAME}
-                  # aws ecr get-login-password --region ${AWS_DEFAULT_REGION} --profile ${AWS_ROLE} | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-                  # docker tag ${IM_XROAD_SSP_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSP_IMAGE_NAME}
-                  # docker push ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_SS_REPO_NAME}:${IM_XROAD_SSP_IMAGE_NAME}                                                                                                                
-  deploy-information-mediator:
-    docker:
-      - image: cimg/aws:2022.06
-    steps:
-      - checkout   
-      - when:
-          condition: "${<< pipeline.parameters.deploy_to_cluster >>}"      
-          steps:
-            - setup_remote_docker:
-                version: 20.10.14
-            - helm/install-helm-client:
-                version: v3.2.0
-            - aws-cli/setup:
-                role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
-                aws-region: AWS_DEFAULT_REGION
-                profile-name: ${AWS_ROLE}
-                role-session-name: CircleSession
-                session-duration: '1800' 
-            - aws-eks/update-kubeconfig-with-authenticator:
-                cluster-name: "${AWS_CLUSTER_NAME}"
-                cluster-authentication-role-arn: arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}
-            - run:
-                name: Debug
-                command: aws sts get-caller-identity
-            - run:
-                name: Update kubectl
-                command: |
-                  aws eks update-kubeconfig --region "${AWS_DEFAULT_REGION}" --name "${AWS_CLUSTER_NAME}" --role-arn arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}
-            - run:
-                name: Install secrets for Information Mediator
-                command: |
-                  echo "Install secrets for Information Mediator"
-                  # export NAMESPACE="${AWS_NAMESPACE}"
-                  # export XROAD_CS_ENABLED="${IM_XROAD_CS_ENABLED}"
-                  # export XROAD_SSC_ENABLED="${IM_XROAD_SSC_ENABLED}"
-                  # export XROAD_SSM_ENABLED="${IM_XROAD_SSM_ENABLED}"
-                  # export XROAD_SSP_ENABLED="${IM_XROAD_SSP_ENABLED}"
-                  # export SECRETS_ENABLED="${IM_XROAD_GENERATE_NEW_SECRETS}"
-                  # export POSTGRES_ENABLED="false"
-                  # export APPLICATION_ENABLED="false"
-                  # cp ./information-mediator/values.yaml val.yaml
-                  # sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
-                  # sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSC_ENABLED}/'"$XROAD_SSC_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSM_ENABLED}/'"$XROAD_SSM_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSP_ENABLED}/'"$XROAD_SSP_ENABLED"'/g' val.yaml
-                  # sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
-                  # sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
-                  # sed -i 's/${APPLICATION_ENABLED}/'"$APPLICATION_ENABLED"'/g' val.yaml
-                  # helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
-            - run:
-                name: Install postgres for Information Mediator
-                command: |
-                  echo "Install postgres for Information Mediator"
-                  # export NAMESPACE="${AWS_NAMESPACE}"
-                  # export XROAD_CS_ENABLED="${IM_XROAD_CS_ENABLED}"
-                  # export XROAD_SSC_ENABLED="${IM_XROAD_SSC_ENABLED}"
-                  # export XROAD_SSM_ENABLED="${IM_XROAD_SSM_ENABLED}"
-                  # export XROAD_SSP_ENABLED="${IM_XROAD_SSP_ENABLED}"
-                  # export PGDATA_FOLDER="${IM_XROAD_PGDATA}"
-                  # export PGDATA=$(echo ${PGDATA_FOLDER//\//\\/})
-                  # export POSTGRES_USER="${IM_XROAD_POSTGRES_USER}"
-                  # export XROAD_TOKEN_PIN="${IM_XROAD_TOKEN_PIN}"
-                  # export POSTGRES_ENABLED="true"
-                  # export SECRETS_ENABLED="false"
-                  # export APPLICATION_ENABLED="false"
-                  # cp ./information-mediator/values.yaml val.yaml
-                  # sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
-                  # sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSC_ENABLED}/'"$XROAD_SSC_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSM_ENABLED}/'"$XROAD_SSM_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSP_ENABLED}/'"$XROAD_SSP_ENABLED"'/g' val.yaml
-                  # sed -i 's/${PGDATA}/'"$PGDATA"'/g' val.yaml
-                  # sed -i 's/${POSTGRES_USER}/'"$POSTGRES_USER"'/g' val.yaml
-                  # sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
-                  # sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
-                  # sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
-                  # sed -i 's/${APPLICATION_ENABLED}/'"$APPLICATION_ENABLED"'/g' val.yaml      
-                  # helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
-            - run:
-                name: Configure postgres for Information Mediator
-                command: |
-                  echo "Configure postgres for Information Mediator"
-                  # export NAMESPACE="${AWS_NAMESPACE}"  
-                  # export POSTGRES_USER="${IM_XROAD_POSTGRES_USER}"
-                  # export CS_PASS=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSC_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSM_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSP_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # kubectl exec -it service/govstack-xroad-cs-postgres -n $NAMESPACE -- psql -h localhost -U $POSTGRES_USER -c "ALTER USER ${POSTGRES_USER} WITH PASSWORD '${CS_PASS}'"
-                  # kubectl exec -it service/govstack-xroad-ssc-postgres -n $NAMESPACE -- psql -h localhost -U $POSTGRES_USER -c "ALTER USER ${POSTGRES_USER} WITH PASSWORD '${SSC_PASS}'"
-                  # kubectl exec -it service/govstack-xroad-ssm-postgres -n $NAMESPACE -- psql -h localhost -U $POSTGRES_USER -c "ALTER USER ${POSTGRES_USER} WITH PASSWORD '${SSM_PASS}'"
-                  # kubectl exec -it service/govstack-xroad-ssp-postgres -n $NAMESPACE -- psql -h localhost -U $POSTGRES_USER -c "ALTER USER ${POSTGRES_USER} WITH PASSWORD '${SSP_PASS}'"
-            - run:
-                name: Install X-Road components for Information Mediator
-                command: |
-                  echo "Install X-Road components for Information Mediator"
-                  # export NAMESPACE="${AWS_NAMESPACE}"
-                  # export XROAD_CS_ENABLED="${IM_XROAD_CS_ENABLED}"
-                  # export XROAD_SSC_ENABLED="${IM_XROAD_SSC_ENABLED}"
-                  # export XROAD_SSM_ENABLED="${IM_XROAD_SSM_ENABLED}"
-                  # export XROAD_SSP_ENABLED="${IM_XROAD_SSP_ENABLED}"
-                  # export PGDATA_FOLDER="${IM_XROAD_PGDATA}"
-                  # export PGDATA=$(echo ${PGDATA_FOLDER//\//\\/})
-                  # export POSTGRES_USER="${IM_XROAD_POSTGRES_USER}"
-                  # export XROAD_TOKEN_PIN="${IM_XROAD_TOKEN_PIN}"
-                  # export POSTGRES_ENABLED="true"
-                  # export SECRETS_ENABLED="false"
-                  # export APPLICATION_ENABLED="true"
-                  # export ECR_CS_REPO="${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_IM_PREFIX}\/${AWS_ECR_REPO_XROAD_PREFIX}\/${AWS_ECR_CS_REPO_NAME}"
-                  # export ECR_SS_REPO="${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com\/${AWS_ECR_REPO_IM_PREFIX}\/${AWS_ECR_REPO_XROAD_PREFIX}\/${AWS_ECR_SS_REPO_NAME}"
-                  # export ECR_CS_IMAGE_NAME="${IM_XROAD_CS_IMAGE_NAME}"
-                  # export ECR_SSM_IMAGE_NAME="${IM_XROAD_SSM_IMAGE_NAME}"
-                  # export ECR_SSC_IMAGE_NAME="${IM_XROAD_SSC_IMAGE_NAME}"
-                  # export ECR_SSP_IMAGE_NAME="${IM_XROAD_SSP_IMAGE_NAME}"
-                  # export CS_DB_HOST=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-                  # export CS_DB_PORT=$(kubectl get service govstack-xroad-cs-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)
-                  # export CS_DB_ADMIN_USER=$POSTGRES_USER
-                  # export CS_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-cs-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export CS_DB_UI_PASS=$(kubectl get secret govstack-xroad-cs-postgres-centerui-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSC_DB_HOST=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-                  # export SSC_DB_PORT=$(kubectl get service govstack-xroad-ssc-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-                  # export SSC_DB_ADMIN_USER=$POSTGRES_USER
-                  # export SSC_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSC_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSC_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSC_DB_SERVERCONF_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-serverconf-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSC_DB_MESSAGELOG_PASS=$(kubectl get secret govstack-xroad-ssc-postgres-messagelog-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)               
-                  # export SSM_DB_HOST=$(kubectl get service govstack-xroad-ssm-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-                  # export SSM_DB_PORT=$(kubectl get service govstack-xroad-ssm-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-                  # export SSM_DB_ADMIN_USER=$POSTGRES_USER
-                  # export SSM_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSM_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSM_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSM_DB_SERVERCONF_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-serverconf-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSM_DB_MESSAGELOG_PASS=$(kubectl get secret govstack-xroad-ssm-postgres-messagelog-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)               
-                  # export SSP_DB_HOST=$(kubectl get service govstack-xroad-ssp-postgres -o jsonpath='{.spec.clusterIP}' -n $NAMESPACE)
-                  # export SSP_DB_PORT=$(kubectl get service govstack-xroad-ssp-postgres -o jsonpath='{.spec.ports[0].port}' -n $NAMESPACE)            
-                  # export SSP_DB_ADMIN_USER=$POSTGRES_USER
-                  # export SSP_DB_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSP_DB_SERVERCONF_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-serverconf-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSP_DB_MESSAGELOG_ADMIN_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-messagelog-admin-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSP_DB_SERVERCONF_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-serverconf-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)
-                  # export SSP_DB_MESSAGELOG_PASS=$(kubectl get secret govstack-xroad-ssp-postgres-messagelog-secret -o jsonpath='{.data.password}' --namespace $NAMESPACE | base64 --decode)        
-                  # cp ./information-mediator/values.yaml val.yaml
-                  # sed -i 's/${NAMESPACE}/'"$NAMESPACE"'/g' val.yaml
-                  # sed -i 's/${XROAD_CS_ENABLED}/'"$XROAD_CS_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSC_ENABLED}/'"$XROAD_SSC_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSM_ENABLED}/'"$XROAD_SSM_ENABLED"'/g' val.yaml
-                  # sed -i 's/${XROAD_SSP_ENABLED}/'"$XROAD_SSP_ENABLED"'/g' val.yaml
-                  # sed -i 's/${PGDATA}/'"$PGDATA"'/g' val.yaml
-                  # sed -i 's/${POSTGRES_USER}/'"$POSTGRES_USER"'/g' val.yaml
-                  # sed -i 's/${XROAD_TOKEN_PIN}/'"$XROAD_TOKEN_PIN"'/g' val.yaml
-                  # sed -i 's/${POSTGRES_ENABLED}/'"$POSTGRES_ENABLED"'/g' val.yaml
-                  # sed -i 's/${SECRETS_ENABLED}/'"$SECRETS_ENABLED"'/g' val.yaml
-                  # sed -i 's/${APPLICATION_ENABLED}/'"$APPLICATION_ENABLED"'/g' val.yaml
-                  # sed -i 's/${ECR_CS_REPO}/'"$ECR_CS_REPO"'/g' val.yaml
-                  # sed -i 's/${ECR_SS_REPO}/'"$ECR_SS_REPO"'/g' val.yaml
-                  # sed -i 's/${ECR_CS_IMAGE_NAME}/'"$ECR_CS_IMAGE_NAME"'/g' val.yaml
-                  # sed -i 's/${ECR_SSM_IMAGE_NAME}/'"$ECR_SSM_IMAGE_NAME"'/g' val.yaml
-                  # sed -i 's/${ECR_SSC_IMAGE_NAME}/'"$ECR_SSC_IMAGE_NAME"'/g' val.yaml
-                  # sed -i 's/${ECR_SSP_IMAGE_NAME}/'"$ECR_SSP_IMAGE_NAME"'/g' val.yaml
-                  # sed -i 's/${CS_DB_HOST}/'"$CS_DB_HOST"'/g' val.yaml
-                  # sed -i 's/${CS_DB_PORT}/'"$CS_DB_PORT"'/g' val.yaml
-                  # sed -i 's/${CS_DB_ADMIN_USER}/'"$CS_DB_ADMIN_USER"'/g' val.yaml
-                  # sed -i 's/${CS_DB_ADMIN_PASS}/'"$CS_DB_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${CS_DB_UI_PASS}/'"$CS_DB_UI_PASS"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_HOST}/'"$SSC_DB_HOST"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_PORT}/'"$SSC_DB_PORT"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_ADMIN_USER}/'"$SSC_DB_ADMIN_USER"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_ADMIN_PASS}/'"$SSC_DB_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_SERVERCONF_ADMIN_PASS}/'"$SSC_DB_SERVERCONF_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_MESSAGELOG_ADMIN_PASS}/'"$SSC_DB_MESSAGELOG_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_SERVERCONF_PASS}/'"$SSC_DB_SERVERCONF_PASS"'/g' val.yaml
-                  # sed -i 's/${SSC_DB_MESSAGELOG_PASS}/'"$SSC_DB_MESSAGELOG_PASS"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_HOST}/'"$SSM_DB_HOST"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_PORT}/'"$SSM_DB_PORT"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_ADMIN_USER}/'"$SSM_DB_ADMIN_USER"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_ADMIN_PASS}/'"$SSM_DB_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_SERVERCONF_ADMIN_PASS}/'"$SSM_DB_SERVERCONF_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_MESSAGELOG_ADMIN_PASS}/'"$SSM_DB_MESSAGELOG_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_SERVERCONF_PASS}/'"$SSM_DB_SERVERCONF_PASS"'/g' val.yaml
-                  # sed -i 's/${SSM_DB_MESSAGELOG_PASS}/'"$SSM_DB_MESSAGELOG_PASS"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_HOST}/'"$SSP_DB_HOST"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_PORT}/'"$SSP_DB_PORT"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_ADMIN_USER}/'"$SSP_DB_ADMIN_USER"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_ADMIN_PASS}/'"$SSP_DB_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_SERVERCONF_ADMIN_PASS}/'"$SSP_DB_SERVERCONF_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_MESSAGELOG_ADMIN_PASS}/'"$SSP_DB_MESSAGELOG_ADMIN_PASS"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_SERVERCONF_PASS}/'"$SSP_DB_SERVERCONF_PASS"'/g' val.yaml
-                  # sed -i 's/${SSP_DB_MESSAGELOG_PASS}/'"$SSP_DB_MESSAGELOG_PASS"'/g' val.yaml
-                  # helm upgrade --install information-mediator ./information-mediator/ -f val.yaml
-            - run:
-                name: Delete temporary values file
-                command: |
-                  echo "Delete temporary values file"
-                  # rm val.yaml               
+      - checkout       
+      - setup_remote_docker:
+          version: 20.10.14
+      - aws-cli/setup:
+          role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
+          aws-region: AWS_DEFAULT_REGION
+          profile-name: ${AWS_ROLE}
+          role-session-name: CircleSession
+          session-duration: '1800' 
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: "${AWS_CLUSTER_NAME}"
+          cluster-authentication-role-arn: arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}
+      - run:
+          name: Debug
+          command: aws sts get-caller-identity
+      - run:
+          name: Update kubectl
+          command: |
+            aws eks update-kubeconfig --region "${AWS_DEFAULT_REGION}" --name "${AWS_CLUSTER_NAME}" --role-arn arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}          
+      - run:
+          name: Create and deploy container for X-Road Central Server
+          command: |
+            if [ "$IM_XROAD_CREATE_CS_IMAGE" = true ] ; then
+              echo "You Won!"
+            else
+              echo "You Lose!"
+            fi 
+      # - run:
+      #     name: Create and deploy container for X-Road Security Server with management services 
+      #     command: |
+      #       echo "Create and deploy container for X-Road Security Server with management services"
+      # - run:
+      #     name: Create and deploy container for X-Road consumer Security Server 
+      #     command: |
+      #       echo "Create and deploy container for X-Road consumer Security Server"                         
+      # - run:
+      #     name: Create and deploy container for X-Road provider Security Server 
+      #     command: |
+      #       echo "Create and deploy container for X-Road provider Security Server"
+      # - run:
+      #     name: Install secrets for Information Mediator
+      #     command: |
+      #       echo "Install secrets for Information Mediator"
+      # - run:
+      #     name: Install postgres for Information Mediator
+      #     command: |
+      #       echo "Install postgres for Information Mediator"
+      # - run:
+      #     name: Configure postgres for Information Mediator
+      #     command: |
+      #       echo "Configure postgres for Information Mediator"
+      # - run:
+      #     name: Install X-Road components for Information Mediator
+      #     command: |
+      #       echo "Install X-Road components for Information Mediator"
+      # - run:
+      #     name: Delete temporary values file
+      #     command: |
+      #       echo "Delete temporary values file"               
 workflows:
   Deploy IM to EKS cluster:
     jobs:
-      - wait:
-          type: approval
-      - deploy-information-mediator-images:
-          context: aws
-          requires: 
-            - wait
       - hold:
           type: approval       
       - deploy-information-mediator:
