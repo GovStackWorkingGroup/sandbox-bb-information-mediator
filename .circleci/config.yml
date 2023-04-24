@@ -44,11 +44,9 @@ jobs:
             if [ "$IM_XROAD_CREATE_SSM_IMAGE" = true ] ; then
               docker run -d -p 4100:4000 -p 8081:8080 --name ssm -e XROAD_TOKEN_PIN=${IM_XROAD_TOKEN_PIN} ${IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
               export CID=$(docker ps -aqf "name=ssm")
-              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} .
-              docker cp ${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
-              sleep 30
-              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/generate_gpg_keypair.sh /etc/xroad/gpghome ${IM_XROAD_SSM_ID}" 
-              docker exec -it --user xroad $CID bin/bash -c "gpg --homedir /etc/xroad/gpghome --output /var/lib/xroad/backup/conf_backup.tar --decrypt /var/lib/xroad/backup/conf_backup.gpg" 
+              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/conf_backup_ssm.tar .
+              docker cp conf_backup_ssm.tar $CID:/var/lib/xroad/backup/conf_backup.tar
+              sleep 30 
               docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -F -P -f /var/lib/xroad/backup/conf_backup.tar"
               docker cp information-mediator/scripts/security-server-entrypoint.sh $CID:/root/entrypoint.sh
               docker commit $CID ${IM_XROAD_SSM_IMAGE_NAME}
