@@ -53,8 +53,8 @@ The Sandbox Information Mediator(IM) BB in implemented by running [X-Road Centra
    ``` $ docker exec -it --user xroad <CID> bin/bash -c '/usr/share/xroad/scripts/restore_xroad_center_configuration.sh -i <XROAD_INSTANCE> -f /var/lib/xroad/backup/conf_backup.tar' ```
 
    for the Security Server:
-   ``` $ docker cp conf_backup.gpg <CID>:/var/lib/xroad/backup/conf_backup.gpg ```
-   ``` $ docker exec -it --user xroad <CID> bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s <XROAD_SS_ID> -f /var/lib/xroad/backup/conf_backup.gpg ```   
+   ``` $ docker cp conf_backup.tar <CID>:/var/lib/xroad/backup/conf_backup.tar ```
+   ``` $ docker exec -it --user xroad <CID> bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -F -P -f /var/lib/xroad/backup/conf_backup.tar ```   
 
    * CID - docker container id (can be obtained by for example by ``` $ export CID=$(docker ps -aqf "name=cs") ``` where the  ```name``` is the container name
    * XROAD_INSTANCE - X-Road instance name, e.g. DEV
@@ -342,9 +342,9 @@ The Sandbox Information Mediator(IM) BB in implemented by running [X-Road Centra
    * AWS_IM_S3_BUCKET_CS_FOLDER - folder in the S3 bucket for storing Central Server configuraton backups, e.g. "x-road/central-server"
    * AWS_IM_S3_BUCKET_SS_FOLDER - folder in the S3 bucket for storing Security Server configuration backups, "x-road/security-server"
    * AWS_IM_S3_BUCKET_CS_BACKUP_FILE - Central Server configuration backup file name, e.g. "conf_backup.tar"
-   * AWS_IM_S3_BUCKET_SSM_BACKUP_FILE - management services Security Server configuration backup file name, e.g. "conf_backup_ssm.gpg"
-   * AWS_IM_S3_BUCKET_SSC_BACKUP_FILE - consumer Security Server configuration backup file name, e.g. "conf_backup_ssc.gpg"
-   * AWS_IM_S3_BUCKET_SSP_BACKUP_FILE - provider Security Server configuration backup file name, e.g. "conf_backup_ssp.gpg"
+   * AWS_IM_S3_BUCKET_SSM_BACKUP_FILE - management services Security Server configuration backup file name, e.g. "conf_backup_ssm.tar"
+   * AWS_IM_S3_BUCKET_SSC_BACKUP_FILE - consumer Security Server configuration backup file name, e.g. "conf_backup_ssc.tar"
+   * AWS_IM_S3_BUCKET_SSP_BACKUP_FILE - provider Security Server configuration backup file name, e.g. "conf_backup_ssp.tar"
    * AWS_ECR_REPO_IM_PREFIX - repository prefix for the IM container registry, e.g. "im"
    * AWS_ECR_REPO_XROAD_PREFIX - repository prefix for X-Road in the container registry, e.g. "x-road"  
    * AWS_ECR_CS_REPO_NAME - name for the container registry of the Central Server, e.g. "central-server"
@@ -364,9 +364,6 @@ The Sandbox Information Mediator(IM) BB in implemented by running [X-Road Centra
    * IM_XROAD_CENTRAL_SERVER_DOCKERHUB_IMAGE - X-Road Central Server image name in official NIIS Dockerhub, e.g. "niis/xroad-central-server:latest"
    * IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE - X-Road Security Server image name in official NIIS Dockerhub, e.g. "niis/xroad-security-server:latest"
    * IM_XROAD_TOKEN_PIN - X-Road pin token, e.g. "1234"
-   * IM_XROAD_SSM_ID - identificator for X-Road management services Security Server, e.g. "DEV/GOV/1234/SS1"
-   * IM_XROAD_SSC_ID - identificator for X-Road consumer Security Server, e.g. "DEV/GOV/111/SS2"
-   * IM_XROAD_SSP_ID - identificator for X-Road provider Security Server, e.g. "DEV/GOV/222/SS3"
    * IM_XROAD_CREATE_CS_IMAGE - boolean value indicating whether X-Road Central Server image should be re-created, pre-configured and pushed to the container registry
    * IM_XROAD_CREATE_SSM_IMAGE - boolean value indicating whether X-Road management services Security Server image should be re-created, pre-configured and pushed to the container registry
    * IM_XROAD_CREATE_SSC_IMAGE - boolean value indicating whether X-Road consumer Security Server image should be re-created, pre-configured and pushed to the container registry
