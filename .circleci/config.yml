@@ -32,7 +32,7 @@ jobs:
               aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_CS_FOLDER}/${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} information-mediator/${AWS_IM_S3_BUCKET_CS_BACKUP_FILE}
               ls -la information-mediator/
               docker cp information-mediator/${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.tar
-              docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_center_configuration.sh -i ${IM_XROAD_INSTANCE} -f /var/lib/xroad/backup/conf_backup.tar'
+              docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_center_configuration.sh -i DEV -f /var/lib/xroad/backup/conf_backup.tar'
               # docker commit $CID ${IM_XROAD_CS_IMAGE_NAME}
               # aws ecr get-login-password --region ${AWS_DEFAULT_REGION} --profile ${AWS_ROLE} | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
               # docker tag ${IM_XROAD_CS_IMAGE_NAME}:latest ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${AWS_ECR_REPO_IM_PREFIX}/${AWS_ECR_REPO_XROAD_PREFIX}/${AWS_ECR_CS_REPO_NAME}:${IM_XROAD_CS_IMAGE_NAME}
