@@ -48,7 +48,7 @@ jobs:
               docker cp ${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
               sleep 30
               docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/generate_gpg_keypair.sh /etc/xroad/gpghome ${IM_XROAD_SSM_ID}" 
-              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -F -P -f /var/lib/xroad/backup/conf_backup.gpg"
+              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSM_ID} -f /var/lib/xroad/backup/conf_backup.gpg"
               docker cp information-mediator/scripts/security-server-entrypoint.sh $CID:/root/entrypoint.sh
               docker commit $CID ${IM_XROAD_SSM_IMAGE_NAME}
               aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
@@ -64,7 +64,8 @@ jobs:
               aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSC_BACKUP_FILE} .
               docker cp ${AWS_IM_S3_BUCKET_SSC_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
               sleep 30
-              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSC_ID} -f /var/lib/xroad/backup/conf_backup.gpg -p -N"
+              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/generate_gpg_keypair.sh /etc/xroad/gpghome ${IM_XROAD_SSC_ID}"
+              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSC_ID} -f /var/lib/xroad/backup/conf_backup.gpg"
               docker cp information-mediator/scripts/security-server-entrypoint.sh $CID:/root/entrypoint.sh
               docker commit $CID ${IM_XROAD_SSC_IMAGE_NAME}
               aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
@@ -80,7 +81,8 @@ jobs:
               aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSP_BACKUP_FILE} .
               docker cp ${AWS_IM_S3_BUCKET_SSP_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
               sleep 30
-              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSP_ID} -f /var/lib/xroad/backup/conf_backup.gpg -p -N"
+              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/generate_gpg_keypair.sh /etc/xroad/gpghome ${IM_XROAD_SSP_ID}"
+              docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSP_ID} -f /var/lib/xroad/backup/conf_backup.gpg"
               docker cp information-mediator/scripts/security-server-entrypoint.sh $CID:/root/entrypoint.sh
               docker commit $CID ${IM_XROAD_SSP_IMAGE_NAME}
               aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
