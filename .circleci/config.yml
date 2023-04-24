@@ -30,7 +30,7 @@ jobs:
               export CID=$(docker ps -aqf "name=cs")
               aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_CS_FOLDER}/${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} .
               docker cp ${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.tar
-              docker exec -it --user xroad $CID bin/bash -c "supervisorctl status postgres"
+              sleep 30 &
               docker exec -it --user xroad $CID bin/bash -c "/usr/share/xroad/scripts/restore_xroad_center_configuration.sh -i ${IM_XROAD_INSTANCE} -f /var/lib/xroad/backup/conf_backup.tar"
               docker cp information-mediator/scripts/central-server-entrypoint.sh $CID:/root/entrypoint.sh
               docker commit $CID ${IM_XROAD_CS_IMAGE_NAME}
