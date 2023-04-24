@@ -30,6 +30,7 @@ jobs:
               export CID=$(docker ps -aqf "name=cs")
               docker cp information-mediator/scripts/central-server-entrypoint.sh $CID:/root/entrypoint.sh
               aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_CS_FOLDER}/${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} .
+
               docker cp ${AWS_IM_S3_BUCKET_CS_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.tar
               docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_center_configuration.sh -i ${IM_XROAD_INSTANCE} -f /var/lib/xroad/backup/conf_backup.tar'
               docker commit $CID ${IM_XROAD_CS_IMAGE_NAME}
@@ -44,7 +45,7 @@ jobs:
               docker run -d -p 4100:4000 -p 8081:8080 --name ssm -e XROAD_TOKEN_PIN=${IM_XROAD_TOKEN_PIN} ${IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
               export CID=$(docker ps -aqf "name=ssm")
               docker cp information-mediator/scripts/security-server-entrypoint.sh $CID:/root/entrypoint.sh
-              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} . --profile ${AWS_ROLE}
+              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} .
               docker cp ${AWS_IM_S3_BUCKET_SSM_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
               docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSM_ID} -f /var/lib/xroad/backup/conf_backup.gpg'
               docker commit $CID ${IM_XROAD_SSM_IMAGE_NAME}
@@ -59,7 +60,7 @@ jobs:
               docker run -d -p 4200:4000 -p 8082:8080 --name ssc -e XROAD_TOKEN_PIN=${IM_XROAD_TOKEN_PIN} ${IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
               export CID=$(docker ps -aqf "name=ssc")
               docker cp information-mediator/scripts/security-server-entrypoint.sh $CID:/root/entrypoint.sh
-              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSC_BACKUP_FILE} . --profile ${AWS_ROLE}
+              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSC_BACKUP_FILE} .
               docker cp ${AWS_IM_S3_BUCKET_SSC_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
               docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSC_ID} -f /var/lib/xroad/backup/conf_backup.gpg'
               docker commit $CID ${IM_XROAD_SSC_IMAGE_NAME}
@@ -74,7 +75,7 @@ jobs:
               docker run -d -p 4300:4000 -p 8083:8080 --name ssp -e XROAD_TOKEN_PIN=${IM_XROAD_TOKEN_PIN} ${IM_XROAD_SECURITY_SERVER_DOCKERHUB_IMAGE}
               export CID=$(docker ps -aqf "name=ssp")
               docker cp information-mediator/scripts/security-server-entrypoint.sh $CID:/root/entrypoint.sh
-              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSP_BACKUP_FILE} . --profile ${AWS_ROLE}
+              aws s3 cp s3://${AWS_IM_S3_BUCKET}/${AWS_IM_S3_BUCKET_SS_FOLDER}/${AWS_IM_S3_BUCKET_SSP_BACKUP_FILE} .
               docker cp ${AWS_IM_S3_BUCKET_SSP_BACKUP_FILE} $CID:/var/lib/xroad/backup/conf_backup.gpg
               docker exec -it --user xroad $CID bin/bash -c '/usr/share/xroad/scripts/restore_xroad_proxy_configuration.sh -s ${IM_XROAD_SSP_ID} -f /var/lib/xroad/backup/conf_backup.gpg'
               docker commit $CID ${IM_XROAD_SSP_IMAGE_NAME}
