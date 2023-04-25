@@ -62,6 +62,5 @@ application:
     name: govstack-xroad-cs
     containers:
       name: govstack-xroad-cs
-      imageName: xroad-cs
       imagePullPolicy: "Always"
 

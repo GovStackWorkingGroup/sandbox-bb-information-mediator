@@ -71,5 +71,4 @@ application:
     name: govstack-xroad-ssp
     containers:
       name: govstack-xroad-ssp
-      imageName: xroad-ssp
       imagePullPolicy: "Always"

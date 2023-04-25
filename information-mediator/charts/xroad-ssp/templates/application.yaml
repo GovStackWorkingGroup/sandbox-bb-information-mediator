@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.application.deployment.containers.name }}
-          image: {{ .Values.global.xroadSecurityServerImageRepo }}:{{ .Values.application.deployment.containers.imageName }}
+          image: {{ .Values.global.xroadSecurityServerImageRepo }}:{{ .Values.global.xroadSSPImageName }}
           imagePullPolicy: {{ .Values.application.deployment.containers.imagePullPolicy }}
           env:
             - name: XROAD_TOKEN_PIN

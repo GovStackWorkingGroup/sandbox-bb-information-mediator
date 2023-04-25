@@ -2,6 +2,10 @@ global:
   namespace: ${NAMESPACE}
   xroadCentralServerImageRepo: ${ECR_CS_REPO}
   xroadSecurityServerImageRepo: ${ECR_SS_REPO}
+  xroadCSImageName: ${ECR_CS_IMAGE_NAME}
+  xroadSSMImageName: ${ECR_SSM_IMAGE_NAME}
+  xroadSSCImageName: ${ECR_SSC_IMAGE_NAME}
+  xroadSSPImageName: ${ECR_SSP_IMAGE_NAME}
   postgres: ${POSTGRES_ENABLED}
   secret: ${SECRETS_ENABLED}
   application: ${APPLICATION_ENABLED}
