@@ -24,9 +24,11 @@ The Sandbox Information Mediator(IM) BB in implemented by running [X-Road Centra
 
 2. Running X-Road Security Servers in Docker containers
    
-   ``` $ docker run -d -p 4100:4000 -p 8081:8080 --name ssm -e XROAD_TOKEN_PIN=<XROAD_TOKEN_PIN> <XROAD_SECURITY_SERVER_IMAGE> ```
-   ``` $ docker run -d -p 4200:4000 -p 8082:8080 --name ssc -e XROAD_TOKEN_PIN=<XROAD_TOKEN_PIN> <XROAD_SECURITY_SERVER_IMAGE> ```
-   ``` $ docker run -d -p 4300:4000 -p 8083:8080 --name ssp -e XROAD_TOKEN_PIN=<XROAD_TOKEN_PIN> <XROAD_SECURITY_SERVER_IMAGE> ```
+   ``` bash
+    $ docker run -d -p 4100:4000 -p 8081:8080 --name ssm -e XROAD_TOKEN_PIN=<XROAD_TOKEN_PIN> <XROAD_SECURITY_SERVER_IMAGE>
+    $ docker run -d -p 4200:4000 -p 8082:8080 --name ssc -e XROAD_TOKEN_PIN=<XROAD_TOKEN_PIN> <XROAD_SECURITY_SERVER_IMAGE>
+    $ docker run -d -p 4300:4000 -p 8083:8080 --name ssp -e XROAD_TOKEN_PIN=<XROAD_TOKEN_PIN> <XROAD_SECURITY_SERVER_IMAGE> 
+    ```
 
    * XROAD_TOKEN_PIN - X-Road pin token, e.g. 1234
    * XROAD_SECURITY_SERVER_IMAGE - [official NIIS X-Road Security Server Dockerhub image](https://hub.docker.com/r/niis/xroad-security-server)
