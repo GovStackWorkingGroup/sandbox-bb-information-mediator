@@ -50,7 +50,7 @@ The tools used for building and deploying the IM to Kubernetes Cluster in the cl
     * CID - docker container id (can be obtained by for example by ``` $ export CID=$(docker ps -aqf "name=cs") ``` where the  ```name``` is the container name
 
    **NOTE**
-   The [central-server-entrypoint.sh](information-mediator/scripts/central-server-entrypoint.sh) and [security-server-entrypoint.sh](information-mediator/scripts/security-server-entrypoint.sh) scripts contain customizations to the original Docker entrypoint.sh script to configure the X-Road components to use remote database
+   The [central-server-entrypoint.sh](../scripts/central-server-entrypoint.sh) and [security-server-entrypoint.sh](../scripts/security-server-entrypoint.sh) scripts contain customizations to the original Docker entrypoint.sh script to configure the X-Road components to use remote database
    instead of local database that is the default option for X-Road and also to create SQL scripts for data migration from local to remote database. The custom entrypoint script
    will be run the next time the Docker container is run and some required parameter values will be provided by environment variables.
 
@@ -408,30 +408,30 @@ Finally, that temporary values file is used to install IM to Kubernetes Cluster:
 
 The "information-mediator" chart contains the following sub-charts:
 
-* A chart for [X-Road Central Server](information_mediator/charts/xroad-cs)
+* A chart for [X-Road Central Server](../charts/xroad-cs)
   the sub-chart contains also the following templates:
-    - [application.yaml](information_mediator/charts/xroad-cs/templates/application.yaml) for installing X-Road Central Server pod and service to Kubernetes Cluster
-    - [postgres.yaml](information_mediator/charts/xroad-cs/templates/postgres.yaml) for installing X-Road Central Server PostgresSQL database to Kubernetes Cluster
-    - [secret.yaml](information_mediator/charts/xroad-cs/templates/secret.yaml) for installing X-Road Central Server secrets to Kubernetes Cluster
-* A chart for [X-Road management services Security Server](information_mediator/charts/xroad-ssm)
+    - [application.yaml](../charts/xroad-cs/templates/application.yaml) for installing X-Road Central Server pod and service to Kubernetes Cluster
+    - [postgres.yaml](../charts/xroad-cs/templates/postgres.yaml) for installing X-Road Central Server PostgresSQL database to Kubernetes Cluster
+    - [secret.yaml](../charts/xroad-cs/templates/secret.yaml) for installing X-Road Central Server secrets to Kubernetes Cluster
+* A chart for [X-Road management services Security Server](../charts/xroad-ssm)
   the sub-chart contains also the following templates:
-    - [application.yaml](information_mediator/charts/xroad-ssm/templates/application.yaml) for installing X-Road management services Security Server pod and service to Kubernetes Cluster
-    - [postgres.yaml](information_mediator/charts/xroad-ssm/templates/postgres.yaml) for installing X-Road management services Security Server PostgresSQL database to Kubernetes Cluster
-    - [secret.yaml](information_mediator/charts/xroad-ssm/templates/secret.yaml) for installing X-Road management services Security Server secrets to Kubernetes Cluster
-* A chart for [X-Road consumer Security Server](information_mediator/charts/xroad-ssc)
+    - [application.yaml](../charts/xroad-ssm/templates/application.yaml) for installing X-Road management services Security Server pod and service to Kubernetes Cluster
+    - [postgres.yaml](../charts/xroad-ssm/templates/postgres.yaml) for installing X-Road management services Security Server PostgresSQL database to Kubernetes Cluster
+    - [secret.yaml](../charts/xroad-ssm/templates/secret.yaml) for installing X-Road management services Security Server secrets to Kubernetes Cluster
+* A chart for [X-Road consumer Security Server](../charts/xroad-ssc)
   the sub-chart contains also the following templates:
-    - [application.yaml](information_mediator/charts/xroad-ssc/templates/application.yaml) for installing X-Road consumer Security Server pod and service to Kubernetes Cluster
-    - [postgres.yaml](information_mediator/charts/xroad-ssc/templates/postgres.yaml) for installing X-Road consumer Security Server PostgresSQL database to Kubernetes Cluster
-    - [secret.yaml](information_mediator/charts/xroad-ssc/templates/secret.yaml) for installing X-Road comnsumer Security Server secrets to Kubernetes Cluster
-* A chart for [X-Road provider Security Server](information_mediator/charts/xroad-ssp)
+    - [application.yaml](../charts/xroad-ssc/templates/application.yaml) for installing X-Road consumer Security Server pod and service to Kubernetes Cluster
+    - [postgres.yaml](../charts/xroad-ssc/templates/postgres.yaml) for installing X-Road consumer Security Server PostgresSQL database to Kubernetes Cluster
+    - [secret.yaml](../charts/xroad-ssc/templates/secret.yaml) for installing X-Road comnsumer Security Server secrets to Kubernetes Cluster
+* A chart for [X-Road provider Security Server](../charts/xroad-ssp)
   the sub-chart contains also the following templates:
-    - [application.yaml](information_mediator/charts/xroad-ssp/templates/application.yaml) for installing X-Road provider Security Server pod and service to Kubernetes Cluster
-    - [postgres.yaml](information_mediator/charts/xroad-ssp/templates/postgres.yaml) for installing X-Road provider Security Server PostgresSQL database to Kubernetes Cluster
-    - [secret.yaml](information_mediator/charts/xroad-ssp/templates/secret.yaml) for installing X-Road provider Security Server secrets to Kubernetes Cluster
+    - [application.yaml](../charts/xroad-ssp/templates/application.yaml) for installing X-Road provider Security Server pod and service to Kubernetes Cluster
+    - [postgres.yaml](../charts/xroad-ssp/templates/postgres.yaml) for installing X-Road provider Security Server PostgresSQL database to Kubernetes Cluster
+    - [secret.yaml](../charts/xroad-ssp/templates/secret.yaml) for installing X-Road provider Security Server secrets to Kubernetes Cluster
 
 12. CI / CD pipeline
 
-There is also a [CircleCI pipeline](.circleci/config.yml) created for automation of those previous steps.
+There is also a [CircleCI pipeline](../../.circleci/config.yml) created for automation of those previous steps.
 
 The pipeline uses the following environment variables (which can be set under configuration of the CircleCI project):
 
