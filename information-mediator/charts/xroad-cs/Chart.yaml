@@ -1,7 +1,0 @@
-apiVersion: v2
-name: xroad-cs
-description: A Helm chart for deploying a pre-configured X-Road Central Server
-type: application
-version: 0.1.0
-appVersion: "1.0.0"
-

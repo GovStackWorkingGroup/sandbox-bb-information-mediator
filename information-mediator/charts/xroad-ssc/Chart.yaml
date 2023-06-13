@@ -1,6 +1,0 @@
-apiVersion: v2
-name: xroad-ssc
-description: A Helm chart for deploying a pre-configured consumer X-Road Security Server
-type: application
-version: 0.1.0
-appVersion: "1.0.0"

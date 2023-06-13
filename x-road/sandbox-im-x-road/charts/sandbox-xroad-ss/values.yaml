@@ -1,0 +1,9 @@
+---
+serverImage: "im/x-road/security-server"
+tokenPin: "1234"
+dbStorage: "5Gi"
+servers:
+  # server name : image tag
+  ss1: "latest-ss1"
+  ss2: "latest-ss2"
+  ss3: "latest-ss3"
