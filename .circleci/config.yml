@@ -77,5 +77,4 @@ workflows:
       - deploy-information-mediator:                
           context: aws
           requires:
-            - approve-deploy
-         
+            - approve-deploy        
