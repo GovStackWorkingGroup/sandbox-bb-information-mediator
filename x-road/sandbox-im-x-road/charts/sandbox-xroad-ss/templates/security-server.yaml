@@ -1,4 +1,4 @@
-{{- range $server, $tag := .Values.servers }}
+{{- range $server, $value := .Values.servers }}
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
         - name: xroad-security-server
-          image: {{ printf "%s/%s:%s" $.Values.global.registry $.Values.serverImage $tag | quote }}
+          image: {{ printf "%s/%s:%s" $.Values.global.registry $.Values.serverImage $value.tag | quote }}
           imagePullPolicy: Always
           resources:
             requests:

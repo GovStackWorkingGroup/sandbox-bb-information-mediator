@@ -1,0 +1,11 @@
+{{- if .Values.targetGroupARN }}
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: "sandbox-xroad-cs-tg"
+spec:
+  serviceRef:
+    name: "sandbox-xroad-cs"
+    port: 4000
+  targetGroupARN: "{{ .Values.targetGroupARN }}"
+{{- end }}

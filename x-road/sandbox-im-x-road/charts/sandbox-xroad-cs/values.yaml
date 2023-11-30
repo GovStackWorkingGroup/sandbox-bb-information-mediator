@@ -1,4 +1,4 @@
 ---
 tokenPin: "1234"
-serverImage: "im/x-road/central-server"
+serverImage: "im/sandbox-x-road/central-server"
 serverTag: "latest-cs"

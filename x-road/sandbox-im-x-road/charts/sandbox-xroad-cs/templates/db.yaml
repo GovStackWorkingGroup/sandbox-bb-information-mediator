@@ -38,7 +38,7 @@ spec:
               memory: {{ $.Values.dbMemory | default "256Mi" | quote }}          
               cpu: "500m"
             limits:
-              memory: {{ $.Values.dbMemory | default "512Gi" | quote }}
+              memory: {{ $.Values.dbMemory | default "512Mi" | quote }}
               cpu: "1"
           env:
             - name: PGDATA

@@ -1,0 +1,14 @@
+{{- range $server, $value := .Values.servers }}
+{{- if $value.targetGroupARN }}
+---
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: "{{ $server }}-tg"
+spec:
+  serviceRef:
+    name: "sandbox-xroad-{{ $server }}"
+    port: 4000
+  targetGroupARN: "{{ $value.targetGroupARN }}"
+{{- end }}
+{{- end }}

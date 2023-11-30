@@ -30,9 +30,9 @@ shift $((OPTIND-1))
 set -eo pipefail
 
 if [[ -z $REGISTRY ]]; then
-  REPO=im/x-road
+  REPO=im/sandbox-x-road
 else
-  REPO=${REGISTRY}/im/x-road
+  REPO=${REGISTRY}/im/sandbox-x-road
 fi
 TAG=${TAG:-latest}
 

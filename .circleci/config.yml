@@ -3,52 +3,48 @@ version: 2.1
 parameters:
   namespace:
     type: string
-    default: sandbox-im
+    default: im-sandbox
   deploy:
     type: boolean
     default: false
 
 orbs:
-  aws-cli: circleci/aws-cli@3.1
-  aws-ecr: circleci/aws-ecr@8.2.1
-  aws-eks: circleci/aws-eks@2.1.2
-  helm: circleci/helm@1.0
-  kubernetes: circleci/kubernetes@1.3.1
+  aws-cli: circleci/aws-cli@4.1.2
+  helm: circleci/helm@3.0.0
 
 jobs:
   build-docker-images:
     docker:
-      - image: cimg/aws:2023.06                
+      - image: cimg/aws:2023.09
     steps:
-      - checkout       
+      - checkout
       - setup_remote_docker:
           docker_layer_caching: true
       - aws-cli/setup:
-          role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
-          aws-region: AWS_DEFAULT_REGION
-          profile-name: ${AWS_ROLE}
-          role-session-name: CircleSession
-          session-duration: '1800' 
+          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+          region: ${AWS_REGION}
+          role_session_name: CircleCISession
+          session_duration: '1800'
       - run:
           name: Create X-Road container images
           command: |
-            aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-            ./x-road/images/docker-build.sh -p -t latest -r "${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-          
+            aws ecr get-login-password | docker login --username AWS --password-stdin "${CONTAINER_REGISTRY}"
+            ./x-road/images/docker-build.sh -p -t latest -r "${CONTAINER_REGISTRY}"
+
   deploy-information-mediator:
     docker:
-      - image: cimg/aws:2023.06                
+      - image: cimg/aws:2023.09
     steps:
-      - checkout       
+      - checkout
       - aws-cli/setup:
-          role-arn: 'arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}'
-          aws-region: AWS_DEFAULT_REGION
-          profile-name: ${AWS_ROLE}
-          role-session-name: CircleSession
-          session-duration: '1800' 
-      - aws-eks/update-kubeconfig-with-authenticator:
-          cluster-name: "${AWS_CLUSTER_NAME}"
-          cluster-authentication-role-arn: arn:aws:iam::${AWS_ACCOUNT}:role/${AWS_ROLE}        
+          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+          region: ${AWS_REGION}
+          role_session_name: CircleCISession
+          session_duration: '1800'
+      - run:
+        name: Update kubeconfig
+        command: |
+          aws eks update-kubeconfig --name ${EKS_CLUSTER}
       - run:
           name: Deploy Information Mediator
           command: |
@@ -58,23 +54,23 @@ jobs:
                 --namespace "<< pipeline.parameters.namespace >>" \
                 --set-string xroad-ss.tokenPin="$IM_XROAD_TOKEN_PIN" \
                 --set-string xroad-cs.tokenPin="$IM_XROAD_TOKEN_PIN" \
-                --set-string global.registry="${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com" \
+                --set-string global.registry="${CONTAINER_REGISTRY}" \
                 sandbox-im-xroad ./x-road/sandbox-im-x-road
       - run:
           name: Verify that X-Road is ready
           command: |
             kubectl -n "<< pipeline.parameters.namespace>>" wait pod --for=condition=Ready --all --timeout 15m
-  
-workflows:  
+
+workflows:
   "Deploy IM to EKS cluster":
     jobs:
       - build-docker-images:
-          context: aws
+          context: playground
       - approve-deploy:
           type: approval
           requires:
-            - build-docker-images             
-      - deploy-information-mediator:                
-          context: aws
+            - build-docker-images
+      - deploy-information-mediator:
+          context: playground
           requires:
             - approve-deploy        
