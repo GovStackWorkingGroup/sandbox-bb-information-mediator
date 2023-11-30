@@ -42,9 +42,9 @@ jobs:
           role_session_name: CircleCISession
           session_duration: '1800'
       - run:
-        name: Update kubeconfig
-        command: |
-          aws eks update-kubeconfig --name ${EKS_CLUSTER}
+          name: Update kubeconfig
+          command: |
+            aws eks update-kubeconfig --name ${EKS_CLUSTER}
       - run:
           name: Deploy Information Mediator
           command: |
