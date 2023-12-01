@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: xroad-central-server
-          image: {{ printf "%s/%s:%s" .Values.global.registry .Values.serverImage .Values.serverTag | quote }}
+          image: {{ printf "%s/%s:%s-%s" .Values.global.registry .Values.serverImage .Values.global.revision .Values.serverTag | quote }}
           imagePullPolicy: {{ .Values.global.imagePullPolicy | default "Always" }}
           resources:
             requests:

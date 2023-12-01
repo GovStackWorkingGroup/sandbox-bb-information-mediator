@@ -1,5 +1,5 @@
 apiVersion: v2
-name: sandbox-im-x-road-ss
+name: sandbox-im-xroad-ss
 description: GovStack Sandbox BB IM - X-Road Security Server
 type: application
 version: 0.1.0

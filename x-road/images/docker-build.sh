@@ -29,10 +29,11 @@ shift $((OPTIND-1))
 
 set -eo pipefail
 
+IMAGE_BASE=${IMAGE:-bb/im/sandbox-x-road}
 if [[ -z $REGISTRY ]]; then
-  REPO=im/sandbox-x-road
+  REPO=IMAGE_BASE
 else
-  REPO=${REGISTRY}/im/sandbox-x-road
+  REPO=${REGISTRY}/${IMAGE_BASE}
 fi
 TAG=${TAG:-latest}
 

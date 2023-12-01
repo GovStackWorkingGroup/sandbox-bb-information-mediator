@@ -4,11 +4,8 @@ tokenPin: "1234"
 dbStorage: "5Gi"
 servers:
   ss1:
-    tag: "latest-ss1"
-    targetGroupARN:
+    tag: "ss1"
   ss2:
-    tag: "latest-ss2"
-    targetGroupARN:
+    tag: "ss2"
   ss3:
-    tag: "latest-ss3"
-    targetGroupARN:
+    tag: "ss3"
