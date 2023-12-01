@@ -60,7 +60,7 @@ commands:
                   --set-string xroad-ss.tokenPin="$IM_XROAD_TOKEN_PIN" \
                   --set-string xroad-cs.tokenPin="$IM_XROAD_TOKEN_PIN" \
                   --set-string global.registry="${CONTAINER_REGISTRY}" \
-                  --set-string global.revision=<< pipeline.git.revision >>
+                  --set-string global.revision=<< pipeline.git.revision >> \
                   sandbox-im-xroad ./x-road/sandbox-im-x-road
             - run:
                 name: Verify that X-Road is ready
