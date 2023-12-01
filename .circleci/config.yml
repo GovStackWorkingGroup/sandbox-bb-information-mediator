@@ -80,7 +80,7 @@ jobs:
       - image: cimg/aws:2023.09
     steps:
       - build_and_deploy:
-          deploy: false
+          deploy: true
 
 workflows:
   # build every commit
