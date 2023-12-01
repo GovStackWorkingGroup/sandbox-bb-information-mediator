@@ -4,7 +4,7 @@ parameters:
   namespace:
     type: string
     default: im-sandbox
-  deploy:
+  playground:
     type: boolean
     default: false
 
@@ -12,65 +12,104 @@ orbs:
   aws-cli: circleci/aws-cli@4.1.2
   helm: circleci/helm@3.0.0
 
-jobs:
-  build-docker-images:
-    docker:
-      - image: cimg/aws:2023.09
+commands:
+  build_and_deploy:
+    parameters:
+      deploy:
+        type: boolean
+        default: false
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      - aws-cli/setup:
-          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-          region: ${AWS_REGION}
-          role_session_name: CircleCISession
-          session_duration: '1800'
-      - run:
-          name: Create X-Road container images
-          command: |
-            aws ecr get-login-password | docker login --username AWS --password-stdin "${CONTAINER_REGISTRY}"
-            ./x-road/images/docker-build.sh -p -t latest -r "${CONTAINER_REGISTRY}"
+      - helm/install_helm_client:
+          version: v3.13.0
+      - when:
+          condition:
+            not: << parameters.deploy >>
+          steps:
+            - run:
+                name: Create X-Road container images
+                command: |
+                  ./x-road/images/docker-build.sh -t latest -r "${CONTAINER_REGISTRY}"
+                  helm lint ./x-road/sandbox-im-x-road
+      - when:
+          condition: << parameters.deploy >>
+          steps:
+            - aws-cli/setup:
+                role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
+                region: ${AWS_REGION}
+                role_session_name: CircleCISession
+                session_duration: '1800'
+            - run:
+                name: Create X-Road container images
+                command: |
+                  aws ecr get-login-password | docker login --username AWS --password-stdin "${CONTAINER_REGISTRY}"
+                  ./x-road/images/docker-build.sh -p -t << pipeline.git.revision >>  -r "${CONTAINER_REGISTRY}"
+            - run:
+                name: Update kubeconfig
+                command: |
+                  aws eks update-kubeconfig --name ${EKS_CLUSTER}
+            - run:
+                name: Deploy project
+                command: |
+                  helm upgrade --install --atomic \
+                  --wait --timeout 15m \
+                  --create-namespace \
+                  --namespace "<< pipeline.parameters.namespace >>" \
+                  --set-string xroad-ss.tokenPin="$IM_XROAD_TOKEN_PIN" \
+                  --set-string xroad-cs.tokenPin="$IM_XROAD_TOKEN_PIN" \
+                  --set-string global.registry="${CONTAINER_REGISTRY}" \
+                  --set-string global.revision=<< pipeline.git.revision >>
+                  sandbox-im-xroad ./x-road/sandbox-im-x-road
+            - run:
+                name: Verify that X-Road is ready
+                command: |
+                  kubectl -n "<< pipeline.parameters.namespace >>" wait pod --for=condition=Ready --all --timeout 15m
 
-  deploy-information-mediator:
+jobs:
+  build:
     docker:
       - image: cimg/aws:2023.09
     steps:
-      - checkout
-      - aws-cli/setup:
-          role_arn: "${AWS_CIRCLECI_ROLE_ARN}"
-          region: ${AWS_REGION}
-          role_session_name: CircleCISession
-          session_duration: '1800'
-      - run:
-          name: Update kubeconfig
-          command: |
-            aws eks update-kubeconfig --name ${EKS_CLUSTER}
-      - run:
-          name: Deploy Information Mediator
-          command: |
-            helm upgrade --install --atomic \
-                --wait --timeout 15m \
-                --create-namespace \
-                --namespace "<< pipeline.parameters.namespace >>" \
-                --set-string xroad-ss.tokenPin="$IM_XROAD_TOKEN_PIN" \
-                --set-string xroad-cs.tokenPin="$IM_XROAD_TOKEN_PIN" \
-                --set-string global.registry="${CONTAINER_REGISTRY}" \
-                sandbox-im-xroad ./x-road/sandbox-im-x-road
-      - run:
-          name: Verify that X-Road is ready
-          command: |
-            kubectl -n "<< pipeline.parameters.namespace>>" wait pod --for=condition=Ready --all --timeout 15m
+      - build_and_deploy:
+          deploy: false
+
+  build-and-deploy:
+    docker:
+      - image: cimg/aws:2023.09
+    steps:
+      - build_and_deploy:
+          deploy: false
 
 workflows:
-  "Deploy IM to EKS cluster":
+  # build every commit
+  "Just build":
+    when:
+      and:
+        - equal: [ false, << pipeline.parameters.playground >> ]
+        - not:
+            equal: [ 'main', << pipeline.git.branch >> ]
     jobs:
-      - build-docker-images:
+      - build:
+          context: sandbox-dev
+
+  # build and deploy to dev commits to main
+  "Build and deploy":
+    when:
+      and:
+        - equal: [ false, << pipeline.parameters.playground >> ]
+        - equal: [ 'main', << pipeline.git.branch >> ]
+    jobs:
+      - build-and-deploy:
+          context: sandbox-dev
+
+  # build and deploy to playground depending on parameter
+  "Build and deploy to playground":
+    when:
+      and:
+        - equal: [ true, << pipeline.parameters.playground >> ]
+        - equal: [ 'main', << pipeline.git.branch >> ]
+    jobs:
+      - build-and-deploy:
           context: playground
-      - approve-deploy:
-          type: approval
-          requires:
-            - build-docker-images
-      - deploy-information-mediator:
-          context: playground
-          requires:
-            - approve-deploy        

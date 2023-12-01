@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
         - name: xroad-security-server
-          image: {{ printf "%s/%s:%s" $.Values.global.registry $.Values.serverImage $value.tag | quote }}
+          image: {{ printf "%s/%s:%s-%s" $.Values.global.registry $.Values.serverImage $.Values.global.revision $value.tag | quote }}
           imagePullPolicy: Always
           resources:
             requests:
