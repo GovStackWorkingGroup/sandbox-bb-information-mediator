@@ -1,14 +1,15 @@
 #!/bin/bash
 # Builds preconfigured Sandbox X-Road images
 
-cd $(dirname -- "$0")
+cd "$(dirname -- "$0")"
 
 REGISTRY=
 PUSH=false
 TAG=
 VARIANTS=( ss1 ss2 ss3 )
+DIGESTS=false
 
-while getopts "r:t:p" opt; do
+while getopts "r:t:pd" opt; do
   case "${opt}" in
     r)
       REGISTRY="${OPTARG}"
@@ -18,6 +19,9 @@ while getopts "r:t:p" opt; do
       ;;
     t)
       TAG="${OPTARG}"
+      ;;
+    d)
+      DIGESTS=true
       ;;
     *)
       echo "Usage: $0 -r <registry base url> [-t tag] [-p]"
@@ -36,6 +40,14 @@ else
   REPO=${REGISTRY}/${IMAGE_BASE}
 fi
 TAG=${TAG:-latest}
+
+if [[ $DIGESTS = "true" ]]; then
+  echo "IMAGE_cs=$(docker inspect --format='{{index .RepoDigests 0}}' $REPO/central-server:$TAG-cs)"
+  for s in "${VARIANTS[@]}"; do
+    echo "IMAGE_$s=$(docker inspect --format='{{index .RepoDigests 0}}' $REPO/security-server:$TAG-$s)"
+  done
+  exit 0
+fi
 
 echo "Building Central Server images $REPO/central-server:$TAG"
 docker build -q -t $REPO/central-server:$TAG sandbox-xroad-cs
@@ -60,10 +72,10 @@ done
 if [[ -n $REGISTRY && $PUSH = true ]]; then
   echo -e "\nPushing images to $REGISTRY..."
 
-  docker push -q $REPO/security-server:$TAG
+  docker push $REPO/security-server:$TAG
   for s in "${VARIANTS[@]}"; do
-    docker push -q $REPO/security-server:$TAG-$s
+    docker push $REPO/security-server:$TAG-$s
   done
-  docker push -q $REPO/central-server:$TAG
-  docker push -q $REPO/central-server:$TAG-cs
+  docker push $REPO/central-server:$TAG
+  docker push $REPO/central-server:$TAG-cs
 fi

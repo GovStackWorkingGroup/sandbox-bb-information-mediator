@@ -1,4 +1,5 @@
 ---
 tokenPin: "1234"
-serverImage: "bb/im/sandbox-x-road/central-server"
-serverTag: "cs"
+baseImage: "bb/im/sandbox-x-road/central-server"
+tag: "latest-cs"
+image:

@@ -45,7 +45,7 @@ commands:
                 name: Create X-Road container images
                 command: |
                   aws ecr get-login-password | docker login --username AWS --password-stdin "${CONTAINER_REGISTRY}"
-                  ./x-road/images/docker-build.sh -p -t << pipeline.git.revision >>  -r "${CONTAINER_REGISTRY}"
+                  ./x-road/images/docker-build.sh -p -t latest -r "${CONTAINER_REGISTRY}"
             - run:
                 name: Update kubeconfig
                 command: |
@@ -53,14 +53,19 @@ commands:
             - run:
                 name: Deploy project
                 command: |
+                  # get repo digests for images
+                  export $(./x-road/images/docker-build.sh -d -t latest -r "${CONTAINER_REGISTRY}")
+
                   helm upgrade --install --atomic \
-                  --wait --timeout 15m \
+                  --wait --timeout 20m \
                   --create-namespace \
                   --namespace "<< pipeline.parameters.namespace >>" \
                   --set-string xroad-ss.tokenPin="$IM_XROAD_TOKEN_PIN" \
                   --set-string xroad-cs.tokenPin="$IM_XROAD_TOKEN_PIN" \
-                  --set-string global.registry="${CONTAINER_REGISTRY}" \
-                  --set-string global.revision=<< pipeline.git.revision >> \
+                  --set-string sandbox-im-xroad-cs.image="$IMAGE_cs" \
+                  --set-string sandbox-im-xroad-ss.servers.ss1.image="$IMAGE_ss1" \
+                  --set-string sandbox-im-xroad-ss.servers.ss2.image="$IMAGE_ss2" \
+                  --set-string sandbox-im-xroad-ss.servers.ss3.image="$IMAGE_ss3" \
                   sandbox-im-xroad ./x-road/sandbox-im-x-road
             - run:
                 name: Verify that X-Road is ready

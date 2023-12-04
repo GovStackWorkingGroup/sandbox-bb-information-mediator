@@ -1,11 +1,14 @@
 ---
-serverImage: "bb/im/sandbox-x-road/security-server"
+baseImage: "bb/im/sandbox-x-road/security-server"
 tokenPin: "1234"
 dbStorage: "5Gi"
 servers:
   ss1:
-    tag: "ss1"
+    image:
+    tag: "latest-ss1"
   ss2:
-    tag: "ss2"
+    image:
+    tag: "latest-ss2"
   ss3:
-    tag: "ss3"
+    image:
+    tag: "latest-ss3"
