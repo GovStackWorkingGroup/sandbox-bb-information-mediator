@@ -33,6 +33,8 @@ spec:
     matchLabels:
       app: sandbox-xroad-cs
   replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
