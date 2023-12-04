@@ -42,9 +42,11 @@ fi
 TAG=${TAG:-latest}
 
 if [[ $DIGESTS = "true" ]]; then
-  echo "IMAGE_cs=$(docker inspect --format='{{index .RepoDigests 0}}' $REPO/central-server:$TAG-cs)"
+  tmp=$(docker inspect --format='{{index .RepoDigests 0}}' $REPO/central-server:$TAG-cs)
+  echo "IMAGE_cs=$REPO/${tmp##*/}"
   for s in "${VARIANTS[@]}"; do
-    echo "IMAGE_$s=$(docker inspect --format='{{index .RepoDigests 0}}' $REPO/security-server:$TAG-$s)"
+    tmp=$(docker inspect --format='{{index .RepoDigests 0}}' $REPO/security-server:$TAG-$s)
+    echo "IMAGE_$s=$REPO/${tmp##*/}"
   done
   exit 0
 fi
