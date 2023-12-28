@@ -97,17 +97,7 @@ workflows:
             equal: [ 'main', << pipeline.git.branch >> ]
     jobs:
       - build:
-          context: sandbox-dev
-
-  # build and deploy to dev commits to main
-  "Build and deploy":
-    when:
-      and:
-        - equal: [ false, << pipeline.parameters.playground >> ]
-        - equal: [ 'main', << pipeline.git.branch >> ]
-    jobs:
-      - build-and-deploy:
-          context: sandbox-dev
+          context: playground
 
   # build and deploy to playground depending on parameter
   "Build and deploy to playground":
